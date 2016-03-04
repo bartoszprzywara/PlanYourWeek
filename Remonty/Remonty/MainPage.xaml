@@ -7,7 +7,101 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.Resources>
+        <Style TargetType="Button" x:Name="NaviButtonStyle">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Name="MenuItemIconStyle">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Name="MenuItemLabelStyle">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+        </Style>
+    </Page.Resources>
 
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <RelativePanel Grid.Row="0" Background="LightGray">
+            <Button Content="&#xE700;" Name="HamburgerButton" RelativePanel.AlignLeftWithPanel="True" Style="{StaticResource NaviButtonStyle}" Click="HamburgerButton_Click"/>
+            <TextBlock Text="Twój tydzień"  Name="TitleTextBlock" Margin="10,0,0,0" RelativePanel.RightOf="HamburgerButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <Button Content="&#xE109;" Name="AddButton" RelativePanel.LeftOf="SearchButton" Style="{StaticResource NaviButtonStyle}" Click="AddButton_Click"/>
+            <Button Content="&#xE71E;" Name="SearchButton" RelativePanel.AlignRightWithPanel="True"  Style="{StaticResource NaviButtonStyle}" Click="SearchButton_Click"/>
+        </RelativePanel>
+
+        <SplitView Grid.Row="1" Name="MenuSplitView" CompactPaneLength="40" DisplayMode="Overlay" >
+            <SplitView.Pane>
+                <ListBox Name="MenuListBox" SelectionChanged="MenuListBox_SelectionChanged">
+                    <ListBoxItem Name="YourWeekListBoxItem">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE26B;" Style="{StaticResource MenuItemIconStyle}"/>
+                            <TextBlock Text="Twój tydzień" Style="{StaticResource MenuItemLabelStyle}"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="IncomingListBoxItem">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE26B;" Style="{StaticResource MenuItemIconStyle}"/>
+                            <TextBlock Text="Nowe" Style="{StaticResource MenuItemLabelStyle}"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Name="SettingsListBoxItem">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE115;" Style="{StaticResource MenuItemIconStyle}"/>
+                            <TextBlock Text="Ustawienia" Style="{StaticResource MenuItemLabelStyle}"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                </ListBox>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Frame Name="ContentFrame" />
+            </SplitView.Content>
+        </SplitView>
+
+        <SplitView Grid.Row="0" Name="SearchSplitView" PanePlacement="Right" OpenPaneLength="250" DisplayMode="Overlay">
+            <SplitView.Pane>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Name="SearchSplitTextBox" Width="210" PlaceholderText="Search" FontSize="18" VerticalAlignment="Center"/>
+                    <Button Name="SearchSplitButton" Content="&#xE71E;" Style="{StaticResource NaviButtonStyle}" Click="SearchSplitButton_Click"/>
+                </StackPanel>
+            </SplitView.Pane>
+        </SplitView>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="WidthVisualStateGroup">
+                <VisualState x:Name="VisualStatePhone">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MenuSplitView.DisplayMode" Value="Overlay" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateTablet">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="600" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MenuSplitView.DisplayMode" Value="CompactOverlay" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateDesktop">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1000" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MenuSplitView.DisplayMode" Value="CompactInline" />
+                        <Setter Target="MenuSplitView.IsPaneOpen" Value="True" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>
