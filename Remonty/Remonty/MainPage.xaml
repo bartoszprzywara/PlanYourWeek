@@ -14,14 +14,6 @@
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
         </Style>
-        <Style TargetType="TextBlock" x:Name="MenuItemIconStyle">
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-        </Style>
-        <Style TargetType="TextBlock" x:Name="MenuItemLabelStyle">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="10,0,0,0"/>
-        </Style>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -42,20 +34,20 @@
                 <ListBox Name="MenuListBox" SelectionChanged="MenuListBox_SelectionChanged">
                     <ListBoxItem Name="YourWeekListBoxItem">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE26B;" Style="{StaticResource MenuItemIconStyle}"/>
-                            <TextBlock Text="Twój tydzień" Style="{StaticResource MenuItemLabelStyle}"/>
+                            <TextBlock Text="&#xE26B;" FontSize="18" FontFamily="Segoe MDL2 Assets"/>
+                            <TextBlock Text="Twój tydzień" FontSize="14" Margin="10,0,0,0"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="IncomingListBoxItem">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE26B;" Style="{StaticResource MenuItemIconStyle}"/>
-                            <TextBlock Text="Nowe" Style="{StaticResource MenuItemLabelStyle}"/>
+                            <TextBlock Text="&#xE26B;" FontSize="18" FontFamily="Segoe MDL2 Assets"/>
+                            <TextBlock Text="Nowe" FontSize="14" Margin="10,0,0,0"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="SettingsListBoxItem">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE115;" Style="{StaticResource MenuItemIconStyle}"/>
-                            <TextBlock Text="Ustawienia" Style="{StaticResource MenuItemLabelStyle}"/>
+                            <TextBlock Text="&#xE115;" FontSize="18" FontFamily="Segoe MDL2 Assets"/>
+                            <TextBlock Text="Ustawienia" FontSize="14" Margin="10,0,0,0"/>
                         </StackPanel>
                     </ListBoxItem>
                 </ListBox>
@@ -68,7 +60,7 @@
         <SplitView Grid.Row="0" Name="SearchSplitView" PanePlacement="Right" OpenPaneLength="250" DisplayMode="Overlay">
             <SplitView.Pane>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox Name="SearchSplitTextBox" Width="210" PlaceholderText="Search" FontSize="18" VerticalAlignment="Center"/>
+                    <TextBox Name="SearchSplitTextBox" Width="210" Height="40" PlaceholderText="Szukaj" FontSize="18" VerticalAlignment="Center"/>
                     <Button Name="SearchSplitButton" Content="&#xE71E;" Style="{StaticResource NaviButtonStyle}" Click="SearchSplitButton_Click"/>
                 </StackPanel>
             </SplitView.Pane>
