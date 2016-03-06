@@ -9,7 +9,23 @@
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <TextBlock Text="Twój tydzień" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
+            <RelativePanel Margin="15,10,15,0" BorderThickness="2"  BorderBrush="#FFD2D2D2" Height="90" VerticalAlignment="Top">
+                <TextBlock Name="TitleTextBlock" Text="NAZWA_ZADANIA" RelativePanel.AlignLeftWithPanel="True" Margin="10,5,0,0" />
+                <TextBlock Name="PriorTextBlock" Text="PRIORITET" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,0,0"/>
+                <TextBlock Name="ContextTextBlock" Text="KONTEKST" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <TextBlock Name="DateTextBlock" Text="DATA_STARTU" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
+                <StackPanel RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0">
+                    <Button Name="EditButton" Content="EDIT" Margin="0,0,0,10" Click="EditButton_Click"/>
+                    <Button Name="DoneButton" Content="DONE"/>
+                </StackPanel>
+
+                <!--
+                <StackPanel RelativePanel.AlignHorizontalCenterWithPanel="True" Orientation="Horizontal">
+                    <TextBlock Text="User:" Margin="0,5,5,5" />
+                    <TextBlock Text="Bob" Margin="0,5,0,5" />
+                </StackPanel>
+                -->
+            </RelativePanel>
         </Grid>
     </ScrollViewer>
 </Page>

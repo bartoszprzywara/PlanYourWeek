@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Remonty.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,12 @@ namespace Remonty
         public YourWeek()
         {
             this.InitializeComponent();
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame frame = Window.Current.Content as Frame;
+            frame.Navigate(typeof(AddEditActivity), new Activity());
         }
     }
 }

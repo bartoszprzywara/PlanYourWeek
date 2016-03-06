@@ -1,0 +1,98 @@
+﻿<Page
+    x:Class="Remonty.AddEditActivity"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Remonty"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer>
+        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <RelativePanel Grid.Row="0" Background="LightGray">
+                <Button Content="&#xE0C4;" Name="BackButton" Width="40" Height="40" FontSize="18" FontFamily="Segoe MDL2 Assets" RelativePanel.AlignLeftWithPanel="True" Click="BackButton_Click"/>
+                <TextBlock Text="Dodaj zadanie"  Name="TitleTextBlock" Margin="10,0,0,0" RelativePanel.RightOf="BackButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                <Button Content="&#xE74E;" Name="AddButton" Width="40" Height="40" FontSize="18" FontFamily="Segoe MDL2 Assets" RelativePanel.AlignRightWithPanel="True" Click="AddButton_Click"/>
+            </RelativePanel>
+
+            <StackPanel Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <TextBox Margin="15,10,15,0" Name="TitleTextBox" TextWrapping="Wrap" PlaceholderText="Tytuł"/>
+                <TextBox Margin="15,10,15,0" Name="DescriptionTextBox" TextWrapping="Wrap" PlaceholderText="Opis"/>
+                <RelativePanel Margin="15,10,15,0">
+                    <TextBlock Name="PriorTextBlock" Text="Priorytet" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                    <ComboBox Name="PriorComboBox" Width="130" RelativePanel.AlignRightWithPanel="True">
+                        <ComboBoxItem Content="Niski"/>
+                        <ComboBoxItem Content="Normalny"/>
+                        <ComboBoxItem Content="Wysoki"/>
+                    </ComboBox>
+                    <!--
+            <Image Margin="5,0" Name="StarOneImage" Source="ms-appx:///Assets/StarFull.jpg" Height="20" Width="20" RelativePanel.LeftOf="StarTwoImage"/>
+            <Image Margin="5,0" Name="StarTwoImage" Source="ms-appx:///Assets/StarFull.jpg" Height="20" Width="20" RelativePanel.LeftOf="StarThreeImage"/>
+            <Image Margin="5,0" Name="StarThreeImage" Source="ms-appx:///Assets/StarEmpty.png" Height="20" Width="20" RelativePanel.AlignRightWithPanel="True"/>
+            -->
+                </RelativePanel>
+
+                <Line X2="2000" Stroke="Black" StrokeThickness="1" Margin="15,10,15,0"/>
+
+                <RelativePanel Margin="15,5,-55,0">
+                    <TextBlock Name="IsAllDayTextBlock" Text="Czy całodniowe?" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                    <ToggleSwitch Name="IsAllDayToggleSwitch" OffContent="Nie" OnContent="Tak" IsOn="True" RelativePanel.AlignRightWithPanel="True"/>
+                </RelativePanel>
+
+                <RelativePanel Margin="15,5,15,0">
+                    <TextBlock Name="StartTextBlock" Text="Początek" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                    <CalendarDatePicker Name="StartDatePicker" PlaceholderText="wybierz datę" Width="130" RelativePanel.AlignRightWithPanel="True"/>
+                </RelativePanel>
+
+                <RelativePanel Margin="15,10,15,0">
+                    <TextBlock Name="EndTextBlock" Text="Kuniec" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                    <CalendarDatePicker Name="EndDatePicker" PlaceholderText="wybierz datę" Width="130" RelativePanel.AlignRightWithPanel="True"/>
+                </RelativePanel>
+
+                <RelativePanel Margin="15,10,15,0">
+                    <TextBlock Name="EstimateTextBlock" Text="Czas trwania" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                    <ComboBox Name="EstimateComboBox" Width="130" RelativePanel.AlignRightWithPanel="True">
+                        <ComboBoxItem Content="10 min"/>
+                        <ComboBoxItem Content="20 min"/>
+                        <ComboBoxItem Content="30 min"/>
+                        <ComboBoxItem Content="1 godz"/>
+                        <ComboBoxItem Content="2 godz"/>
+                        <ComboBoxItem Content="3 godz"/>
+                        <ComboBoxItem Content="4 godz"/>
+                        <ComboBoxItem Content="6 godz"/>
+                        <ComboBoxItem Content="10 godz"/>
+                    </ComboBox>
+                </RelativePanel>
+
+                <Line X2="2000" Stroke="Black" StrokeThickness="1" Margin="15,10,15,0"/>
+
+                <RelativePanel Margin="15,10,15,0">
+                    <TextBlock Name="ContextTextBlock" Text="Kontekst" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                    <ComboBox Name="ContextComboBox" Width="130" RelativePanel.AlignRightWithPanel="True">
+                        <ComboBoxItem Content="Dom"/>
+                        <ComboBoxItem Content="Biuro"/>
+                        <ComboBoxItem Content="Telefon"/>
+                    </ComboBox>
+                </RelativePanel>
+
+                <RelativePanel Margin="15,10,15,0">
+                    <TextBlock Name="ProjectContextTextBlock" Text="Projekt" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                    <ComboBox Name="ProjectComboBox" Width="130" RelativePanel.AlignRightWithPanel="True">
+                        <ComboBoxItem Content="Projekt 1"/>
+                        <ComboBoxItem Content="Projekt 2"/>
+                        <ComboBoxItem Content="Projekt 3"/>
+                        <ComboBoxItem Content="Dodaj nowy" Foreground="Gray"/>
+                    </ComboBox>
+                </RelativePanel>
+
+                <Button Content="Pokaż podsumowanie" Margin="15,35,15,0" Click="Button_Click" />
+                <TextBlock Name="Podsumowanie" Margin="15,0,15,0" TextWrapping="Wrap"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Page>
