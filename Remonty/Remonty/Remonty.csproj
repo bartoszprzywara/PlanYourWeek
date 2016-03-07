@@ -97,7 +97,7 @@
     <Compile Include="Views\AddEditActivity.xaml.cs">
       <DependentUpon>AddEditActivity.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\Activity.cs" />
+    <Compile Include="Models\Activity.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>

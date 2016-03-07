@@ -1,4 +1,4 @@
-﻿using Remonty.Model;
+﻿using Remonty.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,15 +23,20 @@ namespace Remonty
     /// </summary>
     public sealed partial class YourWeek : Page
     {
+        private List<Activity> Activities;
+
         public YourWeek()
         {
             this.InitializeComponent();
+            Activities = ActivityManager.getActivities();
         }
 
-        private void EditButton_Click(object sender, RoutedEventArgs e)
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            var selectedActivity = (Activity)e.ClickedItem;
+
             Frame frame = Window.Current.Content as Frame;
-            frame.Navigate(typeof(AddEditActivity), new Activity());
+            frame.Navigate(typeof(AddEditActivity), selectedActivity);
         }
     }
 }

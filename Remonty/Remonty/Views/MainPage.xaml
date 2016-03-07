@@ -8,11 +8,19 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <Style TargetType="Button" x:Name="NaviButtonStyle">
+        <Style TargetType="Button" x:Key="NaviButtonStyle">
             <Setter Property="Height" Value="40"/>
             <Setter Property="Width" Value="40"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="HamburgerMenuItemIconStyle">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="HamburgerMenuItemLabelStyle">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
         </Style>
     </Page.Resources>
 
@@ -23,7 +31,7 @@
         </Grid.RowDefinitions>
 
         <RelativePanel Grid.Row="0" Background="LightGray">
-            <Button Content="&#xE700;" Name="HamburgerButton" RelativePanel.AlignLeftWithPanel="True" Style="{StaticResource NaviButtonStyle}" Click="HamburgerButton_Click"/>
+            <Button Content="&#xE700;" Name="HamburgerButton" Style="{StaticResource NaviButtonStyle}" Click="HamburgerButton_Click"/>
             <TextBlock Text="Twój tydzień"  Name="TitleTextBlock" Margin="10,0,0,0" RelativePanel.RightOf="HamburgerButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
             <Button Content="&#xE109;" Name="AddButton" RelativePanel.LeftOf="SearchButton" Style="{StaticResource NaviButtonStyle}" Click="AddButton_Click"/>
             <Button Content="&#xE71E;" Name="SearchButton" RelativePanel.AlignRightWithPanel="True"  Style="{StaticResource NaviButtonStyle}" Click="SearchButton_Click"/>
@@ -34,62 +42,62 @@
                 <ListBox Name="MenuListBox" SelectionChanged="MenuListBox_SelectionChanged">
                     <ListBoxItem Name="YourWeekListBoxItem">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE10F;" FontSize="18" FontFamily="Segoe MDL2 Assets"/>
-                            <TextBlock Text="Twój tydzień" FontSize="14" Margin="10,0,0,0"/>
+                            <TextBlock Text="&#xE10F;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
+                            <TextBlock Text="Twój tydzień" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="IncomingListBoxItem">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE734;" FontSize="18" FontFamily="Segoe MDL2 Assets"/>
-                            <TextBlock Text="Nowe" FontSize="14" Margin="10,0,0,0"/>
+                            <TextBlock Text="&#xE734;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
+                            <TextBlock Text="Nowe" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="ScheduledListBoxItem">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE2AD;" FontSize="18" FontFamily="Segoe MDL2 Assets"/>
-                            <TextBlock Text="Zaplanowane" FontSize="14" Margin="10,0,0,0"/>
+                            <TextBlock Text="&#xE2AD;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
+                            <TextBlock Text="Zaplanowane" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="NextListBoxItem">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE122;" FontSize="18" FontFamily="Segoe MDL2 Assets"/>
-                            <TextBlock Text="Najbliższe" FontSize="14" Margin="10,0,0,0"/>
+                            <TextBlock Text="&#xE122;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
+                            <TextBlock Text="Najbliższe" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="SomedayListBoxItem">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE74E;" FontSize="18" FontFamily="Segoe MDL2 Assets"/>
-                            <TextBlock Text="Kiedyś" FontSize="14" Margin="10,0,0,0"/>
+                            <TextBlock Text="&#xE74E;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
+                            <TextBlock Text="Kiedyś" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="WaitingListBoxItem">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE805;" FontSize="18" FontFamily="Segoe MDL2 Assets"/>
-                            <TextBlock Text="Oddelegowane" FontSize="14" Margin="10,0,0,0"/>
+                            <TextBlock Text="&#xE805;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
+                            <TextBlock Text="Oddelegowane" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="DoneListBoxItem">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE930;" FontSize="18" FontFamily="Segoe MDL2 Assets"/>
-                            <TextBlock Text="Zrobione" FontSize="14" Margin="10,0,0,0"/>
+                            <TextBlock Text="&#xE930;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
+                            <TextBlock Text="Zrobione" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="ProjectsListBoxItem">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE80A;" FontSize="18" FontFamily="Segoe MDL2 Assets"/>
-                            <TextBlock Text="Projekty" FontSize="14" Margin="10,0,0,0"/>
+                            <TextBlock Text="&#xE80A;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
+                            <TextBlock Text="Projekty" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="ContextsListBoxItem">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE909;" FontSize="18" FontFamily="Segoe MDL2 Assets"/>
-                            <TextBlock Text="Konteksty" FontSize="14" Margin="10,0,0,0"/>
+                            <TextBlock Text="&#xE909;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
+                            <TextBlock Text="Konteksty" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="SettingsListBoxItem">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE115;" FontSize="18" FontFamily="Segoe MDL2 Assets"/>
-                            <TextBlock Text="Ustawienia" FontSize="14" Margin="10,0,0,0"/>
+                            <TextBlock Text="&#xE115;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
+                            <TextBlock Text="Ustawienia" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
                         </StackPanel>
                     </ListBoxItem>
                 </ListBox>

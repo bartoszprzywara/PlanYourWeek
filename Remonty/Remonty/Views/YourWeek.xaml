@@ -5,27 +5,28 @@
     xmlns:local="using:Remonty"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:data="using:Remonty.Models"
     mc:Ignorable="d">
 
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <RelativePanel Margin="15,10,15,0" BorderThickness="2"  BorderBrush="#FFD2D2D2" Height="90" VerticalAlignment="Top">
-                <TextBlock Name="TitleTextBlock" Text="NAZWA_ZADANIA" RelativePanel.AlignLeftWithPanel="True" Margin="10,5,0,0" />
-                <TextBlock Name="PriorTextBlock" Text="PRIORITET" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,0,0"/>
-                <TextBlock Name="ContextTextBlock" Text="KONTEKST" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
-                <TextBlock Name="DateTextBlock" Text="DATA_STARTU" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
-                <StackPanel RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0">
-                    <Button Name="EditButton" Content="EDIT" Margin="0,0,0,10" Click="EditButton_Click"/>
-                    <Button Name="DoneButton" Content="DONE"/>
-                </StackPanel>
-
-                <!--
-                <StackPanel RelativePanel.AlignHorizontalCenterWithPanel="True" Orientation="Horizontal">
-                    <TextBlock Text="User:" Margin="0,5,5,5" />
-                    <TextBlock Text="Bob" Margin="0,5,0,5" />
-                </StackPanel>
-                -->
-            </RelativePanel>
-        </Grid>
-    </ScrollViewer>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ListView ItemsSource="{x:Bind Activities}" Margin="0,10,0,0" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Margin" Value="-11,0,-11,0" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="data:Activity">
+                    <RelativePanel BorderThickness="2" BorderBrush="#FFD2D2D2" Height="90" Margin="15,5,15,5">
+                        <TextBlock Name="TitleTextBlock" Text="{x:Bind Title}" Margin="10,5,0,0" />
+                        <TextBlock Name="PriorTextBlock" Text="{x:Bind Priority}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,0,0"/>
+                        <TextBlock Name="ContextTextBlock" Text="{x:Bind Context}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                        <TextBlock Name="DateTextBlock" Text="{x:Bind StartDate}" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
+                        <Button Name="DoneButton" Content="DONE" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0"/>
+                    </RelativePanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </Page>
