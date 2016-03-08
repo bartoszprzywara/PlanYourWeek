@@ -94,6 +94,8 @@
     <None Include="Remonty_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Context.cs" />
+    <Compile Include="Models\Project.cs" />
     <Compile Include="Views\AddEditActivity.xaml.cs">
       <DependentUpon>AddEditActivity.xaml</DependentUpon>
     </Compile>
@@ -124,8 +126,6 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\StarEmpty.png" />
-    <Content Include="Assets\StarFull.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

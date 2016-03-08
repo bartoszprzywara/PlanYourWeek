@@ -20,9 +20,12 @@
                 <DataTemplate x:DataType="data:Activity">
                     <RelativePanel BorderThickness="2" BorderBrush="#FFD2D2D2" Height="90" Margin="15,5,15,5">
                         <TextBlock Name="TitleTextBlock" Text="{x:Bind Title}" Margin="10,5,0,0" />
-                        <TextBlock Name="PriorTextBlock" Text="{x:Bind Priority}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,0,0"/>
-                        <TextBlock Name="ContextTextBlock" Text="{x:Bind Context}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
-                        <TextBlock Name="DateTextBlock" Text="{x:Bind StartDate}" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
+                        <TextBlock Name="PriorLabelTextBlock" Text="Priorytet:" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,0,0,0"/>
+                        <TextBlock Name="PriorValueTextBlock" Text="{x:Bind Priority}" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="PriorLabelTextBlock" Margin="5,0,0,0"/>
+                        <TextBlock Name="ContextLabelTextBlock" Text="@" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+                        <TextBlock Name="ContextValueTextBlock" Text="{x:Bind Context}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="ContextLabelTextBlock"/>
+                        <TextBlock Name="StartHourTextBlock" Text="{x:Bind StartHourUI}" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
+                        <TextBlock Name="StartDateTextBlock" Text="{x:Bind StartDateUI}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="StartHourTextBlock" Margin="10,0,0,5"/>
                         <Button Name="DoneButton" Content="DONE" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,0,10,0"/>
                     </RelativePanel>
                 </DataTemplate>

@@ -8,23 +8,9 @@ namespace Remonty.Models
 {
     public class Activity
     {
-        public Activity()
-        {
-            Title = "Tytuł zadania 1";
-            Description = "Opis zadania 1";
-            Priority = 0;
-            IsAllDay = false;
-            StartHour = new TimeSpan(17, 34, 56);
-            StartDate = new DateTimeOffset(new DateTime(2016,03,29));
-            EndDate = new DateTimeOffset(new DateTime(2016,03,30)); ;
-            Estimation = 3;
-            Context = 1;
-            Project = 2;
-        }
-
-        public Activity(string Title, string Description, int? Priority, bool? IsAllDay,
+        public Activity(string Title, string Description, string Priority, bool? IsAllDay,
                         TimeSpan? StartHour, DateTime? StartDate, DateTime? EndDate,
-                        int? Estimation, int? Context, int? Project)
+                        string Estimation, string Context, string Project)
         {
             this.Title = Title;
             this.Description = Description;
@@ -43,15 +29,70 @@ namespace Remonty.Models
 
         public string Title { get; set; }
         public string Description { get; set; }
-        public int? Priority { get; set; }
+        public string Priority { get; set; }
         public bool? IsAllDay { get; set; }
-        public TimeSpan StartHour { get; set; }
+        public TimeSpan? StartHour { get; set; }
         public DateTimeOffset? StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
-        public int? Estimation { get; set; }
-        public int? Context { get; set; }
-        public int? Project { get; set; }
+        public string Estimation { get; set; }
+        public string Context { get; set; }
+        public string Project { get; set; }
+        public string StartDateUI
+        {
+            get
+            {
+                if (StartDate != null)
+                    return ((DateTimeOffset)StartDate).ToString("dd.MM.yyyy");
+                return "";
+            }
+        }
+        public string StartHourUI
+        {
+            get
+            {
+                if (StartHour != null)
+                    return ((TimeSpan)StartHour).ToString(@"hh\:mm");
+                return "";
+            }
+        }
     }
+
+    public class Activities
+    {
+        private static Activities m_oInstance = null;
+        private int m_nCounter = 0;
+        private List<Activity> activities = new List<Activity>();
+
+        public static Activities Instance
+        {
+            get
+            {
+                if (m_oInstance == null)
+                    m_oInstance = new Activities();
+                return m_oInstance;
+            }
+        }
+
+        public void AddActivity(Activity activity)
+        {
+            activities.Add(activity);
+            m_nCounter++;
+        }
+
+        public List<Activity> GetActivities()
+        {
+            return activities;
+        }
+
+        private Activities()
+        {
+            m_nCounter = 1;
+        }
+
+        
+    }
+
+
 
     public class ActivityManager
     {
@@ -59,12 +100,23 @@ namespace Remonty.Models
         {
             var activities = new List<Activity>();
 
-            activities.Add(new Activity("Kupić farbę", "Biała 10l, Zielona 5l", 2, true, null, null, new DateTime(2016, 04, 21), 4, 0, null));
-            activities.Add(new Activity());
+            activities.Add(new Activity("Kupić farbę", "Biała 10l, Zielona 5l", "Wysoki", true, null, null, new DateTime(2016, 04, 21), "2 godz", "Zakupy", null));
+            activities.Add(new Activity("Tytuł zadania 1", "Opis zadania 1", "Niski", false, new TimeSpan(17, 34, 56), new DateTime(2016, 03, 29), new DateTime(2016, 03, 30), "1 godz", "Spotkanie", "Położyć panele"));
+            activities.Add(new Activity("Pomalować kuchnię", "Na zielono", "Normalny", false, new TimeSpan(16, 00, 00), new DateTime(2016, 04, 23), new DateTime(2016, 04, 23), "4 godz", "Kuchnia", "Pomalować mieszkanie"));
             //activities.Add(new Activity(null, null, null, null, null, null, null, null, null, null));
-            activities.Add(new Activity("Pomalować kuchnię", "Na zielono", 1, false, new TimeSpan(16, 00, 00), new DateTime(2016, 04, 23), new DateTime(2016, 04, 23), 6, 4, 1));
 
             return activities;
+        }
+    }
+
+    public class ActivityManagerNew
+    {
+        public static void AddSomeActivities()
+        {
+            Activities.Instance.AddActivity(new Activity("Kupić farbę", "Biała 10l, Zielona 5l", "Wysoki", true, null, null, new DateTime(2016, 04, 21), "2 godz", "Zakupy", null));
+            Activities.Instance.AddActivity(new Activity("Tytuł zadania 1", "Opis zadania 1", "Niski", false, new TimeSpan(17, 34, 56), new DateTime(2016, 03, 29), new DateTime(2016, 03, 30), "1 godz", "Spotkanie", "Położyć panele"));
+            Activities.Instance.AddActivity(new Activity("Pomalować kuchnię", "Na zielono", "Normalny", false, new TimeSpan(16, 00, 00), new DateTime(2016, 04, 23), new DateTime(2016, 04, 23), "4 godz", "Kuchnia", "Pomalować mieszkanie"));
+            Activities.Instance.AddActivity(new Activity(null, null, null, null, null, null, null, null, null, null));
         }
     }
 }
