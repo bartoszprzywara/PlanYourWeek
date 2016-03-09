@@ -12,11 +12,12 @@ namespace Remonty.Models
                         TimeSpan? StartHour, DateTime? StartDate, DateTime? EndDate,
                         string Estimation, string Context, string Project)
         {
+            this.ID = Activities.Instance.getProposedID();
             this.Title = Title;
             this.Description = Description;
             this.Priority = Priority;
             this.IsAllDay = IsAllDay;
-            if (StartHour != null)
+            if (StartHour != null && this.IsAllDay == false)
                 this.StartHour = (TimeSpan)StartHour;
             if (StartDate != null)
                 this.StartDate = new DateTimeOffset((DateTime)StartDate);
@@ -27,6 +28,47 @@ namespace Remonty.Models
             this.Project = Project;
         }
 
+        public Activity(string Title, string Description, string Priority, bool? IsAllDay,
+                TimeSpan? StartHour, DateTimeOffset? StartDate, DateTimeOffset? EndDate,
+                string Estimation, string Context, string Project)
+        {
+            this.ID = Activities.Instance.getProposedID();
+            this.Title = Title;
+            this.Description = Description;
+            this.Priority = Priority;
+            this.IsAllDay = IsAllDay;
+            if (StartHour != null && this.IsAllDay == false)
+                this.StartHour = (TimeSpan)StartHour;
+            if (StartDate != null)
+                this.StartDate = (DateTimeOffset)StartDate;
+            if (EndDate != null)
+                this.EndDate = (DateTimeOffset)EndDate;
+            this.Estimation = Estimation;
+            this.Context = Context;
+            this.Project = Project;
+        }
+
+        public Activity(int ID, string Title, string Description, string Priority, bool? IsAllDay,
+        TimeSpan? StartHour, DateTimeOffset? StartDate, DateTimeOffset? EndDate,
+        string Estimation, string Context, string Project)
+        {
+            this.ID = ID;
+            this.Title = Title;
+            this.Description = Description;
+            this.Priority = Priority;
+            this.IsAllDay = IsAllDay;
+            if (StartHour != null && this.IsAllDay == false)
+                this.StartHour = (TimeSpan)StartHour;
+            if (StartDate != null)
+                this.StartDate = (DateTimeOffset)StartDate;
+            if (EndDate != null)
+                this.EndDate = (DateTimeOffset)EndDate;
+            this.Estimation = Estimation;
+            this.Context = Context;
+            this.Project = Project;
+        }
+
+        public int ID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Priority { get; set; }
@@ -61,39 +103,42 @@ namespace Remonty.Models
     {
         private static Activities m_oInstance = null;
         private int m_nCounter = 0;
-        private List<Activity> activities = new List<Activity>();
+        public List<Activity> activities = new List<Activity>();
 
         public static Activities Instance
         {
             get
             {
                 if (m_oInstance == null)
+                {
                     m_oInstance = new Activities();
+                    ActivityManager.AddSomeActivities();
+                }
                 return m_oInstance;
             }
         }
 
-        public void AddActivity(Activity activity)
+        public void addActivity(Activity activity)
         {
             activities.Add(activity);
             m_nCounter++;
         }
 
-        public List<Activity> GetActivities()
+        public List<Activity> getActivities()
         {
             return activities;
         }
 
-        private Activities()
+        public int getProposedID()
         {
-            m_nCounter = 1;
+            return m_nCounter;
         }
 
         
     }
 
 
-
+    /*
     public class ActivityManager
     {
         public static List<Activity> getActivities()
@@ -108,15 +153,16 @@ namespace Remonty.Models
             return activities;
         }
     }
+    */
 
-    public class ActivityManagerNew
+    public class ActivityManager
     {
         public static void AddSomeActivities()
         {
-            Activities.Instance.AddActivity(new Activity("Kupić farbę", "Biała 10l, Zielona 5l", "Wysoki", true, null, null, new DateTime(2016, 04, 21), "2 godz", "Zakupy", null));
-            Activities.Instance.AddActivity(new Activity("Tytuł zadania 1", "Opis zadania 1", "Niski", false, new TimeSpan(17, 34, 56), new DateTime(2016, 03, 29), new DateTime(2016, 03, 30), "1 godz", "Spotkanie", "Położyć panele"));
-            Activities.Instance.AddActivity(new Activity("Pomalować kuchnię", "Na zielono", "Normalny", false, new TimeSpan(16, 00, 00), new DateTime(2016, 04, 23), new DateTime(2016, 04, 23), "4 godz", "Kuchnia", "Pomalować mieszkanie"));
-            Activities.Instance.AddActivity(new Activity(null, null, null, null, null, null, null, null, null, null));
+            Activities.Instance.addActivity(new Activity("Kupić farbę", "Biała 10l, Zielona 5l", "Wysoki", true, null, null, new DateTime(2016, 04, 21), "2 godz", "Zakupy", null));
+            Activities.Instance.addActivity(new Activity("Tytuł zadania 1", "Opis zadania 1", "Niski", false, new TimeSpan(17, 34, 56), new DateTime(2016, 03, 29), new DateTime(2016, 03, 30), "1 godz", "Spotkanie", "Położyć panele"));
+            Activities.Instance.addActivity(new Activity("Pomalować kuchnię", "Na zielono", "Normalny", false, new TimeSpan(16, 00, 00), new DateTime(2016, 04, 23), new DateTime(2016, 04, 23), "4 godz", "Kuchnia", "Pomalować mieszkanie"));
+            Activities.Instance.addActivity(new Activity(null, null, null, null, null, null, null, null, null, null));
         }
     }
 }

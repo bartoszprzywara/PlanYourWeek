@@ -28,8 +28,8 @@ namespace Remonty
         {
             this.InitializeComponent();
 
-            PriorComboBox.ItemsSource = new string[] {"Niski","Normalny","Wysoki"};
-            EstimateComboBox.ItemsSource = new string[] {"10 min","20 min","30 min","1 godz","2 godz","3 godz","4 godz","6 godz","10 godz"};
+            PriorComboBox.ItemsSource = new string[] { "Niski", "Normalny", "Wysoki" };
+            EstimateComboBox.ItemsSource = new string[] { "10 min", "20 min", "30 min", "1 godz", "2 godz", "3 godz", "4 godz", "6 godz", "10 godz" };
             ContextComboBox.ItemsSource = ContextManager.getContexts();
             ProjectComboBox.ItemsSource = ProjectManager.getProjects();
 
@@ -37,11 +37,13 @@ namespace Remonty
             StartHourRelativePanel.Visibility = Visibility.Collapsed;
         }
 
+        private Activity activity = null;
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter == null) return;
 
-            Activity activity = e.Parameter as Activity;
+            activity = e.Parameter as Activity;
 
             TitleTextBlock.Text = (activity.Title != null) ? activity.Title : "Twoje zadanie";
 
@@ -69,6 +71,7 @@ namespace Remonty
             EstimateComboBox.SelectedItem = activity.Estimation;
             ContextComboBox.SelectedItem = activity.Context;
             ProjectComboBox.SelectedItem = activity.Project;
+            IdTextBlock.Text = activity.ID.ToString();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -79,14 +82,54 @@ namespace Remonty
 
         async private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new MessageDialog("Dodaję nowy");
-            await dialog.ShowAsync();
+            if (TitleTextBox.Text == "")
+            {
+                var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę");
+                await dialog.ShowAsync();
+            }
+            else {
+                Activities.Instance.addActivity(new Activity(
+                    TitleTextBox.Text,
+                    DescriptionTextBox.Text,
+                    (PriorComboBox != null) ? (string)(PriorComboBox.SelectedItem) : "",
+                    IsAllDayToggleSwitch.IsOn,
+                    StartHourTimePicker.Time,
+                    StartDatePicker.Date,
+                    EndDatePicker.Date,
+                    (EstimateComboBox != null) ? (string)(EstimateComboBox.SelectedItem) : "",
+                    (ContextComboBox.SelectedItem != null) ? (string)(ContextComboBox.SelectedItem) : "",
+                    (ProjectComboBox != null) ? (string)(ProjectComboBox.SelectedItem) : ""
+                    ));
+                if (this.Frame.CanGoBack)
+                    this.Frame.GoBack();
+            }
         }
 
         async private void SaveExistingButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new MessageDialog("Edytuję istniejący");
-            await dialog.ShowAsync();
+            if (TitleTextBox.Text == "")
+            {
+                var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę");
+                await dialog.ShowAsync();
+            }
+            else {
+                Activity tempActivity = new Activity(
+                    activity.ID,
+                    TitleTextBox.Text,
+                    DescriptionTextBox.Text,
+                    (PriorComboBox != null) ? (string)(PriorComboBox.SelectedItem) : "",
+                    IsAllDayToggleSwitch.IsOn,
+                    StartHourTimePicker.Time,
+                    StartDatePicker.Date,
+                    EndDatePicker.Date,
+                    (EstimateComboBox != null) ? (string)(EstimateComboBox.SelectedItem) : "",
+                    (ContextComboBox.SelectedItem != null) ? (string)(ContextComboBox.SelectedItem) : "",
+                    (ProjectComboBox != null) ? (string)(ProjectComboBox.SelectedItem) : ""
+                    );
+                Activities.Instance.activities[activity.ID] = tempActivity;
+                if (this.Frame.CanGoBack)
+                    this.Frame.GoBack();
+            }
         }
 
         private void IsAllDayToggleSwitch_Toggled(object sender, RoutedEventArgs e)

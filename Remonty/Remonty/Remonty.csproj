@@ -90,11 +90,15 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Compile Include="localdb.sqlite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <None Include="project.json" />
     <None Include="Remonty_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Context.cs" />
+    <Compile Include="Helpers\LocalDatabaseHelper.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Views\AddEditActivity.xaml.cs">
       <DependentUpon>AddEditActivity.xaml</DependentUpon>
@@ -164,6 +168,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="Microsoft.VCLibs, Version=14.0">
+      <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
+    </SDKReference>
+    <SDKReference Include="SQLite.UAP.2015, Version=3.8.11.1">
+      <Name>SQLite for Universal App Platform</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

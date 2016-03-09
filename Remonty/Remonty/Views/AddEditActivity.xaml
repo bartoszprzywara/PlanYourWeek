@@ -43,7 +43,7 @@
             </RelativePanel>
 
             <StackPanel Grid.Row="1">
-                <TextBox PlaceholderText="Tytuł" Name="TitleTextBox" Margin="{StaticResource ActivityCommonMargin}"/>
+                <TextBox PlaceholderText="Nazwa" Name="TitleTextBox" Margin="{StaticResource ActivityCommonMargin}"/>
                 <TextBox PlaceholderText="Opis" Name="DescriptionTextBox" Margin="{StaticResource ActivityCommonMargin}"/>
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
@@ -95,7 +95,10 @@
                     <ComboBox Name="ProjectComboBox" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
-                <Button Content="Pokaż podsumowanie" Margin="15,35,15,0" Name="DebugButton" Click="DebugButton_Click" />
+                <StackPanel Orientation="Horizontal" Margin="15,35,15,0">
+                    <Button Content="Pokaż podsumowanie"  Name="DebugButton" Click="DebugButton_Click" />
+                    <TextBlock Name="IdTextBlock" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
                 <TextBlock Name="Podsumowanie" Margin="15,0,15,10" TextWrapping="Wrap"/>
             </StackPanel>
         </Grid>

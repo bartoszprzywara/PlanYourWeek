@@ -23,12 +23,12 @@ namespace Remonty
     /// </summary>
     public sealed partial class YourWeek : Page
     {
-        private List<Activity> Activities;
+        private List<Activity> ActivitiesUI;
 
         public YourWeek()
         {
             this.InitializeComponent();
-            Activities = ActivityManager.getActivities();
+            ActivitiesUI = Activities.Instance.getActivities();
         }
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
