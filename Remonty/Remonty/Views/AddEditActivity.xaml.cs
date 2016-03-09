@@ -1,4 +1,5 @@
-﻿using Remonty.Models;
+﻿using Remonty.Helpers;
+using Remonty.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,29 +16,29 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace Remonty
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class AddEditActivity : Page
     {
         public AddEditActivity()
         {
             this.InitializeComponent();
-
-            PriorComboBox.ItemsSource = new string[] { "Niski", "Normalny", "Wysoki" };
-            EstimateComboBox.ItemsSource = new string[] { "10 min", "20 min", "30 min", "1 godz", "2 godz", "3 godz", "4 godz", "6 godz", "10 godz" };
-            ContextComboBox.ItemsSource = ContextManager.getContexts();
-            ProjectComboBox.ItemsSource = ProjectManager.getProjects();
+            // TODO: do helpera jak sie da
+            InitializeComboBoxes();
 
             IsAllDayToggleSwitch.IsOn = true;
             StartHourRelativePanel.Visibility = Visibility.Collapsed;
         }
 
-        private Activity activity = null;
+        private void InitializeComboBoxes()
+        {
+            PriorComboBox.ItemsSource = new string[] { "Niski", "Normalny", "Wysoki" };
+            EstimateComboBox.ItemsSource = new string[] { "10 min", "20 min", "30 min", "1 godz", "2 godz", "3 godz", "4 godz", "6 godz", "10 godz" };
+            ContextComboBox.ItemsSource = ContextManager.getContexts();
+            ProjectComboBox.ItemsSource = ProjectManager.getProjects();
+        }
+
+        private Activity activity;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -52,10 +53,12 @@ namespace Remonty
             SaveButton.Click -= new RoutedEventHandler(SaveButton_Click);
             SaveButton.Click += new RoutedEventHandler(SaveExistingButton_Click);
 
-            SetControlValues(activity);
+            // TODO: helper ActivityHelper.cs zrobic na statycznych metodach
+            LoadActivityValuesIntoControls();
         }
 
-        private void SetControlValues(Activity activity)
+        // TODO: wrzucic LoadActivityValuesIntoControls do helpera ActivityHelper.cs
+        private void LoadActivityValuesIntoControls()
         {
             if (activity.Title != null)
                 TitleTextBox.Text = activity.Title;
@@ -71,11 +74,21 @@ namespace Remonty
             EstimateComboBox.SelectedItem = activity.Estimation;
             ContextComboBox.SelectedItem = activity.Context;
             ProjectComboBox.SelectedItem = activity.Project;
-            IdTextBlock.Text = activity.ID.ToString();
+            IdTextBlock.Text = activity.Id.ToString();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.Frame.CanGoBack)
+                this.Frame.GoBack();
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO: implement confirmation popup
+            LocalDatabaseHelper delete = new LocalDatabaseHelper();
+            delete.DeleteActivity(activity.Id);
+
             if (this.Frame.CanGoBack)
                 this.Frame.GoBack();
         }
@@ -88,18 +101,21 @@ namespace Remonty
                 await dialog.ShowAsync();
             }
             else {
-                Activities.Instance.addActivity(new Activity(
+                LocalDatabaseHelper insert = new LocalDatabaseHelper();
+                // TODO: zrobic LoadActivityValues<<FROM>>Controls i do helpera ActivityHelper.cs
+                insert.Insert(new Activity(
                     TitleTextBox.Text,
                     DescriptionTextBox.Text,
-                    (PriorComboBox != null) ? (string)(PriorComboBox.SelectedItem) : "",
+                    (PriorComboBox != null) ? (string)(PriorComboBox.SelectedItem) : null,
                     IsAllDayToggleSwitch.IsOn,
                     StartHourTimePicker.Time,
                     StartDatePicker.Date,
                     EndDatePicker.Date,
-                    (EstimateComboBox != null) ? (string)(EstimateComboBox.SelectedItem) : "",
-                    (ContextComboBox.SelectedItem != null) ? (string)(ContextComboBox.SelectedItem) : "",
-                    (ProjectComboBox != null) ? (string)(ProjectComboBox.SelectedItem) : ""
+                    (EstimateComboBox != null) ? (string)(EstimateComboBox.SelectedItem) : null,
+                    (ContextComboBox != null) ? (string)(ContextComboBox.SelectedItem) : null,
+                    (ProjectComboBox != null) ? (string)(ProjectComboBox.SelectedItem) : null
                     ));
+                
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
             }
@@ -113,20 +129,20 @@ namespace Remonty
                 await dialog.ShowAsync();
             }
             else {
-                Activity tempActivity = new Activity(
-                    activity.ID,
+                LocalDatabaseHelper update = new LocalDatabaseHelper();
+                update.UpdateDetails(activity.Id, new Activity(
                     TitleTextBox.Text,
                     DescriptionTextBox.Text,
-                    (PriorComboBox != null) ? (string)(PriorComboBox.SelectedItem) : "",
+                    (PriorComboBox != null) ? (string)(PriorComboBox.SelectedItem) : null,
                     IsAllDayToggleSwitch.IsOn,
                     StartHourTimePicker.Time,
                     StartDatePicker.Date,
                     EndDatePicker.Date,
-                    (EstimateComboBox != null) ? (string)(EstimateComboBox.SelectedItem) : "",
-                    (ContextComboBox.SelectedItem != null) ? (string)(ContextComboBox.SelectedItem) : "",
-                    (ProjectComboBox != null) ? (string)(ProjectComboBox.SelectedItem) : ""
-                    );
-                Activities.Instance.activities[activity.ID] = tempActivity;
+                    (EstimateComboBox != null) ? (string)(EstimateComboBox.SelectedItem) : null,
+                    (ContextComboBox != null) ? (string)(ContextComboBox.SelectedItem) : null,
+                    (ProjectComboBox != null) ? (string)(ProjectComboBox.SelectedItem) : null
+                    ));
+
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
             }
@@ -134,6 +150,7 @@ namespace Remonty
 
         private void IsAllDayToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
+            // TODO: dorobic animacje pokazywania sie i chowania time pickera
             if (IsAllDayToggleSwitch.IsOn)
                 StartHourRelativePanel.Visibility = Visibility.Collapsed;
             else
@@ -142,6 +159,8 @@ namespace Remonty
 
         private void DebugButton_Click(object sender, RoutedEventArgs e)
         {
+            // TODO: do helpera helpera ActivityHelper.cs metoda ktora zwraca string (chyba nie bedzie takie proste)
+            // TODO: ale mozna sprobowac uzyc obiektu Activity
             string _title = TitleTextBox.Text;
             string _description = DescriptionTextBox.Text;
             string _priority = (PriorComboBox != null) ? (string)(PriorComboBox.SelectedItem) : "";

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Remonty.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,6 +31,7 @@ namespace Remonty
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            InitializeLocalDatabase.InitializeLocalDB();
         }
 
         /// <summary>

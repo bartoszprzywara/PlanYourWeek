@@ -90,13 +90,11 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Compile Include="localdb.sqlite">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
     <None Include="project.json" />
     <None Include="Remonty_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\InitializeLocalDatabase.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Helpers\LocalDatabaseHelper.cs" />
     <Compile Include="Models\Project.cs" />

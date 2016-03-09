@@ -38,7 +38,7 @@
                 <Button Content="&#xE0C4;" Name="BackButton" Style="{StaticResource NaviButtonStyle}" Click="BackButton_Click"/>
                 <TextBlock Text="Dodaj zadanie"  Name="TitleTextBlock" Margin="10,0,0,0" RelativePanel.RightOf="BackButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
                 <Button Content="&#xE73A;" Name="DoneButton" RelativePanel.LeftOf="DeleteButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed"/>
-                <Button Content="&#xE107;" Name="DeleteButton" RelativePanel.LeftOf="SaveButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed"/>
+                <Button Content="&#xE107;" Name="DeleteButton" RelativePanel.LeftOf="SaveButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed" Click="DeleteButton_Click"/>
                 <Button Content="&#xE74E;" Name="SaveButton" RelativePanel.AlignRightWithPanel="True" Style="{StaticResource NaviButtonStyle}" Click="SaveButton_Click"/>
             </RelativePanel>
 
