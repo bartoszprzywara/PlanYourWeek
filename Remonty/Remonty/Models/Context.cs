@@ -6,27 +6,20 @@ using System.Threading.Tasks;
 
 namespace Remonty.Models
 {
-    public class Context
+    public class Context : IHasName
     {
-        public string ContextName;
-    }
-
-    public class ContextManager
-    {
-        public static List<string> getContexts()
+        public Context()
         {
-            var contexts = new List<string>();
-            contexts.Add("Zakupy");
-            contexts.Add("Spotkanie");
-            contexts.Add("Telefon");
-            contexts.Add("Komputer");
-            contexts.Add("Kuchnia");
-            contexts.Add("Łazienka");
-            contexts.Add("Przedpokój");
-            contexts.Add("Salon");
-            contexts.Add("Sypialnia");
 
-            return contexts;
         }
+
+        public Context(string name)
+        {
+            Name = name;
+        }
+
+        [SQLite.Net.Attributes.PrimaryKey, SQLite.Net.Attributes.AutoIncrement]
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }

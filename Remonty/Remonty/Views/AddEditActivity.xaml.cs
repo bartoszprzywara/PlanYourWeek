@@ -23,19 +23,11 @@ namespace Remonty
         public AddEditActivity()
         {
             this.InitializeComponent();
-            // TODO: do helpera jak sie da
             InitializeComboBoxes();
 
             IsAllDayToggleSwitch.IsOn = true;
             StartHourRelativePanel.Visibility = Visibility.Collapsed;
-        }
-
-        private void InitializeComboBoxes()
-        {
-            PriorComboBox.ItemsSource = new string[] { "Niski", "Normalny", "Wysoki" };
-            EstimateComboBox.ItemsSource = new string[] { "10 min", "20 min", "30 min", "1 godz", "2 godz", "3 godz", "4 godz", "6 godz", "10 godz" };
-            ContextComboBox.ItemsSource = ContextManager.getContexts();
-            ProjectComboBox.ItemsSource = ProjectManager.getProjects();
+            EndHourRelativePanel.Visibility = Visibility.Collapsed;
         }
 
         private Activity activity;
@@ -43,7 +35,6 @@ namespace Remonty
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter == null) return;
-
             activity = e.Parameter as Activity;
 
             TitleTextBlock.Text = (activity.Title != null) ? activity.Title : "Twoje zadanie";
@@ -53,28 +44,7 @@ namespace Remonty
             SaveButton.Click -= new RoutedEventHandler(SaveButton_Click);
             SaveButton.Click += new RoutedEventHandler(SaveExistingButton_Click);
 
-            // TODO: helper ActivityHelper.cs zrobic na statycznych metodach
             LoadActivityValuesIntoControls();
-        }
-
-        // TODO: wrzucic LoadActivityValuesIntoControls do helpera ActivityHelper.cs
-        private void LoadActivityValuesIntoControls()
-        {
-            if (activity.Title != null)
-                TitleTextBox.Text = activity.Title;
-            if (activity.Description != null)
-                DescriptionTextBox.Text = activity.Description;
-            PriorComboBox.SelectedItem = activity.Priority;
-            if (activity.IsAllDay != null)
-                IsAllDayToggleSwitch.IsOn = (bool)activity.IsAllDay;
-            if (activity.StartHour != null)
-                StartHourTimePicker.Time = (TimeSpan)activity.StartHour;
-            StartDatePicker.Date = activity.StartDate;
-            EndDatePicker.Date = activity.EndDate;
-            EstimateComboBox.SelectedItem = activity.Estimation;
-            ContextComboBox.SelectedItem = activity.Context;
-            ProjectComboBox.SelectedItem = activity.Project;
-            IdTextBlock.Text = activity.Id.ToString();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -85,9 +55,8 @@ namespace Remonty
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: implement confirmation popup
-            LocalDatabaseHelper delete = new LocalDatabaseHelper();
-            delete.DeleteActivity(activity.Id);
+            // TODO: Implement confirmation popup
+            LocalDatabaseHelper.DeleteItem<Activity>(activity.Id);
 
             if (this.Frame.CanGoBack)
                 this.Frame.GoBack();
@@ -101,20 +70,8 @@ namespace Remonty
                 await dialog.ShowAsync();
             }
             else {
-                LocalDatabaseHelper insert = new LocalDatabaseHelper();
-                // TODO: zrobic LoadActivityValues<<FROM>>Controls i do helpera ActivityHelper.cs
-                insert.Insert(new Activity(
-                    TitleTextBox.Text,
-                    DescriptionTextBox.Text,
-                    (PriorComboBox != null) ? (string)(PriorComboBox.SelectedItem) : null,
-                    IsAllDayToggleSwitch.IsOn,
-                    StartHourTimePicker.Time,
-                    StartDatePicker.Date,
-                    EndDatePicker.Date,
-                    (EstimateComboBox != null) ? (string)(EstimateComboBox.SelectedItem) : null,
-                    (ContextComboBox != null) ? (string)(ContextComboBox.SelectedItem) : null,
-                    (ProjectComboBox != null) ? (string)(ProjectComboBox.SelectedItem) : null
-                    ));
+                Activity tempActivity = LoadActivityValuesFromControls();
+                LocalDatabaseHelper.InsertItem<Activity>(tempActivity);
                 
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
@@ -129,19 +86,8 @@ namespace Remonty
                 await dialog.ShowAsync();
             }
             else {
-                LocalDatabaseHelper update = new LocalDatabaseHelper();
-                update.UpdateDetails(activity.Id, new Activity(
-                    TitleTextBox.Text,
-                    DescriptionTextBox.Text,
-                    (PriorComboBox != null) ? (string)(PriorComboBox.SelectedItem) : null,
-                    IsAllDayToggleSwitch.IsOn,
-                    StartHourTimePicker.Time,
-                    StartDatePicker.Date,
-                    EndDatePicker.Date,
-                    (EstimateComboBox != null) ? (string)(EstimateComboBox.SelectedItem) : null,
-                    (ContextComboBox != null) ? (string)(ContextComboBox.SelectedItem) : null,
-                    (ProjectComboBox != null) ? (string)(ProjectComboBox.SelectedItem) : null
-                    ));
+                Activity tempActivity = LoadActivityValuesFromControls();
+                LocalDatabaseHelper.UpdateActivity(activity.Id, tempActivity);
 
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
@@ -150,38 +96,80 @@ namespace Remonty
 
         private void IsAllDayToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
-            // TODO: dorobic animacje pokazywania sie i chowania time pickera
+            // TODO: Implement animation of showing and hiding time picker
             if (IsAllDayToggleSwitch.IsOn)
+            {
                 StartHourRelativePanel.Visibility = Visibility.Collapsed;
+                EndHourRelativePanel.Visibility = Visibility.Collapsed;
+            }
             else
+            {
                 StartHourRelativePanel.Visibility = Visibility.Visible;
+                EndHourRelativePanel.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void InitializeComboBoxes()
+        {
+            PriorComboBox.ItemsSource = new string[] { "Niski", "Normalny", "Wysoki" };
+            EstimateComboBox.ItemsSource = new string[] { "10 min", "20 min", "30 min", "1 godz", "2 godz", "3 godz", "4 godz", "6 godz", "10 godz" };
+            ContextComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Context>();
+            ProjectComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Project>();
+        }
+
+        private void LoadActivityValuesIntoControls()
+        {
+            if (activity.Title != null)
+                TitleTextBox.Text = activity.Title;
+            if (activity.Description != null)
+                DescriptionTextBox.Text = activity.Description;
+            PriorComboBox.SelectedItem = activity.Priority;
+            if (activity.IsAllDay != null)
+                IsAllDayToggleSwitch.IsOn = (bool)activity.IsAllDay;
+            StartDatePicker.Date = activity.StartDate;
+            if (activity.StartHour != null)
+                StartHourTimePicker.Time = (TimeSpan)activity.StartHour;
+            EndDatePicker.Date = activity.EndDate;
+            if (activity.EndHour != null)
+                EndHourTimePicker.Time = (TimeSpan)activity.EndHour;
+            EstimateComboBox.SelectedItem = activity.Estimation;
+            ContextComboBox.SelectedItem = activity.Context;
+            ProjectComboBox.SelectedItem = activity.Project;
+        }
+
+        private Activity LoadActivityValuesFromControls()
+        {
+            return new Activity(
+                    TitleTextBox.Text,
+                    DescriptionTextBox.Text,
+                    (PriorComboBox != null) ? (string)(PriorComboBox.SelectedItem) : null,
+                    IsAllDayToggleSwitch.IsOn,
+                    StartDatePicker.Date,
+                    StartHourTimePicker.Time,
+                    EndDatePicker.Date,
+                    EndHourTimePicker.Time,
+                    (EstimateComboBox != null) ? (string)(EstimateComboBox.SelectedItem) : null,
+                    (ContextComboBox != null) ? (string)(ContextComboBox.SelectedItem) : null,
+                    (ProjectComboBox != null) ? (string)(ProjectComboBox.SelectedItem) : null
+                    );
         }
 
         private void DebugButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: do helpera helpera ActivityHelper.cs metoda ktora zwraca string (chyba nie bedzie takie proste)
-            // TODO: ale mozna sprobowac uzyc obiektu Activity
-            string _title = TitleTextBox.Text;
-            string _description = DescriptionTextBox.Text;
-            string _priority = (PriorComboBox != null) ? (string)(PriorComboBox.SelectedItem) : "";
-            bool _isAllDay = IsAllDayToggleSwitch.IsOn;
-            string _startHour = StartHourTimePicker.Time.ToString();
-            string _startDate = (StartDatePicker.Date != null) ? ((DateTimeOffset)StartDatePicker.Date).ToString("dd.MM.yyyy") : "";
-            string _endDate = (EndDatePicker.Date != null) ? ((DateTimeOffset)EndDatePicker.Date).ToString("dd.MM.yyyy") : "";
-            string _estimation = (EstimateComboBox != null) ? (string)(EstimateComboBox.SelectedItem) : "";
-            string _context = (ContextComboBox.SelectedItem != null) ? (string)(ContextComboBox.SelectedItem) : "";
-            string _project = (ProjectComboBox != null) ? (string)(ProjectComboBox.SelectedItem) : "";
+            Activity tempActivity = LoadActivityValuesFromControls();
 
-            Podsumowanie.Text = "Tytuł: " + _title + "\t" +
-                                "Opis: " + _description + "\n" +
-                                "Prior: " + _priority + "\t" +
-                                "CzyCałyDzień: " + _isAllDay + "\t" +
-                                "Godzina: " + _startHour + "\n" +
-                                "Start: " + _startDate + "\n" +
-                                "Kuniec: " + _endDate + "\n" +
-                                "Estim: " + _estimation + "\t" +
-                                "Kontekst: " + _context + "\t" +
-                                "Projekt: " + _project;
+            IdTextBlock.Text = (activity != null) ? "Id: " + activity.Id : "Id: -1";
+            Podsumowanie.Text = "Tytuł: " + tempActivity.Title + "\n" +
+                                "Opis: " + tempActivity.Description + "\n" +
+                                "Prior: " + tempActivity.Priority + "\t\t" +
+                                "CzyCałyDzień: " + tempActivity.IsAllDay + "\n" +
+                                "Start: " + tempActivity.StartDate + "\t\t" +
+                                "Godzina: " + tempActivity.StartHour + "\n" +
+                                "Kuniec: " + tempActivity.EndDate + "\t\t" +
+                                "Godzina: " + tempActivity.EndHour + "\n" +
+                                "Estim: " + tempActivity.Estimation + "\t" +
+                                "Kontekst: " + tempActivity.Context + "\t" +
+                                "Projekt: " + tempActivity.Project;
         }
     }
 }

@@ -9,6 +9,7 @@
 
     <Page.Resources>
         <Thickness x:Key="ActivityCommonMargin">15,10,15,0</Thickness>
+        <Thickness x:Key="ActivityTimePickerMargin">15,4,15,0</Thickness>
         <x:Double x:Key="ActivityRightColumnWidth">130</x:Double>
         <Style TargetType="Button" x:Key="NaviButtonStyle">
             <Setter Property="Height" Value="40"/>
@@ -63,19 +64,24 @@
                     <ToggleSwitch MinWidth="85" Name="IsAllDayToggleSwitch" OffContent="Nie" OnContent="Tak" RelativePanel.AlignRightWithPanel="True" Toggled="IsAllDayToggleSwitch_Toggled"/>
                 </RelativePanel>
 
-                <RelativePanel Name="StartHourRelativePanel" Margin="{StaticResource ActivityCommonMargin}">
-                    <TextBlock Name="StartHourTextBlock" Text="Godzina" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <TimePicker ClockIdentifier="24HourClock" MinWidth="{StaticResource ActivityRightColumnWidth}" Name="StartHourTimePicker" RelativePanel.AlignRightWithPanel="True"/>
-                </RelativePanel>
-
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="StartTextBlock" Text="Początek" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <CalendarDatePicker Name="StartDatePicker" PlaceholderText="wybierz datę" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
+                <RelativePanel Name="StartHourRelativePanel" Margin="{StaticResource ActivityTimePickerMargin}">
+                    <!--<TextBlock Name="StartHourTextBlock" Text="Godzina" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>-->
+                    <TimePicker ClockIdentifier="24HourClock" MinWidth="{StaticResource ActivityRightColumnWidth}" Name="StartHourTimePicker" RelativePanel.AlignRightWithPanel="True"/>
+                </RelativePanel>
+
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
-                    <TextBlock Name="EndTextBlock" Text="Kuniec" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
+                    <TextBlock Name="EndTextBlock" Text="Deadline" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <CalendarDatePicker Name="EndDatePicker" PlaceholderText="wybierz datę" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                </RelativePanel>
+
+                <RelativePanel Name="EndHourRelativePanel" Margin="{StaticResource ActivityTimePickerMargin}">
+                    <!--<TextBlock Name="StartHourTextBlock" Text="Godzina" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>-->
+                    <TimePicker ClockIdentifier="24HourClock" MinWidth="{StaticResource ActivityRightColumnWidth}" Name="EndHourTimePicker" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">

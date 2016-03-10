@@ -30,8 +30,8 @@
                         <TextBlock Name="PriorValueTextBlock" Text="{x:Bind Priority}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="PriorLabelTextBlock" Margin="3,5,0,0"/>
                         <TextBlock Name="ContextLabelTextBlock" Text="@" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,5,0,0"/>
                         <TextBlock Name="ContextValueTextBlock" Text="{x:Bind Context}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="ContextLabelTextBlock" Margin="0,5,0,0"/>
-                        <TextBlock Name="StartHourTextBlock" Text="{x:Bind StartHourUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
-                        <TextBlock Name="StartDateTextBlock" Text="{x:Bind StartDateUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="StartHourTextBlock" Margin="5,0,0,5"/>
+                        <TextBlock Name="StartHourTextBlock" Text="{x:Bind StartHourUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,5,5"/>
+                        <TextBlock Name="StartDateTextBlock" Text="{x:Bind StartDateUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="StartHourTextBlock" Margin="0,0,0,5"/>
                         <Button Name="DoneButton" Content="DONE" FontSize="{StaticResource YourWeekItemButtonFontSize}" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,5,10,0"/>
                     </RelativePanel>
                 </DataTemplate>

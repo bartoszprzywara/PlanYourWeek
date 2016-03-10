@@ -13,43 +13,25 @@ namespace Remonty.Models
 
         }
 
-        // TODO: wywalic ktorys konstruktor
-        public Activity(string Title, string Description, string Priority, bool? IsAllDay,
-                        TimeSpan? StartHour, DateTime? StartDate, DateTime? EndDate,
-                        string Estimation, string Context, string Project)
+        public Activity(string title, string description, string priority, bool? isAllDay,
+                        DateTimeOffset? startDate, TimeSpan? startHour, DateTimeOffset? endDate, TimeSpan? endHour,
+                        string estimation, string context, string project)
         {
-            this.Title = Title;
-            this.Description = Description;
-            this.Priority = Priority;
-            this.IsAllDay = IsAllDay;
-            if (StartHour != null && this.IsAllDay == false)
-                this.StartHour = (TimeSpan)StartHour;
-            if (StartDate != null)
-                this.StartDate = new DateTimeOffset((DateTime)StartDate);
-            if (EndDate != null)
-                this.EndDate = new DateTimeOffset((DateTime)EndDate); ;
-            this.Estimation = Estimation;
-            this.Context = Context;
-            this.Project = Project;
-        }
-
-        public Activity(string Title, string Description, string Priority, bool? IsAllDay,
-                        TimeSpan? StartHour, DateTimeOffset? StartDate, DateTimeOffset? EndDate,
-                        string Estimation, string Context, string Project)
-        {
-            this.Title = Title;
-            this.Description = Description;
-            this.Priority = Priority;
-            this.IsAllDay = IsAllDay;
-            if (StartHour != null && this.IsAllDay == false)
-                this.StartHour = (TimeSpan)StartHour;
-            if (StartDate != null)
-                this.StartDate = (DateTimeOffset)StartDate;
-            if (EndDate != null)
-                this.EndDate = (DateTimeOffset)EndDate;
-            this.Estimation = Estimation;
-            this.Context = Context;
-            this.Project = Project;
+            Title = title;
+            Description = description;
+            Priority = priority;
+            IsAllDay = isAllDay;
+            if (startDate != null)
+                StartDate = startDate;
+            if (startHour != null && IsAllDay == false)
+                StartHour = startHour;
+            if (endDate != null)
+                EndDate = endDate;
+            if (endHour != null && IsAllDay == false)
+                EndHour = endHour;
+            Estimation = estimation;
+            Context = context;
+            Project = project;
         }
 
         [SQLite.Net.Attributes.PrimaryKey, SQLite.Net.Attributes.AutoIncrement]
@@ -58,27 +40,28 @@ namespace Remonty.Models
         public string Description { get; set; }
         public string Priority { get; set; }
         public bool? IsAllDay { get; set; }
-        public TimeSpan? StartHour { get; set; }
         public DateTimeOffset? StartDate { get; set; }
+        public TimeSpan? StartHour { get; set; }
         public DateTimeOffset? EndDate { get; set; }
+        public TimeSpan? EndHour { get; set; }
         public string Estimation { get; set; }
         public string Context { get; set; }
         public string Project { get; set; }
-        public string StartDateUI
-        {
-            get
-            {
-                if (StartDate != null)
-                    return ((DateTimeOffset)StartDate).ToString("dd.MM.yyyy");
-                return "";
-            }
-        }
         public string StartHourUI
         {
             get
             {
                 if (StartHour != null)
                     return ((TimeSpan)StartHour).ToString(@"hh\:mm");
+                return "";
+            }
+        }
+        public string StartDateUI
+        {
+            get
+            {
+                if (StartDate != null)
+                    return ((DateTimeOffset)StartDate).ToString("dd.MM.yyyy");
                 return "";
             }
         }

@@ -15,24 +15,16 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-namespace Remonty
+namespace Remonty.Views
 {
-    public sealed partial class YourWeek : Page
+    public sealed partial class Contexts : Page
     {
-        public YourWeek()
+        public Contexts()
         {
             this.InitializeComponent();
-            listofActivities = LocalDatabaseHelper.ReadAllItemsFromTable<Activity>();
+            listofContexts = LocalDatabaseHelper.ReadAllItemsFromTable<Context>();
         }
 
-        private List<Activity> listofActivities;
-
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            var selectedActivity = (Activity)e.ClickedItem;
-
-            Frame frame = Window.Current.Content as Frame;
-            frame.Navigate(typeof(AddEditActivity), selectedActivity);
-        }
+        private List<Context> listofContexts;
     }
 }

@@ -31,7 +31,7 @@ namespace Remonty
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            InitializeLocalDatabase.InitializeLocalDB();
+            LocalDatabaseHelper.InitializeLocalDB();
         }
 
         /// <summary>
