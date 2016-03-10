@@ -17,14 +17,14 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Remonty
 {
-    public sealed partial class Contexts : Page
+    public sealed partial class Projects : Page
     {
-        public Contexts()
+        public Projects()
         {
             this.InitializeComponent();
-            listofContexts = LocalDatabaseHelper.ReadAllItemsFromTable<Context>();
+            listofProjects = LocalDatabaseHelper.ReadAllItemsFromTable<Project>();
         }
 
-        private List<Context> listofContexts;
+        private List<Project> listofProjects;
     }
 }

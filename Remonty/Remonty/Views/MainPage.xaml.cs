@@ -95,13 +95,13 @@ namespace Remonty
             else if (ProjectsListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Projekty";
-                ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
+                ContentFrame.Navigate(typeof(Projects));
                 MenuSplitView.IsPaneOpen = false;
             }
             else if (ContextsListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Konteksty";
-                ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
+                ContentFrame.Navigate(typeof(Contexts));
                 MenuSplitView.IsPaneOpen = false;
             }
             else if (SettingsListBoxItem.IsSelected)
