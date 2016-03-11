@@ -39,10 +39,10 @@ namespace Remonty
         private void DoneButton_Click(object sender, RoutedEventArgs e)
         {
             int ItemID = (int)((FrameworkElement)e.OriginalSource).DataContext;
+            int ItemIndex = LocalDatabaseHelper.ReadItemIndex<Activity>("Id", ItemID);
 
-            // c# listview.remove
-            //listofActivities.RemoveAt(ItemID-1);
-            //LocalDatabaseHelper.DeleteItem<Activity>(ItemID);
+            listofActivities.RemoveAt(ItemIndex);
+            LocalDatabaseHelper.DeleteItem<Activity>(ItemID);
         }
     }
 }

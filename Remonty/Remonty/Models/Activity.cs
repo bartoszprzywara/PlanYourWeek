@@ -47,6 +47,7 @@ namespace Remonty.Models
         public string Estimation { get; set; }
         public string Context { get; set; }
         public string Project { get; set; }
+        //public bool? IsDone { get; set; }
         public string StartHourUI
         {
             get

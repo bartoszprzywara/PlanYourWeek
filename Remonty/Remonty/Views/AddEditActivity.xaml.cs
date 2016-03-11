@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 namespace Remonty
@@ -23,11 +24,24 @@ namespace Remonty
         public AddEditActivity()
         {
             this.InitializeComponent();
+            SetUpPageAnimation();
             InitializeComboBoxes();
 
             IsAllDayToggleSwitch.IsOn = true;
             StartHourRelativePanel.Visibility = Visibility.Collapsed;
             EndHourRelativePanel.Visibility = Visibility.Collapsed;
+        }
+
+        public void SetUpPageAnimation()
+        {
+            TransitionCollection collection = new TransitionCollection();
+            NavigationThemeTransition theme = new NavigationThemeTransition();
+
+            var info = new ContinuumNavigationTransitionInfo();
+
+            theme.DefaultNavigationTransitionInfo = info;
+            collection.Add(theme);
+            this.Transitions = collection;
         }
 
         private Activity activity;
@@ -53,26 +67,34 @@ namespace Remonty
                 this.Frame.GoBack();
         }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        async private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: Implement confirmation popup
-            LocalDatabaseHelper.DeleteItem<Activity>(activity.Id);
+            var dialog = new MessageDialog("Na pewno chcesz bezpowrotnie usunąć to zadanie?", "Na pewno?");
+            dialog.Commands.Add(new UICommand("Yes") { Id = 0 });
+            dialog.Commands.Add(new UICommand("No") { Id = 1 });
+            dialog.CancelCommandIndex = 1;
 
-            if (this.Frame.CanGoBack)
-                this.Frame.GoBack();
+            var result = await dialog.ShowAsync();
+
+            if ((int)result.Id == 0)
+            {
+                LocalDatabaseHelper.DeleteItem<Activity>(activity.Id);
+                if (this.Frame.CanGoBack)
+                    this.Frame.GoBack();
+            }
         }
 
         async private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (TitleTextBox.Text == "")
             {
-                var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę");
+                var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady");
                 await dialog.ShowAsync();
             }
             else {
                 Activity tempActivity = LoadActivityValuesFromControls();
                 LocalDatabaseHelper.InsertItem<Activity>(tempActivity);
-                
+
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
             }
