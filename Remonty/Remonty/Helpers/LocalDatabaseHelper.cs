@@ -28,7 +28,7 @@ namespace Remonty.Helpers
             foreach (string value in contexts)
                 InsertItem(new Context(value));
 
-            string[] projects = { "Pomalować mieszkanie", "Wymienić kaloryfery", "Położyć panele", "<Dodaj nowy>" };
+            string[] projects = { "Pomalować mieszkanie", "Wymienić kaloryfery", "Położyć panele"};
             foreach (string value in projects)
                 InsertItem(new Project(value));
 #endif

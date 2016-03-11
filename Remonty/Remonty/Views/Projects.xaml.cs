@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,5 +27,17 @@ namespace Remonty
         }
 
         private List<Project> listofProjects;
+
+        async private void AddItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (AddItemTextBlock.Text == "")
+            {
+                var dialog = new MessageDialog("Projekt musi mieć nazwę");
+                await dialog.ShowAsync();
+            }
+            else {
+                LocalDatabaseHelper.InsertItem(new Project(AddItemTextBlock.Text));
+            }
+        }
     }
 }
