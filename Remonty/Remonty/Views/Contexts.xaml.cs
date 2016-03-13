@@ -2,11 +2,13 @@
 using Remonty.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,6 +27,20 @@ namespace Remonty
             listofContexts = LocalDatabaseHelper.ReadAllItemsFromTable<Context>();
         }
 
-        private List<Context> listofContexts;
+        private ObservableCollection<Context> listofContexts;
+
+        async private void AddItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (AddItemTextBlock.Text == "")
+            {
+                var dialog = new MessageDialog("Kontekst musi mieć nazwę");
+                await dialog.ShowAsync();
+            }
+            else {
+                LocalDatabaseHelper.InsertItem(new Context(AddItemTextBlock.Text));
+                listofContexts.Add(LocalDatabaseHelper.ReadLastItem<Context>());
+                AddItemTextBlock.Text = "";
+            }
+        }
     }
 }

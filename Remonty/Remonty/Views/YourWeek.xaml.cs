@@ -2,6 +2,7 @@
 using Remonty.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -25,7 +26,7 @@ namespace Remonty
             listofActivities = LocalDatabaseHelper.ReadAllItemsFromTable<Activity>();
         }
 
-        private List<Activity> listofActivities;
+        private ObservableCollection<Activity> listofActivities;
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -33,6 +34,15 @@ namespace Remonty
 
             Frame frame = Window.Current.Content as Frame;
             frame.Navigate(typeof(AddEditActivity), selectedActivity);
+        }
+
+        private void DoneButton_Click(object sender, RoutedEventArgs e)
+        {
+            int ItemID = (int)((FrameworkElement)e.OriginalSource).DataContext;
+
+            // c# listview.remove
+            //listofActivities.RemoveAt(ItemID-1);
+            //LocalDatabaseHelper.DeleteItem<Activity>(ItemID);
         }
     }
 }

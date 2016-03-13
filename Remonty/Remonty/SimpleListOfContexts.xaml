@@ -1,0 +1,31 @@
+﻿<UserControl
+    x:Class="Remonty.SimpleListOfContexts"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Remonty"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <x:Double x:Key="ItemTitleFontSize">16</x:Double>
+        <Style TargetType="Button" x:Key="ItemButtonStyle">
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid BorderThickness="2" BorderBrush="#FFD2D2D2" Margin="4,5,4,5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Name="TitleTextBlock" Text="{x:Bind Context.Name}" FontSize="{StaticResource ItemTitleFontSize}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+        <Button Grid.Column="1" Visibility="Visible" Name="EditButton" DataContext="{x:Bind Context.Id}" Content="&#xE104;" Style="{StaticResource ItemButtonStyle}" Click="EditButton_Click"/>
+        <Button Grid.Column="1" Visibility="Collapsed" Name="DeleteButton" Content="&#xE107;" Style="{StaticResource ItemButtonStyle}"/>
+    </Grid>
+</UserControl>

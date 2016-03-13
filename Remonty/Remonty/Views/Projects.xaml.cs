@@ -2,6 +2,7 @@
 using Remonty.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -26,7 +27,7 @@ namespace Remonty
             listofProjects = LocalDatabaseHelper.ReadAllItemsFromTable<Project>();
         }
 
-        private List<Project> listofProjects;
+        private ObservableCollection<Project> listofProjects;
 
         async private void AddItemButton_Click(object sender, RoutedEventArgs e)
         {
@@ -37,6 +38,8 @@ namespace Remonty
             }
             else {
                 LocalDatabaseHelper.InsertItem(new Project(AddItemTextBlock.Text));
+                listofProjects.Add(LocalDatabaseHelper.ReadLastItem<Project>());
+                AddItemTextBlock.Text = "";
             }
         }
     }

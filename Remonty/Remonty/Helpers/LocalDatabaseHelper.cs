@@ -1,6 +1,7 @@
 ﻿using Remonty.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ namespace Remonty.Helpers
             foreach (string value in contexts)
                 InsertItem(new Context(value));
 
-            string[] projects = { "Pomalować mieszkanie", "Wymienić kaloryfery", "Położyć panele"};
+            string[] projects = { "Pomalować mieszkanie", "Wymienić kaloryfery", "Położyć panele" };
             foreach (string value in projects)
                 InsertItem(new Project(value));
 #endif
@@ -55,7 +56,7 @@ namespace Remonty.Helpers
             }
         }
 
-         public static T ReadItem<T>(int itemId) where T : class
+        public static T ReadItem<T>(int itemId) where T : class
         {
             using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
             {
@@ -64,55 +65,52 @@ namespace Remonty.Helpers
             }
         }
 
-        public static List<T> ReadAllItemsFromTable<T>() where T : class
+        public static T ReadLastItem<T>() where T : class
         {
             using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
             {
-                List<T> myCollection = conn.Table<T>().ToList();
-                //ObservableCollection<Activity> ActivitiesList = new ObservableCollection<Activity>(myCollection);
-                return myCollection;
+                var lastItem = conn.Query<T>("SELECT * FROM " + typeof(T).Name + " ORDER BY id DESC LIMIT 1").FirstOrDefault();
+                return lastItem;
             }
         }
 
-        public static List<string> ReadNamesFromTable<T>() where T : class, IHasName
+        public static ObservableCollection<T> ReadAllItemsFromTable<T>() where T : class
         {
             using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
             {
                 List<T> tempCollection = conn.Table<T>().ToList();
-                List<string> myCollection = new List<string>();
+                ObservableCollection<T> myCollection = new ObservableCollection<T>(tempCollection);
+                return myCollection;
+            }
+        }
+
+        public static ObservableCollection<string> ReadNamesFromTable<T>() where T : class, IHasName
+        {
+            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            {
+                List<T> tempCollection = conn.Table<T>().ToList();
+                ObservableCollection<string> myCollection = new ObservableCollection<string>();
                 foreach (T item in tempCollection)
                     myCollection.Add(item.Name);
                 return myCollection;
             }
         }
 
-        /*
-        public static void UpdateNameInTable<T>(int Id, T editedName) where T : class, IHasName
+        public static void UpdateNameInTable<T>(int Id, string editedName) where T : class, IHasName
         {
             using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
             {
-                var existingActivity = conn.Query<Activity>("SELECT * FROM Activity WHERE Id =" + Id.ToString()).FirstOrDefault();
-                if (existingActivity != null)
+                var existingItem = conn.Query<T>("SELECT * FROM " + typeof(T).Name + " WHERE Id =" + Id.ToString()).FirstOrDefault();
+                if (existingItem != null)
                 {
-                    existingActivity.Title = editedActivity.Title;
-                    existingActivity.Description = editedActivity.Description;
-                    existingActivity.Priority = editedActivity.Priority;
-                    existingActivity.IsAllDay = editedActivity.IsAllDay;
-                    existingActivity.StartHour = editedActivity.StartHour;
-                    existingActivity.StartDate = editedActivity.StartDate;
-                    existingActivity.EndDate = editedActivity.EndDate;
-                    existingActivity.Estimation = editedActivity.Estimation;
-                    existingActivity.Context = editedActivity.Context;
-                    existingActivity.Project = editedActivity.Project;
-
+                    existingItem.Name = editedName;
                     conn.RunInTransaction(() =>
                     {
-                        conn.Update(existingActivity);
+                        conn.Update(existingItem);
                     });
                 }
             }
         }
-        */
 
         public static void UpdateActivity(int Id, Activity editedActivity)
         {

@@ -98,6 +98,9 @@
     <Compile Include="Helpers\LocalDatabaseHelper.cs" />
     <Compile Include="Models\IHasName.cs" />
     <Compile Include="Models\Project.cs" />
+    <Compile Include="SimpleListOfContexts.xaml.cs">
+      <DependentUpon>SimpleListOfContexts.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Projects.xaml.cs">
       <DependentUpon>Projects.xaml</DependentUpon>
     </Compile>
@@ -148,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="SimpleListOfContexts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Projects.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
