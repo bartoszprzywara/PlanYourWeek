@@ -39,7 +39,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Name="TitleTextBlock" Text="{x:Bind Name}" FontSize="{StaticResource ItemTitleFontSize}" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                            <Button Grid.Column="1" Name="DeleteButton" Content="&#xE104;" Style="{StaticResource ItemButtonStyle}"/>
+                            <Button Grid.Column="1" Name="EditButton" Content="&#xE104;" Style="{StaticResource ItemButtonStyle}" Click="EditButton_Click"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

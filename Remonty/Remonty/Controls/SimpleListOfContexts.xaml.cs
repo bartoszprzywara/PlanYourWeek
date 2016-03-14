@@ -26,13 +26,17 @@ namespace Remonty
             this.DataContextChanged += (s, e) => Bindings.Update();
         }
 
-        async private void EditButton_Click(object sender, RoutedEventArgs e)
+        private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            //DeleteButton.Visibility = Visibility.Visible;
-            //EditButton.Visibility = Visibility.Collapsed;
-            var ItemID = ((FrameworkElement)e.OriginalSource).DataContext;
-            var dialog = new MessageDialog(ItemID.ToString());
-            await dialog.ShowAsync();
+            DeleteButton.Visibility = Visibility.Visible;
+            EditButton.Visibility = Visibility.Collapsed;
+
+            TitleTextBlock.Visibility = Visibility.Collapsed;
+            TitleTextBox.Visibility = Visibility.Visible;
+
+            //var ItemID = ((FrameworkElement)e.OriginalSource).DataContext;
+            //var dialog = new MessageDialog(ItemID.ToString());
+            //await dialog.ShowAsync();
 
             // http://www.familie-smits.com/development-tips/tinder-control-for-your-windows-app
         }

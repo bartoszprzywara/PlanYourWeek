@@ -27,5 +27,6 @@
         <TextBlock Name="TitleTextBlock" Text="{x:Bind Context.Name}" FontSize="{StaticResource ItemTitleFontSize}" Margin="10,0,0,0" VerticalAlignment="Center"/>
         <Button Grid.Column="1" Visibility="Visible" Name="EditButton" DataContext="{x:Bind Context.Id}" Content="&#xE104;" Style="{StaticResource ItemButtonStyle}" Click="EditButton_Click"/>
         <Button Grid.Column="1" Visibility="Collapsed" Name="DeleteButton" Content="&#xE107;" Style="{StaticResource ItemButtonStyle}"/>
+        <TextBox Visibility="Collapsed" Name="TitleTextBox" Text="{x:Bind Context.Name}" FontSize="{StaticResource ItemTitleFontSize}" Margin="10,0,0,0" VerticalAlignment="Center"/>
     </Grid>
 </UserControl>

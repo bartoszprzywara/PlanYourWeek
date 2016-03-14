@@ -21,7 +21,15 @@ namespace Remonty
         public MainPage()
         {
             this.InitializeComponent();
-            ContentFrame.Navigate(typeof(YourWeek));
+
+            if (App.CurrentFrameInMainPage != null)
+            {
+                TitleTextBlock.Text = App.TitleTextBlockText;
+                ContentFrame.Navigate(App.CurrentFrameInMainPage, TitleTextBlock.Text);
+                // TODO: Pamiętać, że aktualnie nie działa dla powrotu do SearchResults
+            }
+            else
+                ContentFrame.Navigate(typeof(YourWeek));
         }
 
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
@@ -31,6 +39,9 @@ namespace Remonty
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
+            App.CurrentFrameInMainPage = ContentFrame.CurrentSourcePageType;
+            App.TitleTextBlockText = TitleTextBlock.Text;
+
             this.Frame.Navigate(typeof(AddEditActivity));
             TitleTextBlock.Text = "Nowe zadanie";
         }
