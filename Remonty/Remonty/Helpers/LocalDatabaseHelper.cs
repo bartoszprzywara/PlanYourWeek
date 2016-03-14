@@ -65,6 +65,15 @@ namespace Remonty.Helpers
             }
         }
 
+        public static int ReadItemIndex<T>(string columnName, int itemId) where T : class
+        {
+            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            {
+                var itemIndex = conn.Query<T>("SELECT * FROM " + typeof(T).Name + " WHERE " + columnName + " <" + itemId).Count;
+                return itemIndex;
+            }
+        }
+
         public static T ReadLastItem<T>() where T : class
         {
             using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
