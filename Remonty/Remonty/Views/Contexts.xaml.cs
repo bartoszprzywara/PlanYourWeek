@@ -33,7 +33,7 @@ namespace Remonty
         {
             if (AddItemTextBlock.Text == "")
             {
-                var dialog = new MessageDialog("Kontekst musi mieć nazwę");
+                var dialog = new MessageDialog("Kontekst musi mieć nazwę", "Nie da rady");
                 await dialog.ShowAsync();
             }
             else {

@@ -133,8 +133,8 @@ namespace Remonty
 
         private void InitializeComboBoxes()
         {
-            PriorComboBox.ItemsSource = new string[] { "Niski", "Normalny", "Wysoki" };
-            EstimateComboBox.ItemsSource = new string[] { "10 min", "20 min", "30 min", "1 godz", "2 godz", "3 godz", "4 godz", "6 godz", "10 godz" };
+            PriorityComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Priority>();
+            EstimationComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Estimation>();
             ContextComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Context>();
             ProjectComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Project>();
         }
@@ -145,7 +145,8 @@ namespace Remonty
                 TitleTextBox.Text = activity.Title;
             if (activity.Description != null)
                 DescriptionTextBox.Text = activity.Description;
-            PriorComboBox.SelectedItem = activity.Priority;
+            if (activity.PriorityId != null)
+                PriorityComboBox.SelectedIndex = (int)activity.PriorityId - 1;
             if (activity.IsAllDay != null)
                 IsAllDayToggleSwitch.IsOn = (bool)activity.IsAllDay;
             StartDatePicker.Date = activity.StartDate;
@@ -154,9 +155,12 @@ namespace Remonty
             EndDatePicker.Date = activity.EndDate;
             if (activity.EndHour != null)
                 EndHourTimePicker.Time = (TimeSpan)activity.EndHour;
-            EstimateComboBox.SelectedItem = activity.Estimation;
-            ContextComboBox.SelectedItem = activity.Context;
-            ProjectComboBox.SelectedItem = activity.Project;
+            if (activity.EstimationId != null)
+                EstimationComboBox.SelectedIndex = (int)activity.EstimationId - 1;
+            if (activity.ContextId != null)
+                ContextComboBox.SelectedIndex = (int)activity.ContextId - 1;
+            if (activity.ProjectId != null)
+                ProjectComboBox.SelectedIndex = (int)activity.ProjectId - 1;
         }
 
         private Activity LoadActivityValuesFromControls()
@@ -164,15 +168,15 @@ namespace Remonty
             return new Activity(
                     TitleTextBox.Text,
                     DescriptionTextBox.Text,
-                    (PriorComboBox != null) ? (string)(PriorComboBox.SelectedItem) : null,
+                    (PriorityComboBox.SelectedItem != null) ? PriorityComboBox.SelectedIndex + 1 : (int?)null,
                     IsAllDayToggleSwitch.IsOn,
                     StartDatePicker.Date,
                     StartHourTimePicker.Time,
                     EndDatePicker.Date,
                     EndHourTimePicker.Time,
-                    (EstimateComboBox != null) ? (string)(EstimateComboBox.SelectedItem) : null,
-                    (ContextComboBox != null) ? (string)(ContextComboBox.SelectedItem) : null,
-                    (ProjectComboBox != null) ? (string)(ProjectComboBox.SelectedItem) : null
+                    (EstimationComboBox.SelectedItem != null) ? EstimationComboBox.SelectedIndex + 1 : (int?)null,
+                    (ContextComboBox.SelectedItem != null) ? ContextComboBox.SelectedIndex + 1 : (int?)null,
+                    (ProjectComboBox.SelectedItem != null) ? ProjectComboBox.SelectedIndex + 1 : (int?)null
                     );
         }
 
@@ -183,15 +187,15 @@ namespace Remonty
             IdTextBlock.Text = (activity != null) ? "Id: " + activity.Id : "Id: -1";
             Podsumowanie.Text = "Tytuł: " + tempActivity.Title + "\n" +
                                 "Opis: " + tempActivity.Description + "\n" +
-                                "Prior: " + tempActivity.Priority + "\t\t" +
+                                "Prior: " + tempActivity.PriorityUI + "\t\t" +
                                 "CzyCałyDzień: " + tempActivity.IsAllDay + "\n" +
                                 "Start: " + tempActivity.StartDate + "\t\t" +
                                 "Godzina: " + tempActivity.StartHour + "\n" +
                                 "Kuniec: " + tempActivity.EndDate + "\t\t" +
                                 "Godzina: " + tempActivity.EndHour + "\n" +
-                                "Estim: " + tempActivity.Estimation + "\t" +
-                                "Kontekst: " + tempActivity.Context + "\t" +
-                                "Projekt: " + tempActivity.Project;
+                                "Estim: " + tempActivity.EstimationUI + "\t" +
+                                "Kontekst: " + tempActivity.ContextUI + "\t" +
+                                "Projekt: " + tempActivity.ProjectUI;
         }
     }
 }

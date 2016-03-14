@@ -33,7 +33,7 @@ namespace Remonty
         {
             if (AddItemTextBlock.Text == "")
             {
-                var dialog = new MessageDialog("Projekt musi mieć nazwę");
+                var dialog = new MessageDialog("Projekt musi mieć nazwę", "Nie da rady");
                 await dialog.ShowAsync();
             }
             else {
@@ -45,11 +45,23 @@ namespace Remonty
 
         async private void EditButton_Click(object sender, RoutedEventArgs e)
         {
+            //var ItemID = ((FrameworkElement)e.OriginalSource).DataContext;
+            //var dialog = new MessageDialog(ItemID.ToString());
+            //await dialog.ShowAsync();
+            //http://www.familie-smits.com/development-tips/tinder-control-for-your-windows-app
+
+
+            EditItemContentDialog contentDialog = new EditItemContentDialog();
+            contentDialog.MinWidth = this.ActualWidth;
+            contentDialog.MaxWidth = this.ActualWidth;
+            ContentDialogResult result = await contentDialog.ShowAsync();
+
+            /*
             var dialog = new ContentDialog()
             {
                 Title = "Lorem Ipsum",
                 MaxWidth = this.ActualWidth, // Required for Mobile!
-                Content = new SimpleListOfContexts()
+                Content = EditItemContentDialog
             };
 
             dialog.PrimaryButtonText = "OK";

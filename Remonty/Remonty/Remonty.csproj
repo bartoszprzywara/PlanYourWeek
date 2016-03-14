@@ -94,13 +94,15 @@
     <None Include="Remonty_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EditItemContentDialog.xaml.cs">
+      <DependentUpon>EditItemContentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\LocalDatabaseHelper.cs" />
     <Compile Include="Models\Context.cs" />
+    <Compile Include="Models\Estimation.cs" />
     <Compile Include="Models\IHasName.cs" />
+    <Compile Include="Models\Priority.cs" />
     <Compile Include="Models\Project.cs" />
-    <Compile Include="Controls\SimpleListOfContexts.xaml.cs">
-      <DependentUpon>SimpleListOfContexts.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Projects.xaml.cs">
       <DependentUpon>Projects.xaml</DependentUpon>
     </Compile>
@@ -151,7 +153,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\SimpleListOfContexts.xaml">
+    <Page Include="EditItemContentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

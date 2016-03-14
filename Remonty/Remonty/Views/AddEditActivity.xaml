@@ -48,8 +48,8 @@
                 <TextBox PlaceholderText="Opis" Name="DescriptionTextBox" Margin="{StaticResource ActivityCommonMargin}"/>
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
-                    <TextBlock Name="PriorTextBlock" Text="Priorytet" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <ComboBox Name="PriorComboBox" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <TextBlock Name="PriorityTextBlock" Text="Priorytet" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
+                    <ComboBox Name="PriorityComboBox" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                     <!--
                     <Image Margin="5,0" Name="StarOneImage" Source="ms-appx:///Assets/StarFull.jpg" Height="20" Width="20" RelativePanel.LeftOf="StarTwoImage"/>
                     <Image Margin="5,0" Name="StarTwoImage" Source="ms-appx:///Assets/StarFull.jpg" Height="20" Width="20" RelativePanel.LeftOf="StarThreeImage"/>
@@ -85,8 +85,8 @@
                 </RelativePanel>
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
-                    <TextBlock Name="EstimateTextBlock" Text="Czas trwania" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <ComboBox Name="EstimateComboBox" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <TextBlock Name="EstimationTextBlock" Text="Czas trwania" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
+                    <ComboBox Name="EstimationComboBox" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
                 <Line Margin="{StaticResource ActivityCommonMargin}" Style="{StaticResource ActivityHorizontalLineStyle}"/>

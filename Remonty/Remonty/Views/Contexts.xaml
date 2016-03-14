@@ -28,11 +28,19 @@
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Margin" Value="-11,0,-11,0" />
                     </Style>
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="data:Context">
-                        <local:SimpleListOfContexts HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <Grid BorderThickness="2" BorderBrush="#FFD2D2D2" Margin="15,5,15,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Name="TitleTextBlock" Text="{x:Bind Name}" FontSize="{StaticResource ItemTitleFontSize}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            <Button Grid.Column="1" Name="EditButton" Content="&#xE104;" Style="{StaticResource ItemButtonStyle}"/>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

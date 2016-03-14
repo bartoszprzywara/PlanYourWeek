@@ -19,11 +19,13 @@ namespace Remonty.Helpers
             DeleteAllItemsInTable<Activity>();
             DeleteAllItemsInTable<Context>();
             DeleteAllItemsInTable<Project>();
+            DeleteAllItemsInTable<Estimation>();
+            DeleteAllItemsInTable<Priority>();
 
-            InsertItem(new Activity("Kupić farbę", "Biała 10l, Zielona 5l", "Wysoki", true, null, null, new DateTime(2016, 04, 21), null, "2 godz", "Zakupy", null));
-            InsertItem(new Activity("Tytuł zadania 1", "Opis zadania 1", "Niski", false, new DateTime(2016, 03, 29), new TimeSpan(17, 34, 56), new DateTime(2016, 03, 30), new TimeSpan(19, 27, 44), "1 godz", "Spotkanie", "Położyć panele"));
-            InsertItem(new Activity("Pomalować kuchnię", "Na zielono", "Normalny", false, new DateTime(2016, 04, 23), new TimeSpan(16, 00, 00), new DateTime(2016, 04, 23), new TimeSpan(20, 00, 00), "4 godz", "Kuchnia", "Pomalować mieszkanie"));
-            //InsertItem(new Activity(null, null, null, null, null, null, null, null, null, null, null));
+            InsertItem(new Activity("Kupić farbę", "Biała 10l, Zielona 5l", 3, true, null, null, new DateTime(2016, 04, 21), null, 5, 1, null));
+            InsertItem(new Activity("Tytuł zadania 1", "Opis zadania 1", 1, false, new DateTime(2016, 03, 29), new TimeSpan(17, 34, 56), new DateTime(2016, 03, 30), new TimeSpan(19, 27, 44), 4, 2, 3));
+            InsertItem(new Activity("Pomalować kuchnię", "Na zielono", 2, false, new DateTime(2016, 04, 23), new TimeSpan(16, 00, 00), new DateTime(2016, 04, 23), new TimeSpan(20, 00, 00), 7, 5, 1));
+            InsertItem(new Activity(null, null, null, null, null, null, null, null, null, null, null));
 
             string[] contexts = { "Zakupy", "Spotkanie", "Telefon", "Komputer", "Kuchnia", "Łazienka", "Przedpokój", "Salon", "Sypialnia" };
             foreach (string value in contexts)
@@ -32,6 +34,14 @@ namespace Remonty.Helpers
             string[] projects = { "Pomalować mieszkanie", "Wymienić kaloryfery", "Położyć panele" };
             foreach (string value in projects)
                 InsertItem(new Project(value));
+
+            string[] estimations = { "15 min", "30 min", "1 godz", "2 godz", "3 godz", "4 godz", "6 godz", "10 godz" };
+            foreach (string value in estimations)
+                InsertItem(new Estimation(value));
+
+            string[] priorities = { "Niski", "Normalny", "Wysoki" };
+            foreach (string value in priorities)
+                InsertItem(new Priority(value));
 #endif
         }
 
@@ -42,6 +52,8 @@ namespace Remonty.Helpers
                 conn.CreateTable<Activity>();
                 conn.CreateTable<Context>();
                 conn.CreateTable<Project>();
+                conn.CreateTable<Estimation>();
+                conn.CreateTable<Priority>();
             }
         }
 
@@ -130,14 +142,14 @@ namespace Remonty.Helpers
                 {
                     existingActivity.Title = editedActivity.Title;
                     existingActivity.Description = editedActivity.Description;
-                    existingActivity.Priority = editedActivity.Priority;
+                    existingActivity.PriorityId = editedActivity.PriorityId;
                     existingActivity.IsAllDay = editedActivity.IsAllDay;
                     existingActivity.StartHour = editedActivity.StartHour;
                     existingActivity.StartDate = editedActivity.StartDate;
                     existingActivity.EndDate = editedActivity.EndDate;
-                    existingActivity.Estimation = editedActivity.Estimation;
-                    existingActivity.Context = editedActivity.Context;
-                    existingActivity.Project = editedActivity.Project;
+                    existingActivity.EstimationId = editedActivity.EstimationId;
+                    existingActivity.ContextId = editedActivity.ContextId;
+                    existingActivity.ProjectId = editedActivity.ProjectId;
 
                     conn.RunInTransaction(() =>
                     {
