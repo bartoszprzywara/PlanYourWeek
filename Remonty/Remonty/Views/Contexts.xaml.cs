@@ -42,5 +42,14 @@ namespace Remonty
                 AddItemTextBlock.Text = "";
             }
         }
+
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            //var ItemID = ((FrameworkElement)e.OriginalSource).DataContext;
+            var selectedContext = (Context)e.ClickedItem;
+
+            Frame frame = Window.Current.Content as Frame;
+            frame.Navigate(typeof(EditContext), selectedContext);
+        }
     }
 }

@@ -16,11 +16,12 @@
             <Setter Property="Width" Value="40"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="Foreground" Value="{StaticResource ForegroundMainColor}"/>
         </Style>
         <Style TargetType="Line" x:Key="ActivityHorizontalLineStyle">
             <Setter Property="X2" Value="2000"/>
-            <Setter Property="Stroke" Value="Black"/>
-            <Setter Property="StrokeThickness" Value="1"/>
+            <Setter Property="Stroke" Value="{StaticResource BackgroundMainColor}"/>
+            <Setter Property="StrokeThickness" Value="2"/>
         </Style>
         <Style TargetType="TextBlock" x:Key="ActivityLeftColumnTextBlockStyle">
             <Setter Property="RelativePanel.AlignLeftWithPanel" Value="True"/>
@@ -28,28 +29,28 @@
         </Style>
     </Page.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <RelativePanel Grid.Row="0" Background="LightGray">
-                <Button Content="&#xE0C4;" Name="BackButton" Style="{StaticResource NaviButtonStyle}" Click="BackButton_Click"/>
-                <TextBlock Text="Dodaj zadanie"  Name="TitleTextBlock" Margin="10,0,0,0" RelativePanel.RightOf="BackButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
-                <Button Content="&#xE73A;" Name="DoneButton" RelativePanel.LeftOf="DeleteButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed"/>
-                <Button Content="&#xE107;" Name="DeleteButton" RelativePanel.LeftOf="SaveButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed" Click="DeleteButton_Click"/>
-                <Button Content="&#xE74E;" Name="SaveButton" RelativePanel.AlignRightWithPanel="True" Style="{StaticResource NaviButtonStyle}" Click="SaveButton_Click"/>
-            </RelativePanel>
+        <RelativePanel Grid.Row="0" Background="{StaticResource BackgroundMainColor}">
+            <Button Content="&#xE0C4;" Name="BackButton" Style="{StaticResource NaviButtonStyle}" Click="BackButton_Click"/>
+            <TextBlock Text="Dodaj zadanie"  Name="TitleTextBlock" Foreground="{StaticResource ForegroundMainColor}" Margin="10,0,0,0" RelativePanel.RightOf="BackButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <Button Content="&#xE73A;" Name="DoneButton" RelativePanel.LeftOf="DeleteButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed"/>
+            <Button Content="&#xE107;" Name="DeleteButton" RelativePanel.LeftOf="SaveButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed" Click="DeleteButton_Click"/>
+            <Button Content="&#xE74E;" Name="SaveButton" RelativePanel.AlignRightWithPanel="True" Style="{StaticResource NaviButtonStyle}" Click="SaveButton_Click"/>
+        </RelativePanel>
 
-            <StackPanel Grid.Row="1">
-                <TextBox PlaceholderText="Nazwa" Name="TitleTextBox" Margin="{StaticResource ActivityCommonMargin}"/>
-                <TextBox PlaceholderText="Opis" Name="DescriptionTextBox" Margin="{StaticResource ActivityCommonMargin}"/>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBox PlaceholderText="Nazwa" Name="TitleTextBox" BorderBrush="{StaticResource BackgroundMainColor}" Margin="{StaticResource ActivityCommonMargin}"/>
+                <TextBox PlaceholderText="Opis" Name="DescriptionTextBox" BorderBrush="{StaticResource BackgroundMainColor}" Margin="{StaticResource ActivityCommonMargin}"/>
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="PriorityTextBlock" Text="Priorytet" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <ComboBox Name="PriorityComboBox" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <ComboBox Name="PriorityComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                     <!--
                     <Image Margin="5,0" Name="StarOneImage" Source="ms-appx:///Assets/StarFull.jpg" Height="20" Width="20" RelativePanel.LeftOf="StarTwoImage"/>
                     <Image Margin="5,0" Name="StarTwoImage" Source="ms-appx:///Assets/StarFull.jpg" Height="20" Width="20" RelativePanel.LeftOf="StarThreeImage"/>
@@ -66,7 +67,7 @@
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="StartTextBlock" Text="Początek" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <CalendarDatePicker Name="StartDatePicker" PlaceholderText="wybierz datę" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <CalendarDatePicker Name="StartDatePicker" PlaceholderText="wybierz datę" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
                 <RelativePanel Name="StartHourRelativePanel" Margin="{StaticResource ActivityTimePickerMargin}">
@@ -76,7 +77,7 @@
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="EndTextBlock" Text="Deadline" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <CalendarDatePicker Name="EndDatePicker" PlaceholderText="wybierz datę" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <CalendarDatePicker Name="EndDatePicker" PlaceholderText="wybierz datę" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
                 <RelativePanel Name="EndHourRelativePanel" Margin="{StaticResource ActivityTimePickerMargin}">
@@ -86,27 +87,27 @@
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="EstimationTextBlock" Text="Czas trwania" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <ComboBox Name="EstimationComboBox" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <ComboBox Name="EstimationComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
                 <Line Margin="{StaticResource ActivityCommonMargin}" Style="{StaticResource ActivityHorizontalLineStyle}"/>
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="ContextTextBlock" Text="Kontekst" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <ComboBox Name="ContextComboBox" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <ComboBox Name="ContextComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="ProjectContextTextBlock" Text="Projekt" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <ComboBox Name="ProjectComboBox" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <ComboBox Name="ProjectComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
                 <StackPanel Orientation="Horizontal" Margin="15,35,15,0">
-                    <Button Content="Pokaż podsumowanie"  Name="DebugButton" Click="DebugButton_Click" />
+                    <Button Content="Pokaż podsumowanie" Name="DebugButton" Foreground="{StaticResource ForegroundMainColor}" Background="{StaticResource BackgroundMainColor}" Click="DebugButton_Click" />
                     <TextBlock Name="IdTextBlock" Margin="5,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
                 <TextBlock Name="Podsumowanie" Margin="15,0,15,10" TextWrapping="Wrap"/>
             </StackPanel>
-        </Grid>
-    </ScrollViewer>
+        </ScrollViewer>
+    </Grid>
 </Page>

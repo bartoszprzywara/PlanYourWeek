@@ -32,6 +32,12 @@ namespace Remonty
                 ContentFrame.Navigate(typeof(YourWeek));
         }
 
+        private void SaveState()
+        {
+            App.CurrentFrameInMainPage = ContentFrame.CurrentSourcePageType;
+            App.TitleTextBlockText = TitleTextBlock.Text;
+        }
+
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
             MenuSplitView.IsPaneOpen = !MenuSplitView.IsPaneOpen;
@@ -39,9 +45,7 @@ namespace Remonty
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            App.CurrentFrameInMainPage = ContentFrame.CurrentSourcePageType;
-            App.TitleTextBlockText = TitleTextBlock.Text;
-
+            SaveState();
             this.Frame.Navigate(typeof(AddEditActivity));
             TitleTextBlock.Text = "Nowe zadanie";
         }
@@ -66,60 +70,70 @@ namespace Remonty
                 TitleTextBlock.Text = "Twój tydzień";
                 ContentFrame.Navigate(typeof(YourWeek));
                 MenuSplitView.IsPaneOpen = false;
+                SaveState();
             }
             else if (IncomingListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Nowe";
                 ContentFrame.Navigate(typeof(Incoming));
                 MenuSplitView.IsPaneOpen = false;
+                SaveState();
             }
             else if (ScheduledListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Zaplanowane";
                 ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
+                SaveState();
             }
             else if (NextListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Najbliższe";
                 ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
+                SaveState();
             }
             else if (SomedayListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Kiedyś";
                 ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
+                SaveState();
             }
             else if (WaitingListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Oddelegowane";
                 ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
+                SaveState();
             }
             else if (DoneListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Zrobione";
                 ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
+                SaveState();
             }
             else if (ProjectsListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Projekty";
                 ContentFrame.Navigate(typeof(Projects));
                 MenuSplitView.IsPaneOpen = false;
+                SaveState();
             }
             else if (ContextsListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Konteksty";
                 ContentFrame.Navigate(typeof(Contexts));
                 MenuSplitView.IsPaneOpen = false;
+                SaveState();
             }
             else if (SettingsListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Ustawienia";
                 ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
+                SaveState();
             }
         }
     }

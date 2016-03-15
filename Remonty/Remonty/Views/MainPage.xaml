@@ -13,14 +13,17 @@
             <Setter Property="Width" Value="40"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="Foreground" Value="{StaticResource ForegroundMainColor}"/>
         </Style>
         <Style TargetType="TextBlock" x:Key="HamburgerMenuItemIconStyle">
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="Foreground" Value="{StaticResource ForegroundMainColor}"/>
         </Style>
         <Style TargetType="TextBlock" x:Key="HamburgerMenuItemLabelStyle">
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="Foreground" Value="{StaticResource ForegroundMainColor}"/>
         </Style>
     </Page.Resources>
 
@@ -30,16 +33,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <RelativePanel Grid.Row="0" Background="LightGray">
+        <RelativePanel Grid.Row="0" Background="{StaticResource BackgroundMainColor}">
             <Button Content="&#xE700;" Name="HamburgerButton" Style="{StaticResource NaviButtonStyle}" Click="HamburgerButton_Click"/>
-            <TextBlock Text="Twój tydzień"  Name="TitleTextBlock" Margin="10,0,0,0" RelativePanel.RightOf="HamburgerButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <TextBlock Text="Twój tydzień" Name="TitleTextBlock" Foreground="{StaticResource ForegroundMainColor}" Margin="10,0,0,0" RelativePanel.RightOf="HamburgerButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
             <Button Content="&#xE109;" Name="AddButton" RelativePanel.LeftOf="SearchButton" Style="{StaticResource NaviButtonStyle}" Click="AddButton_Click"/>
             <Button Content="&#xE71E;" Name="SearchButton" RelativePanel.AlignRightWithPanel="True"  Style="{StaticResource NaviButtonStyle}" Click="SearchButton_Click"/>
         </RelativePanel>
 
         <SplitView Grid.Row="1" Name="MenuSplitView" CompactPaneLength="40" OpenPaneLength="180" DisplayMode="Overlay" >
             <SplitView.Pane>
-                <ListBox Name="MenuListBox" SelectionChanged="MenuListBox_SelectionChanged">
+                <ListBox Name="MenuListBox" SelectionChanged="MenuListBox_SelectionChanged" Background="{StaticResource BackgroundMainColor}">
                     <ListBoxItem Name="YourWeekListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE10F;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
@@ -110,8 +113,8 @@
         <SplitView Grid.Row="0" Name="SearchSplitView" PanePlacement="Right" OpenPaneLength="250" DisplayMode="Overlay">
             <SplitView.Pane>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox Name="SearchSplitTextBox" Width="210" Height="40" PlaceholderText="Szukaj" FontSize="18"/>
-                    <Button Name="SearchSplitButton" Content="&#xE71E;" Style="{StaticResource NaviButtonStyle}" Click="SearchSplitButton_Click"/>
+                    <TextBox Name="SearchSplitTextBox" Width="210" Height="40" PlaceholderText="Szukaj" BorderBrush="{StaticResource BackgroundMainColor}" FontSize="18"/>
+                    <Button Name="SearchSplitButton" Content="&#xE71E;" Background="{StaticResource BackgroundMainColor}" Style="{StaticResource NaviButtonStyle}" Click="SearchSplitButton_Click"/>
                 </StackPanel>
             </SplitView.Pane>
         </SplitView>

@@ -5,4 +5,8 @@
     xmlns:local="using:Remonty"
     RequestedTheme="Light">
 
+    <Application.Resources>
+        <SolidColorBrush x:Key="BackgroundMainColor" Color="{ThemeResource SystemAccentColor}"/>
+        <SolidColorBrush x:Key="ForegroundMainColor" Color="White"/>
+    </Application.Resources>
 </Application>

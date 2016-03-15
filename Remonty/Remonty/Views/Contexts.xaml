@@ -14,7 +14,8 @@
             <Setter Property="Height" Value="35"/>
             <Setter Property="Width" Value="35"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="Foreground" Value="{StaticResource ForegroundMainColor}"/>
+            <Setter Property="Background" Value="{StaticResource BackgroundMainColor}"/>
         </Style>
     </Page.Resources>
 
@@ -24,7 +25,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ListView ItemsSource="{x:Bind listofContexts}" Margin="0,10,0,0">
+            <ListView ItemsSource="{x:Bind listofContexts}" Margin="0,10,0,0" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -33,25 +34,25 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="data:Context">
-                        <Grid BorderThickness="2" BorderBrush="#FFD2D2D2" Margin="15,5,15,5">
+                        <Grid BorderThickness="2" BorderBrush="{StaticResource BackgroundMainColor}" Margin="15,5,15,5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Name="TitleTextBlock" Text="{x:Bind Name}" FontSize="{StaticResource ItemTitleFontSize}" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                            <Button Grid.Column="1" Name="EditButton" Content="&#xE104;" Style="{StaticResource ItemButtonStyle}"/>
+                            <TextBlock Text="{x:Bind Name}" FontSize="{StaticResource ItemTitleFontSize}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                            <Button Grid.Column="1" Content="{x:Bind Counter}" Style="{StaticResource ItemButtonStyle}"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Grid Grid.Row="1" BorderThickness="2" BorderBrush="#FFD2D2D2" Margin="15.5,5,15.5,5">
+            <Grid Grid.Row="1" BorderThickness="2" BorderBrush="{StaticResource BackgroundMainColor}" Margin="15.5,5,15.5,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBox Grid.Column="0" Name="AddItemTextBlock" PlaceholderText="Dodaj nowy" BorderBrush="White" FontSize="{StaticResource ItemTitleFontSize}"/>
-                <Button Grid.Column="1" Name="AddItemButton" Content="&#xE109;" Style="{StaticResource ItemButtonStyle}" Click="AddItemButton_Click"/>
+                <Button Grid.Column="1" Name="AddItemButton" Content="&#xE109;" FontFamily="Segoe MDL2 Assets" Style="{StaticResource ItemButtonStyle}" Click="AddItemButton_Click"/>
             </Grid>
         </Grid>
     </ScrollViewer>

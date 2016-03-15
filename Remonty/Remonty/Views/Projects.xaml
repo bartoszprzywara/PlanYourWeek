@@ -15,10 +15,11 @@
             <Setter Property="Width" Value="35"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="Foreground" Value="{StaticResource ForegroundMainColor}"/>
+            <Setter Property="Background" Value="{StaticResource BackgroundMainColor}"/>
         </Style>
     </Page.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -33,19 +34,18 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="data:Project">
-                        <Grid BorderThickness="2" BorderBrush="#FFD2D2D2" Margin="15,5,15,5">
+                    <Grid Height="39" BorderThickness="2" BorderBrush="{StaticResource BackgroundMainColor}" Margin="15,5,15,5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Name="TitleTextBlock" Text="{x:Bind Name}" FontSize="{StaticResource ItemTitleFontSize}" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                            <Button Grid.Column="1" Name="EditButton" Content="&#xE104;" Style="{StaticResource ItemButtonStyle}" Click="EditButton_Click"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Grid Grid.Row="1" BorderThickness="2" BorderBrush="#FFD2D2D2" Margin="15.5,5,15.5,5">
+            <Grid Grid.Row="1" BorderThickness="2" BorderBrush="{StaticResource BackgroundMainColor}" Margin="15.5,5,15.5,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -54,5 +54,4 @@
                 <Button Grid.Column="1" Name="AddItemButton" Content="&#xE109;" Style="{StaticResource ItemButtonStyle}" Click="AddItemButton_Click"/>
             </Grid>
         </Grid>
-    </ScrollViewer>
 </Page>
