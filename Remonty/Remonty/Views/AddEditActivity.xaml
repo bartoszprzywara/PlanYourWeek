@@ -3,11 +3,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Remonty"
+    xmlns:helpers="using:Remonty.Helpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
     <Page.Resources>
+        <helpers:ContextConverter x:Key="ContextConverter" />
         <Thickness x:Key="ActivityCommonMargin">15,10,15,0</Thickness>
         <Thickness x:Key="ActivityTimePickerMargin">15,4,15,0</Thickness>
         <x:Double x:Key="ActivityRightColumnWidth">130</x:Double>
@@ -94,7 +96,16 @@
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="ContextTextBlock" Text="Kontekst" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <ComboBox Name="ContextComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <!--<ComboBox Name="ContextComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>-->
+                    <ComboBox
+                        Name="ContextComboBox"
+                        ItemsSource="{x:Bind listOfContexts}"
+                        SelectedValuePath="Id"
+                        DisplayMemberPath="Name"
+                        SelectedItem="{x:Bind context, Mode=TwoWay, Converter={StaticResource ContextConverter}}"
+                        BorderBrush="{StaticResource BackgroundMainColor}"
+                        Width="{StaticResource ActivityRightColumnWidth}"
+                        RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">

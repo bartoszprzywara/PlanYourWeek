@@ -2,6 +2,7 @@
 using Remonty.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -45,6 +46,8 @@ namespace Remonty
         }
 
         private Activity activity;
+        private Context context;
+        private ObservableCollection<Context> listOfContexts;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -135,7 +138,7 @@ namespace Remonty
         {
             PriorityComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Priority>();
             EstimationComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Estimation>();
-            ContextComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Context>();
+            listOfContexts = LocalDatabaseHelper.ReadAllItemsFromTable<Context>();
             ProjectComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Project>();
         }
 
@@ -158,7 +161,7 @@ namespace Remonty
             if (activity.EstimationId != null)
                 EstimationComboBox.SelectedIndex = (int)activity.EstimationId - 1;
             if (activity.ContextId != null)
-                ContextComboBox.SelectedIndex = (int)activity.ContextId - 1;
+                context = listOfContexts[LocalDatabaseHelper.ReadItemIndex<Context>("Id", (int)activity.ContextId)];
             if (activity.ProjectId != null)
                 ProjectComboBox.SelectedIndex = (int)activity.ProjectId - 1;
         }
@@ -175,7 +178,7 @@ namespace Remonty
                     EndDatePicker.Date,
                     EndHourTimePicker.Time,
                     (EstimationComboBox.SelectedItem != null) ? EstimationComboBox.SelectedIndex + 1 : (int?)null,
-                    (ContextComboBox.SelectedItem != null) ? ContextComboBox.SelectedIndex + 1 : (int?)null,
+                    (ContextComboBox.SelectedItem != null) ? (int)ContextComboBox.SelectedValue : (int?)null,
                     (ProjectComboBox.SelectedItem != null) ? ProjectComboBox.SelectedIndex + 1 : (int?)null
                     );
         }

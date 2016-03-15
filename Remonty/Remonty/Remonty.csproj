@@ -94,6 +94,7 @@
     <None Include="Remonty_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ContextConverter.cs" />
     <Compile Include="Views\EditContext.xaml.cs">
       <DependentUpon>EditContext.xaml</DependentUpon>
     </Compile>
