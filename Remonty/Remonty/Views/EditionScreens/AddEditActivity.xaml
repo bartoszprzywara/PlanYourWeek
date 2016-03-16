@@ -68,6 +68,25 @@
                     <ToggleSwitch MinWidth="85" Name="IsAllDayToggleSwitch" OffContent="Nie" OnContent="Tak" RelativePanel.AlignRightWithPanel="True" Toggled="IsAllDayToggleSwitch_Toggled"/>
                 </RelativePanel>
 
+                <!-- tutaj wybor opcji
+                z Do.it
+                inbox
+                today
+                next
+                tomorrow
+                scheduled
+                someday
+                waiting
+                
+                z MainPage
+                nowe
+                zaplanowane
+                najbliższe
+                kiedyś
+                oddelegowane
+                zrobione
+                -->
+                
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="StartTextBlock" Text="Początek" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <CalendarDatePicker Name="StartDatePicker" PlaceholderText="wybierz datę" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>

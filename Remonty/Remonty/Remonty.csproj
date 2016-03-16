@@ -94,6 +94,9 @@
     <None Include="Remonty_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Views\ActivityDone.xaml.cs">
+      <DependentUpon>ActivityDone.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\ProjectConverter.cs" />
     <Compile Include="Views\EditionScreens\EditProject.xaml.cs">
       <DependentUpon>EditProject.xaml</DependentUpon>
@@ -158,6 +161,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\ActivityDone.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\EditionScreens\EditProject.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

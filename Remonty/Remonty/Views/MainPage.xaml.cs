@@ -110,7 +110,7 @@ namespace Remonty
             else if (DoneListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Zrobione";
-                ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
+                ContentFrame.Navigate(typeof(ActivityDone));
                 MenuSplitView.IsPaneOpen = false;
                 SaveState();
             }

@@ -19,12 +19,11 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="Margin" Value="-11,0,-11,0" />
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:Activity">
-                    <RelativePanel BorderThickness="2" BorderBrush="{StaticResource BackgroundMainColor}" Height="80" Margin="15,5,15,5">
+                    <RelativePanel BorderThickness="2" BorderBrush="{StaticResource BackgroundMainColor}" Height="80" Margin="4,5,4,5">
                         <TextBlock Name="TitleTextBlock" Text="{x:Bind Title}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="10,5,0,0" />
                         <TextBlock Name="PriorLabelTextBlock" Text="Priorytet:" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="10,5,0,0"/>
                         <TextBlock Name="PriorValueTextBlock" Text="{x:Bind PriorityUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.RightOf="PriorLabelTextBlock" Margin="3,5,0,0"/>
