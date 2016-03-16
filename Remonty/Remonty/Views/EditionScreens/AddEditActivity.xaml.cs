@@ -33,7 +33,7 @@ namespace Remonty
             EndHourRelativePanel.Visibility = Visibility.Collapsed;
         }
 
-        public void SetUpPageAnimation()
+        private void SetUpPageAnimation()
         {
             TransitionCollection collection = new TransitionCollection();
             NavigationThemeTransition theme = new NavigationThemeTransition();
@@ -48,11 +48,14 @@ namespace Remonty
         private Activity activity;
         private Context context;
         private ObservableCollection<Context> listOfContexts;
+        private Project project;
+        private ObservableCollection<Project> listOfProjects;
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter == null) return;
-            activity = e.Parameter as Activity;
+            Activity tempActivity = e.Parameter as Activity;
+            activity = LocalDatabaseHelper.ReadItem<Activity>(tempActivity.Id);
 
             TitleTextBlock.Text = (activity.Title != null) ? activity.Title : "Twoje zadanie";
 
@@ -66,6 +69,17 @@ namespace Remonty
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            if (this.Frame.CanGoBack)
+                this.Frame.GoBack();
+        }
+
+        private void DoneButton_Click(object sender, RoutedEventArgs e)
+        {
+            string sqlpath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "localdb.sqlite");
+            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            {
+                conn.Query<Activity>("UPDATE Activity SET IsDone=1 WHERE Id = " + activity.Id);
+            }
             if (this.Frame.CanGoBack)
                 this.Frame.GoBack();
         }
@@ -139,7 +153,7 @@ namespace Remonty
             PriorityComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Priority>();
             EstimationComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Estimation>();
             listOfContexts = LocalDatabaseHelper.ReadAllItemsFromTable<Context>();
-            ProjectComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Project>();
+            listOfProjects = LocalDatabaseHelper.ReadAllItemsFromTable<Project>();
         }
 
         private void LoadActivityValuesIntoControls()
@@ -163,7 +177,7 @@ namespace Remonty
             if (activity.ContextId != null)
                 context = listOfContexts[LocalDatabaseHelper.ReadItemIndex<Context>("Id", (int)activity.ContextId)];
             if (activity.ProjectId != null)
-                ProjectComboBox.SelectedIndex = (int)activity.ProjectId - 1;
+                project = listOfProjects[LocalDatabaseHelper.ReadItemIndex<Project>("Id", (int)activity.ProjectId)];
         }
 
         private Activity LoadActivityValuesFromControls()
@@ -179,7 +193,7 @@ namespace Remonty
                     EndHourTimePicker.Time,
                     (EstimationComboBox.SelectedItem != null) ? EstimationComboBox.SelectedIndex + 1 : (int?)null,
                     (ContextComboBox.SelectedItem != null) ? (int)ContextComboBox.SelectedValue : (int?)null,
-                    (ProjectComboBox.SelectedItem != null) ? ProjectComboBox.SelectedIndex + 1 : (int?)null
+                    (ProjectComboBox.SelectedItem != null) ? (int)ProjectComboBox.SelectedValue : (int?)null
                     );
         }
 
@@ -198,7 +212,8 @@ namespace Remonty
                                 "Godzina: " + tempActivity.EndHour + "\n" +
                                 "Estim: " + tempActivity.EstimationUI + "\t" +
                                 "Kontekst: " + tempActivity.ContextUI + "\t" +
-                                "Projekt: " + tempActivity.ProjectUI;
+                                "Projekt: " + tempActivity.ProjectUI + "\n" +
+                                "IsDone: " + activity.IsDone;
         }
     }
 }

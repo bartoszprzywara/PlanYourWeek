@@ -23,7 +23,11 @@ namespace Remonty
         public YourWeek()
         {
             this.InitializeComponent();
-            listofActivities = LocalDatabaseHelper.ReadAllItemsFromTable<Activity>();
+
+            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
+                listofActivities = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0").ToList());
+
+            //listofActivities = LocalDatabaseHelper.ReadAllItemsFromTable<Activity>();
         }
 
         private ObservableCollection<Activity> listofActivities;
@@ -38,11 +42,12 @@ namespace Remonty
 
         private void DoneButton_Click(object sender, RoutedEventArgs e)
         {
-            int ItemID = (int)((FrameworkElement)e.OriginalSource).DataContext;
-            int ItemIndex = LocalDatabaseHelper.ReadItemIndex<Activity>("Id", ItemID);
+            int ItemId = (int)((FrameworkElement)e.OriginalSource).DataContext;
+            //int ItemIndex = LocalDatabaseHelper.ReadItemIndex<Activity>("Id", ItemId);
+            //listofActivities.RemoveAt(ItemIndex);
 
-            listofActivities.RemoveAt(ItemIndex);
-            LocalDatabaseHelper.DeleteItem<Activity>(ItemID);
+            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
+                conn.Query<Activity>("UPDATE Activity SET IsDone=1 WHERE Id = " + ItemId);
         }
     }
 }

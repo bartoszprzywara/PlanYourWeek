@@ -10,6 +10,7 @@
 
     <Page.Resources>
         <helpers:ContextConverter x:Key="ContextConverter" />
+        <helpers:ProjectConverter x:Key="ProjectConverter" />
         <Thickness x:Key="ActivityCommonMargin">15,10,15,0</Thickness>
         <Thickness x:Key="ActivityTimePickerMargin">15,4,15,0</Thickness>
         <x:Double x:Key="ActivityRightColumnWidth">130</x:Double>
@@ -40,7 +41,7 @@
         <RelativePanel Grid.Row="0" Background="{StaticResource BackgroundMainColor}">
             <Button Content="&#xE0C4;" Name="BackButton" Style="{StaticResource NaviButtonStyle}" Click="BackButton_Click"/>
             <TextBlock Text="Dodaj zadanie"  Name="TitleTextBlock" Foreground="{StaticResource ForegroundMainColor}" Margin="10,0,0,0" RelativePanel.RightOf="BackButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
-            <Button Content="&#xE73A;" Name="DoneButton" RelativePanel.LeftOf="DeleteButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed"/>
+            <Button Content="&#xE73A;" Name="DoneButton" RelativePanel.LeftOf="DeleteButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed" Click="DoneButton_Click"/>
             <Button Content="&#xE107;" Name="DeleteButton" RelativePanel.LeftOf="SaveButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed" Click="DeleteButton_Click"/>
             <Button Content="&#xE74E;" Name="SaveButton" RelativePanel.AlignRightWithPanel="True" Style="{StaticResource NaviButtonStyle}" Click="SaveButton_Click"/>
         </RelativePanel>
@@ -96,21 +97,12 @@
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="ContextTextBlock" Text="Kontekst" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <!--<ComboBox Name="ContextComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>-->
-                    <ComboBox
-                        Name="ContextComboBox"
-                        ItemsSource="{x:Bind listOfContexts}"
-                        SelectedValuePath="Id"
-                        DisplayMemberPath="Name"
-                        SelectedItem="{x:Bind context, Mode=TwoWay, Converter={StaticResource ContextConverter}}"
-                        BorderBrush="{StaticResource BackgroundMainColor}"
-                        Width="{StaticResource ActivityRightColumnWidth}"
-                        RelativePanel.AlignRightWithPanel="True"/>
+                    <ComboBox Name="ContextComboBox" ItemsSource="{x:Bind listOfContexts}" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedItem="{x:Bind context, Mode=TwoWay, Converter={StaticResource ContextConverter}}" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="ProjectContextTextBlock" Text="Projekt" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <ComboBox Name="ProjectComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <ComboBox Name="ProjectComboBox" ItemsSource="{x:Bind listOfProjects}" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedItem="{x:Bind project, Mode=TwoWay, Converter={StaticResource ProjectConverter}}" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
                 <StackPanel Orientation="Horizontal" Margin="15,35,15,0">

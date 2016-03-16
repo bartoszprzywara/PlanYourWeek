@@ -24,10 +24,10 @@ namespace Remonty
         public Contexts()
         {
             this.InitializeComponent();
-            listofContexts = LocalDatabaseHelper.ReadAllItemsFromTable<Context>();
+            listofItems = LocalDatabaseHelper.ReadAllItemsFromTable<Context>();
         }
 
-        private ObservableCollection<Context> listofContexts;
+        private ObservableCollection<Context> listofItems;
 
         async private void AddItemButton_Click(object sender, RoutedEventArgs e)
         {
@@ -38,7 +38,7 @@ namespace Remonty
             }
             else {
                 LocalDatabaseHelper.InsertItem(new Context(AddItemTextBlock.Text));
-                listofContexts.Add(LocalDatabaseHelper.ReadLastItem<Context>());
+                listofItems.Add(LocalDatabaseHelper.ReadLastItem<Context>());
                 AddItemTextBlock.Text = "";
             }
         }

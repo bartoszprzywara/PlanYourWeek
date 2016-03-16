@@ -24,10 +24,10 @@ namespace Remonty
         public Projects()
         {
             this.InitializeComponent();
-            listofProjects = LocalDatabaseHelper.ReadAllItemsFromTable<Project>();
+            listofItems = LocalDatabaseHelper.ReadAllItemsFromTable<Project>();
         }
 
-        private ObservableCollection<Project> listofProjects;
+        private ObservableCollection<Project> listofItems;
 
         async private void AddItemButton_Click(object sender, RoutedEventArgs e)
         {
@@ -38,9 +38,18 @@ namespace Remonty
             }
             else {
                 LocalDatabaseHelper.InsertItem(new Project(AddItemTextBlock.Text));
-                listofProjects.Add(LocalDatabaseHelper.ReadLastItem<Project>());
+                listofItems.Add(LocalDatabaseHelper.ReadLastItem<Project>());
                 AddItemTextBlock.Text = "";
             }
+        }
+
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            //var ItemID = ((FrameworkElement)e.OriginalSource).DataContext;
+            var selectedContext = (Project)e.ClickedItem;
+
+            Frame frame = Window.Current.Content as Frame;
+            frame.Navigate(typeof(EditProject), selectedContext);
         }
     }
 }

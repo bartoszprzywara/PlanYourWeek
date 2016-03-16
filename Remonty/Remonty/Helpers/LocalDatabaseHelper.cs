@@ -10,7 +10,7 @@ namespace Remonty.Helpers
 {
     public class LocalDatabaseHelper
     {
-        private static readonly string sqlpath = System.IO.Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "localdb.sqlite");
+        public static readonly string sqlpath = System.IO.Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "localdb.sqlite");
 
         public static void InitializeLocalDB()
         {

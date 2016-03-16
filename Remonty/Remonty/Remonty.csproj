@@ -94,8 +94,12 @@
     <None Include="Remonty_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ProjectConverter.cs" />
+    <Compile Include="Views\EditionScreens\EditProject.xaml.cs">
+      <DependentUpon>EditProject.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\ContextConverter.cs" />
-    <Compile Include="Views\EditContext.xaml.cs">
+    <Compile Include="Views\EditionScreens\EditContext.xaml.cs">
       <DependentUpon>EditContext.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\LocalDatabaseHelper.cs" />
@@ -107,7 +111,7 @@
     <Compile Include="Views\Projects.xaml.cs">
       <DependentUpon>Projects.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddEditActivity.xaml.cs">
+    <Compile Include="Views\EditionScreens\AddEditActivity.xaml.cs">
       <DependentUpon>AddEditActivity.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Activity.cs" />
@@ -154,7 +158,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\EditContext.xaml">
+    <Page Include="Views\EditionScreens\EditProject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditionScreens\EditContext.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -162,7 +170,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddEditActivity.xaml">
+    <Page Include="Views\EditionScreens\AddEditActivity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
