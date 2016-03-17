@@ -18,13 +18,20 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Remonty
 {
-    public sealed partial class ActivityDone : Page
+    public sealed partial class ActivityGeneric : Page
     {
-        public ActivityDone()
+        public ActivityGeneric()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter == null) return;
+            string list = e.Parameter.ToString();
+
             using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                listofActivities = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 1").ToList());
+                listofActivities = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0 AND List = '" + list + "'").ToList());
         }
 
         private ObservableCollection<Activity> listofActivities;

@@ -75,35 +75,35 @@ namespace Remonty
             else if (IncomingListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Nowe";
-                ContentFrame.Navigate(typeof(Incoming));
+                ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
                 SaveState();
             }
             else if (ScheduledListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Zaplanowane";
-                ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
+                ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
                 SaveState();
             }
             else if (NextListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = "Najbliższe";
-                ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
+                TitleTextBlock.Text = "Najblizsze";
+                ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
                 SaveState();
             }
             else if (SomedayListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = "Kiedyś";
-                ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
+                TitleTextBlock.Text = "Kiedys";
+                ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
                 SaveState();
             }
             else if (WaitingListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Oddelegowane";
-                ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
+                ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
                 SaveState();
             }
@@ -131,7 +131,7 @@ namespace Remonty
             else if (SettingsListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Ustawienia";
-                ContentFrame.Navigate(typeof(Settings), TitleTextBlock.Text);
+                ContentFrame.Navigate(typeof(Settings));
                 MenuSplitView.IsPaneOpen = false;
                 SaveState();
             }

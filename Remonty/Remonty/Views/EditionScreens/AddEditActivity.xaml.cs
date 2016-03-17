@@ -147,6 +147,8 @@ namespace Remonty
 
         private void InitializeComboBoxes()
         {
+            // TODO: przeanalizowac jak tu zrobic polskie znaki dla nazw list
+            ListComboBox.ItemsSource = new string[] { "Nowe", "Zaplanowane", "Najblizsze", "Kiedys", "Oddelegowane" };
             PriorityComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Priority>();
             EstimationComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Estimation>();
             listOfContexts = LocalDatabaseHelper.ReadAllItemsFromTable<Context>();
@@ -163,6 +165,7 @@ namespace Remonty
                 PriorityComboBox.SelectedIndex = (int)activity.PriorityId - 1;
             if (activity.IsAllDay != null)
                 IsAllDayToggleSwitch.IsOn = (bool)activity.IsAllDay;
+            ListComboBox.SelectedItem = activity.List;
             StartDatePicker.Date = activity.StartDate;
             if (activity.StartHour != null)
                 StartHourTimePicker.Time = (TimeSpan)activity.StartHour;
@@ -184,6 +187,7 @@ namespace Remonty
                     DescriptionTextBox.Text,
                     (PriorityComboBox.SelectedItem != null) ? PriorityComboBox.SelectedIndex + 1 : (int?)null,
                     IsAllDayToggleSwitch.IsOn,
+                    (string)ListComboBox.SelectedItem,
                     StartDatePicker.Date,
                     StartHourTimePicker.Time,
                     EndDatePicker.Date,
@@ -203,6 +207,7 @@ namespace Remonty
                                 "Opis: " + tempActivity.Description + "\n" +
                                 "Prior: " + tempActivity.PriorityUI + "\t\t" +
                                 "CzyCałyDzień: " + tempActivity.IsAllDay + "\n" +
+                                "Lista: " + tempActivity.List + "\n" +
                                 "Start: " + tempActivity.StartDate + "\t\t" +
                                 "Godzina: " + tempActivity.StartHour + "\n" +
                                 "Kuniec: " + tempActivity.EndDate + "\t\t" +
@@ -210,7 +215,7 @@ namespace Remonty
                                 "Estim: " + tempActivity.EstimationUI + "\t" +
                                 "Kontekst: " + tempActivity.ContextUI + "\t" +
                                 "Projekt: " + tempActivity.ProjectUI + "\n" +
-                                "IsDone: " + activity.IsDone;
+                                "IsDone: " + ((activity != null) ? activity.IsDone : false);
         }
     }
 }

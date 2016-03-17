@@ -22,10 +22,10 @@ namespace Remonty.Helpers
             DeleteAllItemsInTable<Estimation>();
             DeleteAllItemsInTable<Priority>();
 
-            InsertItem(new Activity("Kupić farbę", "Biała 10l, Zielona 5l", 3, true, null, null, new DateTime(2016, 04, 21), null, 5, 1, null));
-            InsertItem(new Activity("Tytuł zadania 1", "Opis zadania 1", 1, false, new DateTime(2016, 03, 29), new TimeSpan(17, 34, 56), new DateTime(2016, 03, 30), new TimeSpan(19, 27, 44), 4, 2, 3));
-            InsertItem(new Activity("Pomalować kuchnię", "Na zielono", 2, false, new DateTime(2016, 04, 23), new TimeSpan(16, 00, 00), new DateTime(2016, 04, 23), new TimeSpan(20, 00, 00), 7, 5, 1));
-            InsertItem(new Activity(null, null, null, null, null, null, null, null, null, null, null));
+            InsertItem(new Activity("Kupić farbę", "Biała 10l, Zielona 5l", 3, true, "Najblizsze", null, null, new DateTime(2016, 04, 21), null, 5, 1, null));
+            InsertItem(new Activity("Tytuł zadania 1", "Opis zadania 1", 1, false, "Zaplanowane", new DateTime(2016, 03, 29), new TimeSpan(17, 34, 56), new DateTime(2016, 03, 30), new TimeSpan(19, 27, 44), 4, 2, 3));
+            InsertItem(new Activity("Pomalować kuchnię", "Na zielono", 2, false, "Zaplanowane", new DateTime(2016, 04, 23), new TimeSpan(16, 00, 00), new DateTime(2016, 04, 23), new TimeSpan(20, 00, 00), 7, 5, 1));
+            InsertItem(new Activity(null, null, null, null, null, null, null, null, null, null, null, null));
 
             string[] contexts = { "Zakupy", "Spotkanie", "Telefon", "Komputer", "Kuchnia", "Łazienka", "Przedpokój", "Salon", "Sypialnia" };
             foreach (string value in contexts)
@@ -144,6 +144,7 @@ namespace Remonty.Helpers
                     existingActivity.Description = editedActivity.Description;
                     existingActivity.PriorityId = editedActivity.PriorityId;
                     existingActivity.IsAllDay = editedActivity.IsAllDay;
+                    existingActivity.List = editedActivity.List;
                     existingActivity.StartHour = editedActivity.StartHour;
                     existingActivity.StartDate = editedActivity.StartDate;
                     existingActivity.EndDate = editedActivity.EndDate;

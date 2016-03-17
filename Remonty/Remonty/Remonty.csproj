@@ -124,8 +124,8 @@
     <Compile Include="Views\Contexts.xaml.cs">
       <DependentUpon>Contexts.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Incoming.xaml.cs">
-      <DependentUpon>Incoming.xaml</DependentUpon>
+    <Compile Include="Views\ActivityGeneric.xaml.cs">
+      <DependentUpon>ActivityGeneric.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -185,7 +185,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Incoming.xaml">
+    <Page Include="Views\ActivityGeneric.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

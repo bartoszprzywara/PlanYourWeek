@@ -14,7 +14,7 @@ namespace Remonty.Models
 
         }
 
-        public Activity(string title, string description, int? priorityId, bool? isAllDay,
+        public Activity(string title, string description, int? priorityId, bool? isAllDay, string list,
                         DateTimeOffset? startDate, TimeSpan? startHour, DateTimeOffset? endDate, TimeSpan? endHour,
                         int? estimationId, int? contextId, int? projectId)
         {
@@ -22,6 +22,7 @@ namespace Remonty.Models
             Description = description;
             PriorityId = priorityId;
             IsAllDay = isAllDay;
+            List = list;
             if (startDate != null)
                 StartDate = startDate;
             if (startHour != null && IsAllDay == false)
@@ -42,6 +43,7 @@ namespace Remonty.Models
         public string Description { get; set; }
         public int? PriorityId { get; set; }
         public bool? IsAllDay { get; set; }
+        public string List { get; set; }
         public DateTimeOffset? StartDate { get; set; }
         public TimeSpan? StartHour { get; set; }
         public DateTimeOffset? EndDate { get; set; }

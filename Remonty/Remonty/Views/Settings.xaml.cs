@@ -21,10 +21,5 @@ namespace Remonty
         {
             this.InitializeComponent();
         }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            SettingsTextBlock.Text = (!String.IsNullOrEmpty((string)e.Parameter)) ? (string)e.Parameter : "(pusty ekran)";
-        }
     }
 }

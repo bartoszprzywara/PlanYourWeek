@@ -51,62 +51,48 @@
                 <TextBox PlaceholderText="Nazwa" Name="TitleTextBox" BorderBrush="{StaticResource BackgroundMainColor}" Margin="{StaticResource ActivityCommonMargin}"/>
                 <TextBox PlaceholderText="Opis" Name="DescriptionTextBox" BorderBrush="{StaticResource BackgroundMainColor}" Margin="{StaticResource ActivityCommonMargin}"/>
 
+                <!-- priorytet -->
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="PriorityTextBlock" Text="Priorytet" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <ComboBox Name="PriorityComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
-                    <!--
-                    <Image Margin="5,0" Name="StarOneImage" Source="ms-appx:///Assets/StarFull.jpg" Height="20" Width="20" RelativePanel.LeftOf="StarTwoImage"/>
-                    <Image Margin="5,0" Name="StarTwoImage" Source="ms-appx:///Assets/StarFull.jpg" Height="20" Width="20" RelativePanel.LeftOf="StarThreeImage"/>
-                    <Image Margin="5,0" Name="StarThreeImage" Source="ms-appx:///Assets/StarEmpty.png" Height="20" Width="20" RelativePanel.AlignRightWithPanel="True"/>
-                    -->
+                    <!--<Image Margin="5,0" Name="StarThreeImage" Source="ms-appx:///Assets/StarFull.png" Height="20" Width="20" RelativePanel.AlignRightWithPanel="True"/>-->
                 </RelativePanel>
 
                 <Line Margin="{StaticResource ActivityCommonMargin}" Style="{StaticResource ActivityHorizontalLineStyle}"/>
 
+                <!-- czy calodniowe -->
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="IsAllDayTextBlock" Text="Czy całodniowe?" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <ToggleSwitch MinWidth="85" Name="IsAllDayToggleSwitch" OffContent="Nie" OnContent="Tak" RelativePanel.AlignRightWithPanel="True" Toggled="IsAllDayToggleSwitch_Toggled"/>
                 </RelativePanel>
-
-                <!-- tutaj wybor opcji
-                z Do.it
-                inbox
-                today
-                next
-                tomorrow
-                scheduled
-                someday
-                waiting
                 
-                z MainPage
-                nowe
-                zaplanowane
-                najbliższe
-                kiedyś
-                oddelegowane
-                zrobione
-                -->
+                <!-- lista -->
+                <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
+                    <TextBlock Name="ListTextBlock" Text="Lista" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
+                    <ComboBox Name="ListComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                </RelativePanel>
                 
+                <!-- poczatek -->
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="StartTextBlock" Text="Początek" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <CalendarDatePicker Name="StartDatePicker" PlaceholderText="wybierz datę" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
                 <RelativePanel Name="StartHourRelativePanel" Margin="{StaticResource ActivityTimePickerMargin}">
-                    <!--<TextBlock Name="StartHourTextBlock" Text="Godzina" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>-->
                     <TimePicker ClockIdentifier="24HourClock" MinWidth="{StaticResource ActivityRightColumnWidth}" Name="StartHourTimePicker" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
+                <!-- deadline -->
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="EndTextBlock" Text="Deadline" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <CalendarDatePicker Name="EndDatePicker" PlaceholderText="wybierz datę" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
                 <RelativePanel Name="EndHourRelativePanel" Margin="{StaticResource ActivityTimePickerMargin}">
-                    <!--<TextBlock Name="StartHourTextBlock" Text="Godzina" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>-->
                     <TimePicker ClockIdentifier="24HourClock" MinWidth="{StaticResource ActivityRightColumnWidth}" Name="EndHourTimePicker" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
+                <!-- czas trwania -->
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="EstimationTextBlock" Text="Czas trwania" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <ComboBox Name="EstimationComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
@@ -114,11 +100,13 @@
 
                 <Line Margin="{StaticResource ActivityCommonMargin}" Style="{StaticResource ActivityHorizontalLineStyle}"/>
 
+                <!-- kontekst -->
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="ContextTextBlock" Text="Kontekst" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <ComboBox Name="ContextComboBox" ItemsSource="{x:Bind listOfContexts}" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedItem="{x:Bind context, Mode=TwoWay, Converter={StaticResource ContextConverter}}" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
+                <!-- projekt -->
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="ProjectContextTextBlock" Text="Projekt" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <ComboBox Name="ProjectComboBox" ItemsSource="{x:Bind listOfProjects}" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedItem="{x:Bind project, Mode=TwoWay, Converter={StaticResource ProjectConverter}}" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
