@@ -88,14 +88,14 @@ namespace Remonty
             }
             else if (NextListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = "Najblizsze";
+                TitleTextBlock.Text = "Najbliższe";
                 ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
                 SaveState();
             }
             else if (SomedayListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = "Kiedys";
+                TitleTextBlock.Text = "Kiedyś";
                 ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
                 SaveState();

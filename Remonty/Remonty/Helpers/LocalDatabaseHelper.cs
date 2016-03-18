@@ -22,16 +22,43 @@ namespace Remonty.Helpers
             DeleteAllItemsInTable<Estimation>();
             DeleteAllItemsInTable<Priority>();
 
-            InsertItem(new Activity("Kupić farbę", "Biała 10l, Zielona 5l", 3, true, "Najblizsze", null, null, new DateTime(2016, 04, 21), null, 5, 1, null));
-            InsertItem(new Activity("Tytuł zadania 1", "Opis zadania 1", 1, false, "Zaplanowane", new DateTime(2016, 03, 29), new TimeSpan(17, 34, 56), new DateTime(2016, 03, 30), new TimeSpan(19, 27, 44), 4, 2, 3));
-            InsertItem(new Activity("Pomalować kuchnię", "Na zielono", 2, false, "Zaplanowane", new DateTime(2016, 04, 23), new TimeSpan(16, 00, 00), new DateTime(2016, 04, 23), new TimeSpan(20, 00, 00), 7, 5, 1));
-            InsertItem(new Activity(null, null, null, null, null, null, null, null, null, null, null, null));
+            //InsertItem(new Activity("Kupić farbę", "Biała 10l, zielona 5l", 2, true, "Najblizsze", null, null, new DateTime(2016, 05, 21), null, 5, 1, null));
+            //InsertItem(new Activity("Pomalować kuchnię", "Na zielono", 2, false, "Zaplanowane", new DateTime(2016, 05, 23), new TimeSpan(16, 00, 00), new DateTime(2016, 05, 23), new TimeSpan(20, 00, 00), 7, 5, 1));
+            //InsertItem(new Activity("Tytuł zadania 1", "Opis zadania 1", 1, false, "Zaplanowane", new DateTime(2016, 03, 29), new TimeSpan(17, 34, 56), new DateTime(2016, 03, 30), new TimeSpan(19, 27, 44), 4, 2, 3));
+            //InsertItem(new Activity(null, null, null, null, null, null, null, null, null, null, null, null));
 
-            string[] contexts = { "Zakupy", "Spotkanie", "Telefon", "Komputer", "Kuchnia", "Łazienka", "Przedpokój", "Salon", "Sypialnia" };
+            // tytuł, opis, prior, calydzien, lista, start, godz, end, godz, est, kont, proj
+            // lista Nowe, Zaplanowane, Najblizsze, Kiedys, Oddelegowane
+            // est 1-"15 min", 2-"30 min", 3-"1 godz", 4-"2 godz", 5-"3 godz", 6-"4 godz", 7-"6 godz", 8-"10 godz"
+            // kont 1-"Zakupy", 2-"Spotkanie", 3-"Telefon", 4-"Prace", 5-"Komputer", 6-"Kuchnia", 7-"Łazienka", 8-"Przedpokój", 9-"Salon", 10-"Sypialnia"
+            // proj 1-"Malowanie", 2-"Kaloryfery", 3-"Podłogi", 4-"Okna"
+            
+            /*
+            InsertItem(new Activity("Pomyśleć nad kuchenką", "Czy kupić nową kuchenkę?", 2, true, "Nowe", null, null, null, null, 5, null));
+            InsertItem(new Activity("Ogłoszenie o wymianie okien", "Na klatce wisi info", 3, true, "Nowe", null, null, new DateTime(2016, 06, 01), null, null, 4));
+            InsertItem(new Activity("Pomalować kuchnię", "Na zielono", 2, false, "Zaplanowane", new DateTime(2016, 05, 23), new TimeSpan(16, 00, 00), new DateTime(2016, 05, 23), new TimeSpan(21, 00, 00), 6, 6, 1));
+            InsertItem(new Activity("Kupić płytki", "Do kuchni i łazienki", 2, true, "Zaplanowane", new DateTime(2016, 05, 19), null, new DateTime(2016, 05, 20), null, 5, 1, 3));
+            InsertItem(new Activity("Mają przywieźć kanapę", "Zadzwonią godzinę przed", 2, true, "Zaplanowane", new DateTime(2016, 05, 21), null, null, null, 3, 9, null));
+            InsertItem(new Activity("Cyklinowanie podłogi", "Przyjdzie Pan Karol z asystentem", 3, false, "Zaplanowane", new DateTime(2016, 05, 09), new TimeSpan(10, 30, 00), null, null, 7, 4, 3));
+            InsertItem(new Activity("Pomiar gazu", "Przyjdzie Pan Jan Kowalski", 1, false, "Zaplanowane", new DateTime(2016, 05, 12), new TimeSpan(08, 00, 00), new DateTime(2016, 05, 12), new TimeSpan(09, 00, 00), 1, 2, null));
+            InsertItem(new Activity("Kupić farbę", "Biała 10l, zielona 5l", 2, true, "Najblizsze", null, null, new DateTime(2016, 05, 21), null, 5, 1,, 1));
+            InsertItem(new Activity("Zmierzyć ile trzeba płytek", "Kuchnia i łazienka", 3, true, "Najblizsze", null, null, new DateTime(2016, 05, 18), null, 2, 4, 3));
+            InsertItem(new Activity("Kupić okna", null, 3, true, "Najblizsze", null, null, new DateTime(2016, 05, 06), null, 6, 1, 4));
+            InsertItem(new Activity("Poszukać ekipy do wymiany okien", "Takiej, która zrobi to najszybciej", 3, true, "Najblizsze", null, null, new DateTime(2016, 05, 06), null, 3, 3, 4));
+            InsertItem(new Activity("Przesunąć lampę na suficie", "Bliżej aneksu", 2, "Salon", true, "Najblizsze", null, null, null, null, 4, 9, null));
+            InsertItem(new Activity("Powiesić szafkę w łazience", "Nad pralką", 1, true, "Najblizsze", null, null, new DateTime(2016, 05, 15), null, 3, 7, null));
+            InsertItem(new Activity("Sprawdzić kod do domofonu", "W spółdzielni", 1, true, "Najblizsze", null, null, null, null, null, 2, null));
+            InsertItem(new Activity("Listwa na złączeniu", "Między salonem a aneksem", 1, true, "Kiedys", null, null, null, null, 2, 4, 3));
+            InsertItem(new Activity("Odkamienić pralkę", null, 2, true, "Kiedys", null, null, new DateTime(2016, 06, 17), null, 5, 7, null));
+            InsertItem(new Activity("Zasłony do okien", "Tata ma przywieźć od babci", 1, true, "Oddelegowane", null, null, new DateTime(2016, 05, 04), null, null, 1, 4));
+            InsertItem(new Activity("Założenie rolet na okna", "Fachowiec ma zadzwonić jak się dowie", 2, true, "Oddelegowane", null, null, new DateTime(2016, 05, 10), new TimeSpan(14, 00, 00), 1, 10, 4));
+            */
+
+            string[] contexts = { "Zakupy", "Spotkanie", "Telefon", "Prace", "Komputer", "Kuchnia", "Łazienka", "Przedpokój", "Salon", "Sypialnia" };
             foreach (string value in contexts)
                 InsertItem(new Context(value));
 
-            string[] projects = { "Pomalować mieszkanie", "Wymienić kaloryfery", "Położyć panele" };
+            string[] projects = { "Malowanie", "Kaloryfery", "Podłogi", "Okna" };
             foreach (string value in projects)
                 InsertItem(new Project(value));
 
