@@ -41,6 +41,7 @@
         <RelativePanel Grid.Row="0" Background="{StaticResource BackgroundMainColor}">
             <Button Content="&#xE0C4;" Name="BackButton" Style="{StaticResource NaviButtonStyle}" Click="BackButton_Click"/>
             <TextBlock Text="Dodaj zadanie"  Name="TitleTextBlock" Foreground="{StaticResource ForegroundMainColor}" Margin="10,0,0,0" RelativePanel.RightOf="BackButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <Button Content="&#xE739;" Name="UnDoneButton" RelativePanel.LeftOf="DeleteButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed" Click="UnDoneButton_Click"/>
             <Button Content="&#xE73A;" Name="DoneButton" RelativePanel.LeftOf="DeleteButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed" Click="DoneButton_Click"/>
             <Button Content="&#xE107;" Name="DeleteButton" RelativePanel.LeftOf="SaveButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed" Click="DeleteButton_Click"/>
             <Button Content="&#xE74E;" Name="SaveButton" RelativePanel.AlignRightWithPanel="True" Style="{StaticResource NaviButtonStyle}" Click="SaveButton_Click"/>
@@ -65,15 +66,15 @@
                     <TextBlock Name="IsAllDayTextBlock" Text="Czy całodniowe?" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <ToggleSwitch MinWidth="85" Name="IsAllDayToggleSwitch" OffContent="Nie" OnContent="Tak" RelativePanel.AlignRightWithPanel="True" Toggled="IsAllDayToggleSwitch_Toggled"/>
                 </RelativePanel>
-                
+
                 <!-- lista -->
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="ListTextBlock" Text="Lista" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <ComboBox Name="ListComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <ComboBox Name="ListComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True" SelectionChanged="ListComboBox_SelectionChanged"/>
                 </RelativePanel>
-                
+
                 <!-- poczatek -->
-                <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
+                <RelativePanel Name="StartDateRelativePanel" Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="StartTextBlock" Text="Początek" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <CalendarDatePicker Name="StartDatePicker" PlaceholderText="wybierz datę" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
@@ -83,7 +84,7 @@
                 </RelativePanel>
 
                 <!-- deadline -->
-                <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
+                <RelativePanel Name="EndDateRelativePanel" Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="EndTextBlock" Text="Deadline" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <CalendarDatePicker Name="EndDatePicker" PlaceholderText="wybierz datę" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
@@ -112,12 +113,26 @@
                     <ComboBox Name="ProjectComboBox" ItemsSource="{x:Bind listOfProjects}" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedItem="{x:Bind project, Mode=TwoWay, Converter={StaticResource ProjectConverter}}" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
                 </RelativePanel>
 
-                <StackPanel Orientation="Horizontal" Margin="15,35,15,0">
-                    <Button Content="Pokaż podsumowanie" Name="DebugButton" Foreground="{StaticResource ForegroundMainColor}" Background="{StaticResource BackgroundMainColor}" Click="DebugButton_Click" />
-                    <TextBlock Name="IdTextBlock" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                <StackPanel Name="DebugAreaStrackPanel">
+                    <StackPanel Orientation="Horizontal" Margin="15,35,15,0">
+                        <Button Content="Pokaż podsumowanie" Foreground="{StaticResource ForegroundMainColor}" Background="{StaticResource BackgroundMainColor}" Click="DebugButton_Click" />
+                        <TextBlock Name="IdTextBlock" Margin="5,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <TextBlock Name="SummaryTextBlock" Margin="15,0,15,10" TextWrapping="Wrap"/>
                 </StackPanel>
-                <TextBlock Name="Podsumowanie" Margin="15,0,15,10" TextWrapping="Wrap"/>
             </StackPanel>
         </ScrollViewer>
+
+        <Grid.Resources>
+            <Storyboard x:Name="ShowStartHourRelativePanelStoryboard">
+                <DoubleAnimation From="0" To="1" Duration="0:0:1" Storyboard.TargetName="StartHourRelativePanel" Storyboard.TargetProperty="Opacity"/>
+            </Storyboard>
+            <Storyboard x:Name="ShowEndHourRelativePanelStoryboard">
+                <DoubleAnimation From="0" To="1" Duration="0:0:1" Storyboard.TargetName="EndHourRelativePanel" Storyboard.TargetProperty="Opacity"/>
+            </Storyboard>
+            <Storyboard x:Name="ShowStartDateRelativePanelStoryboard">
+                <DoubleAnimation From="0" To="1" Duration="0:0:1" Storyboard.TargetName="StartDateRelativePanel" Storyboard.TargetProperty="Opacity"/>
+            </Storyboard>
+        </Grid.Resources>
     </Grid>
 </Page>

@@ -88,14 +88,14 @@ namespace Remonty
             }
             else if (NextListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = "Najbliższe";
+                TitleTextBlock.Text = "Najblizsze"; // nie działają mi polskie znaki w sqlite
                 ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
                 SaveState();
             }
             else if (SomedayListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = "Kiedyś";
+                TitleTextBlock.Text = "Kiedys"; // nie działają mi polskie znaki w sqlite
                 ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
                 SaveState();
@@ -110,7 +110,7 @@ namespace Remonty
             else if (DoneListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Zrobione";
-                ContentFrame.Navigate(typeof(ActivityDone));
+                ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
                 MenuSplitView.IsPaneOpen = false;
                 SaveState();
             }

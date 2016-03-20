@@ -23,13 +23,13 @@ namespace Remonty.Models
             PriorityId = priorityId;
             IsAllDay = isAllDay;
             List = list;
-            if (startDate != null)
+            if (startDate != null && List == "Zaplanowane")
                 StartDate = startDate;
-            if (startHour != null && IsAllDay == false)
+            if (startHour != null && List == "Zaplanowane" && IsAllDay == false)
                 StartHour = startHour;
             if (endDate != null)
                 EndDate = endDate;
-            if (endHour != null && IsAllDay == false)
+            if (endHour != null && IsAllDay == false && EndDate != null)
                 EndHour = endHour;
             EstimationId = estimationId;
             ContextId = contextId;
@@ -75,7 +75,7 @@ namespace Remonty.Models
             get
             {
                 if (ContextId != null)
-                    return LocalDatabaseHelper.ReadItem<Context>((int)ContextId).Name;
+                    return "@" + LocalDatabaseHelper.ReadItem<Context>((int)ContextId).Name;
                 return "";
             }
         }
@@ -104,6 +104,20 @@ namespace Remonty.Models
                 if (PriorityId != null)
                     return LocalDatabaseHelper.ReadItem<Priority>((int)PriorityId).Name;
                 return "";
+            }
+        }
+        public string PriorityUInew
+        {
+            get
+            {
+                if (PriorityId == 1)
+                    return "Gray";
+                else if (PriorityId == 2)
+                    return "Green";
+                else if (PriorityId == 3)
+                    return "Red";
+                else
+                    return "Gray";
             }
         }
     }

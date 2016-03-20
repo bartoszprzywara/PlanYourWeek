@@ -72,7 +72,7 @@ namespace Remonty
                 string sqlpath = System.IO.Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "localdb.sqlite");
                 using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
                 {
-                    conn.Query<Activity>("UPDATE Activity SET ProjectId = NULL WHERE ProjectID = " + project.Id);
+                    conn.Execute("UPDATE Activity SET ProjectId = NULL WHERE ProjectID = " + project.Id);
                 }
 
                 if (this.Frame.CanGoBack)

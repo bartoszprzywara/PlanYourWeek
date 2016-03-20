@@ -24,10 +24,10 @@ namespace Remonty
         {
             this.InitializeComponent();
             using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                listofActivities = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0").ToList());
+                ActivitiesForDay1 = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0").ToList());
         }
 
-        private ObservableCollection<Activity> listofActivities;
+        private ObservableCollection<Activity> ActivitiesForDay1;
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
@@ -42,18 +42,31 @@ namespace Remonty
             int ItemId = (int)((FrameworkElement)e.OriginalSource).DataContext;
 
             using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                conn.Query<Activity>("UPDATE Activity SET IsDone = 1 WHERE Id = " + ItemId);
+                conn.Execute("UPDATE Activity SET IsDone = 1 WHERE Id = " + ItemId);
 
             int i = 0;
-            foreach (Activity item in listofActivities)
-            {
-                if (item.Id == ItemId)
-                {
-                    listofActivities.RemoveAt(i);
-                    break;
-                }
+            while (ActivitiesForDay1[i].Id != ItemId)
                 i++;
-            }
+            ActivitiesForDay1.RemoveAt(i);
+        }
+
+        private int today = (int)DateTime.Today.DayOfWeek;
+        public string Day3 { get { return GetDayOfWeek(today + 2); } }
+        public string Day4 { get { return GetDayOfWeek(today + 3); } }
+        public string Day5 { get { return GetDayOfWeek(today + 4); } }
+        public string Day6 { get { return GetDayOfWeek(today + 5); } }
+        public string Day7 { get { return GetDayOfWeek(today + 6); } }
+
+        private string GetDayOfWeek(int day)
+        {
+            if (day == 1) return "Pon";
+            if (day == 2) return "Wto";
+            if (day == 3) return "Śro";
+            if (day == 4) return "Czw";
+            if (day == 5) return "Pią";
+            if (day == 6) return "Sob";
+            if (day == 7) return "Nie";
+            else return "";
         }
     }
 }

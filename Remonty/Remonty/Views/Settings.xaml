@@ -7,7 +7,30 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock Text="Ustawienia" FontSize="36" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
-    </Grid>
+    <Page.Resources>
+        <Thickness x:Key="SettingsCommonMargin">15,10,0,0</Thickness>
+    </Page.Resources>
+
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock Text="O której godzinie wstajesz?" Margin="{StaticResource SettingsCommonMargin}"/>
+        <TimePicker Name="StartDayTimePicker" Margin="15,5,0,0" ClockIdentifier="24HourClock" MinWidth="130"/>
+        
+        <TextBlock Text="Jakie są Twoje godziny pracy?" Margin="{StaticResource SettingsCommonMargin}"/>
+        <StackPanel Orientation="Horizontal" Margin="{StaticResource SettingsCommonMargin}">
+            <TextBlock Text="od" VerticalAlignment="Center"/>
+            <TimePicker Name="StartWorkingTimePicker" Margin="10,0,0,0" ClockIdentifier="24HourClock" MinWidth="130"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="{StaticResource SettingsCommonMargin}">
+            <TextBlock Text="do" VerticalAlignment="Center"/>
+            <TimePicker Name="EndWorkingTimePicker" Margin="10,0,0,0" ClockIdentifier="24HourClock" MinWidth="130"/>
+        </StackPanel>
+
+        <TextBlock Text="O której godzinie idziesz spać?" Margin="{StaticResource SettingsCommonMargin}"/>
+        <TimePicker Name="EndDayTimePicker" Margin="15,5,0,0" ClockIdentifier="24HourClock" MinWidth="130"/>
+
+        <!--
+        <TextBlock Text="W które dni pracujesz?" Margin="{StaticResource SettingsCommonMargin}"/>
+        -->
+
+    </StackPanel>
 </Page>

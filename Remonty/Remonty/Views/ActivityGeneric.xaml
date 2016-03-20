@@ -15,7 +15,7 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ListView ItemsSource="{x:Bind listofActivities}" Margin="0,10,0,0">
+        <ListView ItemsSource="{x:Bind listofActivities}" Margin="0,10,0,0" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -27,7 +27,7 @@
                         <TextBlock Name="TitleTextBlock" Text="{x:Bind Title}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="10,5,0,0" />
                         <TextBlock Name="PriorLabelTextBlock" Text="Priorytet:" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
                         <TextBlock Name="PriorValueTextBlock" Text="{x:Bind PriorityUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="PriorLabelTextBlock" Margin="3,0,0,5"/>
-                        <TextBlock Name="ContextLabelTextBlock" Text="@" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="40,0,0,5"/>
+                        <TextBlock Name="ContextLabelTextBlock" Text="" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="40,0,0,5"/>
                         <TextBlock Name="ContextValueTextBlock" Text="{x:Bind ContextUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="ContextLabelTextBlock" Margin="0,0,0,5"/>
                     </RelativePanel>
                 </DataTemplate>

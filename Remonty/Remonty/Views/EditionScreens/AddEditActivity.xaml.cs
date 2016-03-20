@@ -27,22 +27,7 @@ namespace Remonty
             this.InitializeComponent();
             SetUpPageAnimation();
             InitializeComboBoxes();
-
-            IsAllDayToggleSwitch.IsOn = true;
-            StartHourRelativePanel.Visibility = Visibility.Collapsed;
-            EndHourRelativePanel.Visibility = Visibility.Collapsed;
-        }
-
-        private void SetUpPageAnimation()
-        {
-            TransitionCollection collection = new TransitionCollection();
-            NavigationThemeTransition theme = new NavigationThemeTransition();
-
-            var info = new ContinuumNavigationTransitionInfo();
-
-            theme.DefaultNavigationTransitionInfo = info;
-            collection.Add(theme);
-            this.Transitions = collection;
+            AddActivityModeSetControls();
         }
 
         private Activity activity;
@@ -58,12 +43,14 @@ namespace Remonty
 
             TitleTextBlock.Text = (activity.Title != null) ? activity.Title : "Twoje zadanie";
 
-            DoneButton.Visibility = Visibility.Visible;
-            DeleteButton.Visibility = Visibility.Visible;
-            SaveButton.Click -= new RoutedEventHandler(SaveButton_Click);
-            SaveButton.Click += new RoutedEventHandler(SaveExistingButton_Click);
-
+            EditActivityModeSetControls();
             LoadActivityValuesIntoControls();
+
+            if (activity.IsDone == true)
+            {
+                DoneButton.Visibility = Visibility.Collapsed;
+                UnDoneButton.Visibility = Visibility.Visible;
+            }
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -72,10 +59,19 @@ namespace Remonty
                 this.Frame.GoBack();
         }
 
+        private void UnDoneButton_Click(object sender, RoutedEventArgs e)
+        {
+            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
+                conn.Execute("UPDATE Activity SET IsDone = 0 WHERE Id = " + activity.Id);
+
+            if (this.Frame.CanGoBack)
+                this.Frame.GoBack();
+        }
+
         private void DoneButton_Click(object sender, RoutedEventArgs e)
         {
             using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                conn.Query<Activity>("UPDATE Activity SET IsDone = 1 WHERE Id = " + activity.Id);
+                conn.Execute("UPDATE Activity SET IsDone = 1 WHERE Id = " + activity.Id);
 
             if (this.Frame.CanGoBack)
                 this.Frame.GoBack();
@@ -132,6 +128,28 @@ namespace Remonty
 
         private void IsAllDayToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
+            SetStartAndEndHourVisibility();
+        }
+
+        private void ListComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((string)ListComboBox.SelectedItem == "Zaplanowane")
+            {
+                StartDateRelativePanel.Visibility = Visibility.Visible;
+                if (StartDatePicker.Date == null)
+                    StartDatePicker.Date = DateTimeOffset.Now;
+                ShowStartDateRelativePanelStoryboard.Begin();
+            }
+            else
+            {
+                StartDateRelativePanel.Visibility = Visibility.Collapsed;
+                StartHourRelativePanel.Visibility = Visibility.Collapsed;
+            }
+            SetStartAndEndHourVisibility();
+        }
+
+        private void SetStartAndEndHourVisibility()
+        {
             // TODO: Implement animation of showing and hiding time picker
             if (IsAllDayToggleSwitch.IsOn)
             {
@@ -140,19 +158,73 @@ namespace Remonty
             }
             else
             {
-                StartHourRelativePanel.Visibility = Visibility.Visible;
-                EndHourRelativePanel.Visibility = Visibility.Visible;
+                if ((string)ListComboBox.SelectedItem == "Zaplanowane" && StartHourRelativePanel.Visibility != Visibility.Visible)
+                {
+                    StartHourRelativePanel.Visibility = Visibility.Visible;
+                    ShowStartHourRelativePanelStoryboard.Begin();
+                    if (activity == null)
+                        StartHourTimePicker.Time = new TimeSpan(0, 0, 0);
+                }
+                if (EndHourRelativePanel.Visibility != Visibility.Visible)
+                {
+                    EndHourRelativePanel.Visibility = Visibility.Visible;
+                    ShowEndHourRelativePanelStoryboard.Begin();
+                }
+                if (activity == null)
+                    EndHourTimePicker.Time = new TimeSpan(0, 0, 0);
             }
+        }
+
+
+        // -----------------------------------------------------------
+        // ------------------------- Helpers -------------------------
+        // -----------------------------------------------------------
+
+
+        private void SetUpPageAnimation()
+        {
+            TransitionCollection collection = new TransitionCollection();
+            NavigationThemeTransition theme = new NavigationThemeTransition();
+
+            var info = new ContinuumNavigationTransitionInfo();
+
+            theme.DefaultNavigationTransitionInfo = info;
+            collection.Add(theme);
+            this.Transitions = collection;
         }
 
         private void InitializeComboBoxes()
         {
-            // TODO: przeanalizowac jak tu zrobic polskie znaki dla nazw list
             ListComboBox.ItemsSource = new string[] { "Nowe", "Zaplanowane", "Najblizsze", "Kiedys", "Oddelegowane" };
             PriorityComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Priority>();
             EstimationComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Estimation>();
             listOfContexts = LocalDatabaseHelper.ReadAllItemsFromTable<Context>();
             listOfProjects = LocalDatabaseHelper.ReadAllItemsFromTable<Project>();
+        }
+
+        private void AddActivityModeSetControls()
+        {
+            PriorityComboBox.SelectedIndex = 1;
+            ListComboBox.SelectedItem = "Zaplanowane";
+            IsAllDayToggleSwitch.IsOn = true;
+            StartDatePicker.Date = DateTimeOffset.Now;
+
+            StartDateRelativePanel.Visibility = Visibility.Visible;
+            StartHourRelativePanel.Visibility = Visibility.Collapsed;
+            EndDateRelativePanel.Visibility = Visibility.Visible;
+            EndHourRelativePanel.Visibility = Visibility.Collapsed;
+
+            DebugButtonSetVisibility();
+        }
+
+        private void EditActivityModeSetControls()
+        {
+            DoneButton.Visibility = Visibility.Visible;
+            DeleteButton.Visibility = Visibility.Visible;
+            SaveButton.Click -= new RoutedEventHandler(SaveButton_Click);
+            SaveButton.Click += new RoutedEventHandler(SaveExistingButton_Click);
+
+            DebugButtonSetVisibility();
         }
 
         private void LoadActivityValuesIntoControls()
@@ -198,12 +270,21 @@ namespace Remonty
                     );
         }
 
+        private void DebugButtonSetVisibility()
+        {
+#if DEBUG
+            DebugAreaStrackPanel.Visibility = Visibility.Visible;
+#else
+            DebugAreaStrackPanel.Visibility = Visibility.Collapsed;
+#endif
+        }
+
         private void DebugButton_Click(object sender, RoutedEventArgs e)
         {
             Activity tempActivity = LoadActivityValuesFromControls();
 
             IdTextBlock.Text = (activity != null) ? "Id: " + activity.Id : "Id: -1";
-            Podsumowanie.Text = "Tytuł: " + tempActivity.Title + "\n" +
+            SummaryTextBlock.Text = "Tytuł: " + tempActivity.Title + "\n" +
                                 "Opis: " + tempActivity.Description + "\n" +
                                 "Prior: " + tempActivity.PriorityUI + "\t\t" +
                                 "CzyCałyDzień: " + tempActivity.IsAllDay + "\n" +

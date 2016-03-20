@@ -30,10 +30,22 @@ namespace Remonty
             if (e.Parameter == null) return;
             string list = e.Parameter.ToString();
 
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                listofActivities = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0 AND List = '" + list + "'").ToList());
+            if (list != "Zrobione")
+                using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
+                    listofActivities = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0 AND List = '" + list + "'").ToList());
+            else
+                using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
+                    listofActivities = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 1").ToList());
         }
 
         private ObservableCollection<Activity> listofActivities;
+
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var selectedActivity = (Activity)e.ClickedItem;
+
+            Frame frame = Window.Current.Content as Frame;
+            frame.Navigate(typeof(AddEditActivity), selectedActivity);
+        }
     }
 }

@@ -20,6 +20,15 @@ namespace Remonty
         public Settings()
         {
             this.InitializeComponent();
+            SetControls();
+        }
+
+        private void SetControls()
+        {
+            StartDayTimePicker.Time = new TimeSpan(07, 00, 00);
+            StartWorkingTimePicker.Time = new TimeSpan(09, 00, 00);
+            EndWorkingTimePicker.Time = new TimeSpan(17, 00, 00);
+            EndDayTimePicker.Time = new TimeSpan(23,00,00);
         }
     }
 }
