@@ -33,9 +33,9 @@ namespace Remonty
         {
             int counter = 0;
             using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                counter = conn.Query<Context>("SELECT * FROM Context WHERE Name = '" + AddItemTextBlock.Text + "' COLLATE NOCASE").Count();
+                counter = conn.Query<Context>("SELECT * FROM Context WHERE Name = '" + AddItemTextBox.Text + "' COLLATE NOCASE").Count();
 
-            if (AddItemTextBlock.Text == "")
+            if (AddItemTextBox.Text == "")
             {
                 var dialog = new MessageDialog("Kontekst musi mieć nazwę", "Nie da rady");
                 await dialog.ShowAsync();
@@ -46,9 +46,9 @@ namespace Remonty
                 await dialog.ShowAsync();
             }
             else {
-                LocalDatabaseHelper.InsertItem(new Context(AddItemTextBlock.Text));
+                LocalDatabaseHelper.InsertItem(new Context(AddItemTextBox.Text));
                 listofItems.Add(LocalDatabaseHelper.ReadLastItem<Context>());
-                AddItemTextBlock.Text = "";
+                AddItemTextBox.Text = "";
             }
         }
 

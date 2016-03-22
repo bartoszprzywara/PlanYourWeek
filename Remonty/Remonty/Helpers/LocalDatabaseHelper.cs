@@ -21,6 +21,7 @@ namespace Remonty.Helpers
             DeleteAllItemsInTable<Project>();
             DeleteAllItemsInTable<Estimation>();
             DeleteAllItemsInTable<Priority>();
+            DeleteAllItemsInTable<Settings>();
 
             // konstruktor: tytuł, opis, prior, calydzien, lista, start, godz, end, godz, est, kont, proj
             // lista: Nowe, Zaplanowane, Najblizsze, Kiedys, Oddelegowane
@@ -37,6 +38,7 @@ namespace Remonty.Helpers
                 conn.Execute("UPDATE Activity SET IsDone = 1");
 
             InsertItem(new Activity("Pomyśleć nad kuchenką", "Czy kupić nową kuchenkę?", 2, true, "Nowe", null, null, null, null, null, 6, null));
+            InsertItem(new Activity(true));
             InsertItem(new Activity("Ogłoszenie o wymianie okien", "Na klatce wisi info", 3, true, "Nowe", null, null, new DateTime(2016, month + 2, 01), null, null, null, 4));
             InsertItem(new Activity("Pomalować kuchnię", "Na zielono", 2, false, "Zaplanowane", new DateTime(2016, month + 1, 23), new TimeSpan(16, 00, 00), new DateTime(2016, month + 1, 23), new TimeSpan(21, 00, 00), 6, 6, 1));
             InsertItem(new Activity("Kupić płytki", "Do kuchni i łazienki", 2, true, "Zaplanowane", new DateTime(2016, month + 1, 19), null, new DateTime(2016, month + 1, 20), null, 5, 1, 3));
@@ -71,6 +73,11 @@ namespace Remonty.Helpers
             string[] priorities = { "Niski", "Normalny", "Wysoki" };
             foreach (string value in priorities)
                 InsertItem(new Priority(value));
+
+            InsertItem(new Settings("StartDay", new TimeSpan(07, 00, 00).ToString()));
+            InsertItem(new Settings("StartWorking", new TimeSpan(09, 00, 00).ToString()));
+            InsertItem(new Settings("EndWorking", new TimeSpan(17, 00, 00).ToString()));
+            InsertItem(new Settings("EndDay", new TimeSpan(23, 00, 00).ToString()));
 #endif
         }
 
@@ -83,6 +90,7 @@ namespace Remonty.Helpers
                 conn.CreateTable<Project>();
                 conn.CreateTable<Estimation>();
                 conn.CreateTable<Priority>();
+                conn.CreateTable<Settings>();
             }
         }
 

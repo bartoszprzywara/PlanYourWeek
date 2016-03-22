@@ -131,7 +131,7 @@ namespace Remonty
             else if (SettingsListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Ustawienia";
-                ContentFrame.Navigate(typeof(Settings));
+                ContentFrame.Navigate(typeof(Options));
                 MenuSplitView.IsPaneOpen = false;
                 SaveState();
             }

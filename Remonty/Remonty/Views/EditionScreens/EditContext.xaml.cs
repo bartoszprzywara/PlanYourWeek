@@ -58,7 +58,7 @@ namespace Remonty
 
         async private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new MessageDialog("Na pewno chcesz bezpowrotnie usunąć ten kontekst? Wszystkie zadania mające ten kontekst stracą go", "Na pewno?");
+            var dialog = new MessageDialog("Na pewno chcesz bezpowrotnie usunąć ten kontekst? Wszystkie zadania mające ten kontekst - stracą go", "Na pewno?");
             dialog.Commands.Add(new UICommand("Yes") { Id = 0 });
             dialog.Commands.Add(new UICommand("No") { Id = 1 });
             dialog.CancelCommandIndex = 1;
@@ -82,9 +82,18 @@ namespace Remonty
 
         async private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            int counter = 0;
+            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
+                counter = conn.Query<Context>("SELECT * FROM Context WHERE Name = '" + NameTextBox.Text + "' COLLATE NOCASE").Count();
+
             if (NameTextBox.Text == "")
             {
-                var dialog = new MessageDialog("Kontekst musi mieć nazwę");
+                var dialog = new MessageDialog("Kontekst musi mieć nazwę", "Nie da rady");
+                await dialog.ShowAsync();
+            }
+            else if (counter > 0 && NameTextBox.Text.ToLower() != context.Name.ToLower())
+            {
+                var dialog = new MessageDialog("Taki kontekst już istnieje", "Nie da rady");
                 await dialog.ShowAsync();
             }
             else {

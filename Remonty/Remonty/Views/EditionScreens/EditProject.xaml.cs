@@ -82,9 +82,18 @@ namespace Remonty
 
         async private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            int counter = 0;
+            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
+                counter = conn.Query<Project>("SELECT * FROM Project WHERE Name = '" + NameTextBox.Text + "' COLLATE NOCASE").Count();
+
             if (NameTextBox.Text == "")
             {
-                var dialog = new MessageDialog("Kontekst musi mieć nazwę");
+                var dialog = new MessageDialog("Projekt musi mieć nazwę", "Nie da rady");
+                await dialog.ShowAsync();
+            }
+            else if (counter > 0 && NameTextBox.Text.ToLower() != project.Name.ToLower())
+            {
+                var dialog = new MessageDialog("Taki projekt już istnieje", "Nie da rady");
                 await dialog.ShowAsync();
             }
             else {

@@ -233,10 +233,8 @@ namespace Remonty
                 TitleTextBox.Text = activity.Title;
             if (activity.Description != null)
                 DescriptionTextBox.Text = activity.Description;
-            if (activity.PriorityId != null)
-                PriorityComboBox.SelectedIndex = (int)activity.PriorityId - 1;
-            if (activity.IsAllDay != null)
-                IsAllDayToggleSwitch.IsOn = (bool)activity.IsAllDay;
+            PriorityComboBox.SelectedIndex = (int)activity.PriorityId - 1;
+            IsAllDayToggleSwitch.IsOn = (bool)activity.IsAllDay;
             ListComboBox.SelectedItem = activity.List;
             StartDatePicker.Date = activity.StartDate;
             if (activity.StartHour != null)
@@ -257,7 +255,7 @@ namespace Remonty
             return new Activity(
                     TitleTextBox.Text,
                     DescriptionTextBox.Text,
-                    (PriorityComboBox.SelectedItem != null) ? PriorityComboBox.SelectedIndex + 1 : (int?)null,
+                    PriorityComboBox.SelectedIndex + 1,
                     IsAllDayToggleSwitch.IsOn,
                     (string)ListComboBox.SelectedItem,
                     StartDatePicker.Date,
@@ -286,12 +284,12 @@ namespace Remonty
             IdTextBlock.Text = (activity != null) ? "Id: " + activity.Id : "Id: -1";
             SummaryTextBlock.Text = "Tytuł: " + tempActivity.Title + "\n" +
                                 "Opis: " + tempActivity.Description + "\n" +
-                                "Prior: " + tempActivity.PriorityUI + "\t\t" +
+                                "Prior: " + tempActivity.PriorityUI + "\t" +
                                 "CzyCałyDzień: " + tempActivity.IsAllDay + "\n" +
                                 "Lista: " + tempActivity.List + "\n" +
-                                "Start: " + tempActivity.StartDate + "\t\t" +
+                                "Start: " + tempActivity.StartDate + "\n" +
                                 "Godzina: " + tempActivity.StartHour + "\n" +
-                                "Kuniec: " + tempActivity.EndDate + "\t\t" +
+                                "Kuniec: " + tempActivity.EndDate + "\n" +
                                 "Godzina: " + tempActivity.EndHour + "\n" +
                                 "Estim: " + tempActivity.EstimationUI + "\t" +
                                 "Kontekst: " + tempActivity.ContextUI + "\t" +

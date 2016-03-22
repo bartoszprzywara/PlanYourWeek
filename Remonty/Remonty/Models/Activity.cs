@@ -14,7 +14,13 @@ namespace Remonty.Models
 
         }
 
-        public Activity(string title, string description, int? priorityId, bool? isAllDay, string list,
+        public Activity(bool isPlaceholderActivity)
+        {
+            IsPlaceholder = isPlaceholderActivity;
+            PriorityId = 1;
+        }
+
+        public Activity(string title, string description, int priorityId, bool isAllDay, string list,
                         DateTimeOffset? startDate, TimeSpan? startHour, DateTimeOffset? endDate, TimeSpan? endHour,
                         int? estimationId, int? contextId, int? projectId)
         {
@@ -35,14 +41,15 @@ namespace Remonty.Models
             ContextId = contextId;
             ProjectId = projectId;
             IsDone = false;
+            IsPlaceholder = false;
         }
 
         [SQLite.Net.Attributes.PrimaryKey, SQLite.Net.Attributes.AutoIncrement]
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public int? PriorityId { get; set; }
-        public bool? IsAllDay { get; set; }
+        public int PriorityId { get; set; }
+        public bool IsAllDay { get; set; }
         public string List { get; set; }
         public DateTimeOffset? StartDate { get; set; }
         public TimeSpan? StartHour { get; set; }
@@ -52,6 +59,7 @@ namespace Remonty.Models
         public int? ContextId { get; set; }
         public int? ProjectId { get; set; }
         public bool IsDone { get; set; }
+        public bool IsPlaceholder { get; set; }
         public string StartHourUI
         {
             get
@@ -67,7 +75,7 @@ namespace Remonty.Models
             {
                 if (StartDate != null)
                     return ((DateTimeOffset)StartDate).ToString("dd.MM.yyyy");
-                return "";
+                return List;
             }
         }
         public string ContextUI
@@ -101,9 +109,7 @@ namespace Remonty.Models
         {
             get
             {
-                if (PriorityId != null)
-                    return LocalDatabaseHelper.ReadItem<Priority>((int)PriorityId).Name;
-                return "";
+                return LocalDatabaseHelper.ReadItem<Priority>((int)PriorityId).Name;
             }
         }
         public string PriorityUInew
@@ -114,10 +120,8 @@ namespace Remonty.Models
                     return "Gray";
                 else if (PriorityId == 2)
                     return "Green";
-                else if (PriorityId == 3)
-                    return "Red";
                 else
-                    return "Gray";
+                    return "Red";
             }
         }
     }
