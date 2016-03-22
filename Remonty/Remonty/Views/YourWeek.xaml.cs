@@ -51,11 +51,11 @@ namespace Remonty
         }
 
         private int today = (int)DateTime.Today.DayOfWeek;
-        public string Day3 { get { return GetDayOfWeek(today + 2); } }
-        public string Day4 { get { return GetDayOfWeek(today + 3); } }
-        public string Day5 { get { return GetDayOfWeek(today + 4); } }
-        public string Day6 { get { return GetDayOfWeek(today + 5); } }
-        public string Day7 { get { return GetDayOfWeek(today + 6); } }
+        public string Day3 { get { return GetDayOfWeek((today + 2) % 7); } }
+        public string Day4 { get { return GetDayOfWeek((today + 3) % 7); } }
+        public string Day5 { get { return GetDayOfWeek((today + 4) % 7); } }
+        public string Day6 { get { return GetDayOfWeek((today + 5) % 7); } }
+        public string Day7 { get { return GetDayOfWeek((today + 6) % 7); } }
 
         private string GetDayOfWeek(int day)
         {
@@ -65,8 +65,7 @@ namespace Remonty
             if (day == 4) return "Czw";
             if (day == 5) return "Pią";
             if (day == 6) return "Sob";
-            if (day == 7) return "Nie";
-            else return "";
+            else return "Nie";
         }
     }
 }

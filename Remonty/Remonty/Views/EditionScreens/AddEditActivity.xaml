@@ -30,6 +30,14 @@
             <Setter Property="RelativePanel.AlignLeftWithPanel" Value="True"/>
             <Setter Property="RelativePanel.AlignVerticalCenterWithPanel" Value="True"/>
         </Style>
+
+        <Style TargetType="Image" x:Key="ActivityClearButtonImageStyle">
+            <Setter Property="Source" Value="../../Assets/GrayClear-512.png"/>
+            <Setter Property="Width" Value="20"/>
+            <Setter Property="Height" Value="17"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+            <Setter Property="RelativePanel.AlignVerticalCenterWithPanel" Value="True"/>
+        </Style>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -86,7 +94,8 @@
                 <!-- deadline -->
                 <RelativePanel Name="EndDateRelativePanel" Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="EndTextBlock" Text="Deadline" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <CalendarDatePicker Name="EndDatePicker" PlaceholderText="wybierz datę" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <Image Name="EndDateClearButton" RelativePanel.LeftOf="EndDatePicker" Style="{StaticResource ActivityClearButtonImageStyle}" Tapped="EndDateClearButton_Tapped"/>
+                    <CalendarDatePicker Name="EndDatePicker" PlaceholderText="wybierz datę" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True" DateChanged="EndDatePicker_DateChanged"/>
                 </RelativePanel>
 
                 <RelativePanel Name="EndHourRelativePanel" Margin="{StaticResource ActivityTimePickerMargin}">
@@ -96,7 +105,8 @@
                 <!-- czas trwania -->
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="EstimationTextBlock" Text="Czas trwania" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <ComboBox Name="EstimationComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <Image Name="EstimationClearButton" RelativePanel.LeftOf="EstimationComboBox" Style="{StaticResource ActivityClearButtonImageStyle}" Tapped="EstimationClearButton_Tapped"/>
+                    <ComboBox Name="EstimationComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True" SelectionChanged="EstimationComboBox_SelectionChanged"/>
                 </RelativePanel>
 
                 <Line Margin="{StaticResource ActivityCommonMargin}" Style="{StaticResource ActivityHorizontalLineStyle}"/>
@@ -104,13 +114,15 @@
                 <!-- kontekst -->
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="ContextTextBlock" Text="Kontekst" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <ComboBox Name="ContextComboBox" ItemsSource="{x:Bind listOfContexts}" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedItem="{x:Bind context, Mode=TwoWay, Converter={StaticResource ContextConverter}}" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <Image Name="ContextClearButton" RelativePanel.LeftOf="ContextComboBox" Style="{StaticResource ActivityClearButtonImageStyle}" Tapped="ContextClearButton_Tapped"/>
+                    <ComboBox Name="ContextComboBox" ItemsSource="{x:Bind listOfContexts}" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedItem="{x:Bind context, Mode=TwoWay, Converter={StaticResource ContextConverter}}" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True" SelectionChanged="ContextComboBox_SelectionChanged"/>
                 </RelativePanel>
 
                 <!-- projekt -->
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="ProjectContextTextBlock" Text="Projekt" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <ComboBox Name="ProjectComboBox" ItemsSource="{x:Bind listOfProjects}" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedItem="{x:Bind project, Mode=TwoWay, Converter={StaticResource ProjectConverter}}" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <Image Name="ProjectClearButton" RelativePanel.LeftOf="ProjectComboBox" Style="{StaticResource ActivityClearButtonImageStyle}" Tapped="ProjectClearButton_Tapped"/>
+                    <ComboBox Name="ProjectComboBox" ItemsSource="{x:Bind listOfProjects}" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedItem="{x:Bind project, Mode=TwoWay, Converter={StaticResource ProjectConverter}}" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True" SelectionChanged="ProjectComboBox_SelectionChanged"/>
                 </RelativePanel>
 
                 <StackPanel Name="DebugAreaStrackPanel">

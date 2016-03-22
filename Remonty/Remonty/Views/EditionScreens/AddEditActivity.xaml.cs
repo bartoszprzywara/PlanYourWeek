@@ -27,6 +27,7 @@ namespace Remonty
             this.InitializeComponent();
             SetUpPageAnimation();
             InitializeComboBoxes();
+            InitializeClearButtons();
             AddActivityModeSetControls();
         }
 
@@ -150,7 +151,6 @@ namespace Remonty
 
         private void SetStartAndEndHourVisibility()
         {
-            // TODO: Implement animation of showing and hiding time picker
             if (IsAllDayToggleSwitch.IsOn)
             {
                 StartHourRelativePanel.Visibility = Visibility.Collapsed;
@@ -175,11 +175,7 @@ namespace Remonty
             }
         }
 
-
-        // -----------------------------------------------------------
-        // ------------------------- Helpers -------------------------
-        // -----------------------------------------------------------
-
+        #region Helpers
 
         private void SetUpPageAnimation()
         {
@@ -200,6 +196,14 @@ namespace Remonty
             EstimationComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Estimation>();
             listOfContexts = LocalDatabaseHelper.ReadAllItemsFromTable<Context>();
             listOfProjects = LocalDatabaseHelper.ReadAllItemsFromTable<Project>();
+        }
+
+        private void InitializeClearButtons()
+        {
+            EndDateClearButton.Visibility = Visibility.Collapsed;
+            EstimationClearButton.Visibility = Visibility.Collapsed;
+            ContextClearButton.Visibility = Visibility.Collapsed;
+            ProjectClearButton.Visibility = Visibility.Collapsed;
         }
 
         private void AddActivityModeSetControls()
@@ -267,6 +271,9 @@ namespace Remonty
                     (ProjectComboBox.SelectedItem != null) ? (int)ProjectComboBox.SelectedValue : (int?)null
                     );
         }
+        #endregion
+
+        #region Debug button
 
         private void DebugButtonSetVisibility()
         {
@@ -296,5 +303,56 @@ namespace Remonty
                                 "Projekt: " + tempActivity.ProjectUI + "\n" +
                                 "IsDone: " + ((activity != null) ? activity.IsDone : false);
         }
+
+        #endregion
+
+        #region Clear controls values
+
+        private void EndDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        {
+            EndDateClearButton.Visibility = Visibility.Visible;
+        }
+
+        private void EndDateClearButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            EndDatePicker.Date = null;
+            EndHourTimePicker.Time = new TimeSpan(0,0,0);
+            EndDateClearButton.Visibility = Visibility.Collapsed;
+        }
+
+        private void EstimationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EstimationClearButton.Visibility = Visibility.Visible;
+        }
+
+        private void EstimationClearButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            EstimationComboBox.SelectedItem = null;
+            EstimationClearButton.Visibility = Visibility.Collapsed;
+        }
+
+        private void ContextComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ContextClearButton.Visibility = Visibility.Visible;
+        }
+
+        private void ContextClearButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            ContextComboBox.SelectedItem = null;
+            ContextClearButton.Visibility = Visibility.Collapsed;
+        }
+
+        private void ProjectComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProjectClearButton.Visibility = Visibility.Visible;
+        }
+
+        private void ProjectClearButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            ProjectComboBox.SelectedItem = null;
+            ProjectClearButton.Visibility = Visibility.Collapsed;
+        }
+
+        #endregion
     }
 }

@@ -39,7 +39,7 @@
             </StackPanel>
         </StackPanel>
 
-        <TextBlock Text="O której godzinie idziesz spać?" Margin="{StaticResource SettingsCommonMargin}"/>
+        <TextBlock Text="O której godzinie chodzisz spać?" Margin="{StaticResource SettingsCommonMargin}"/>
         <StackPanel Orientation="Horizontal" Margin="15,5,0,0">
             <TimePicker Name="EndDayTimePicker" ClockIdentifier="24HourClock" MinWidth="130" TimeChanged="EndDayTimePicker_TimeChanged"/>
             <StackPanel Opacity="0" Orientation="Horizontal" Name="EndDayStackPanel">
