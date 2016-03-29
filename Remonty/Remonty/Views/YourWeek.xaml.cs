@@ -24,10 +24,16 @@ namespace Remonty
         {
             this.InitializeComponent();
             using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
+            {
                 ActivitiesForDay1 = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0").ToList());
+                ActivitiesForDay2 = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0 AND IsPlaceholder = 0").ToList());
+                ActivitiesForDay3 = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0 AND IsPlaceholder = 1").ToList());
+            }
         }
 
         private ObservableCollection<Activity> ActivitiesForDay1;
+        private ObservableCollection<Activity> ActivitiesForDay2;
+        private ObservableCollection<Activity> ActivitiesForDay3;
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
