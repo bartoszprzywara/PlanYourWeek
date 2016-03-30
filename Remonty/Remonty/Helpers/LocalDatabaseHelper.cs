@@ -48,6 +48,7 @@ namespace Remonty.Helpers
                 InsertItem(new Activity("Pomalować kuchnię", "Na zielono", 2, false, "Zaplanowane", new DateTime(2016, month + 1, 23), new TimeSpan(16, 00, 00), new DateTime(2016, month + 1, 23), new TimeSpan(21, 00, 00), 6, 6, 1));
                 InsertItem(new Activity("Kupić płytki", "Do kuchni i łazienki", 2, true, "Zaplanowane", new DateTime(2016, month + 1, 19), null, new DateTime(2016, month + 1, 20), null, 5, 1, 3));
                 InsertItem(new Activity("Mają przywieźć kanapę", "Zadzwonią godzinę przed", 2, true, "Zaplanowane", new DateTime(2016, month + 1, 21), null, null, null, 3, 9, null));
+                InsertItem(new Activity(true));
                 InsertItem(new Activity("Cyklinowanie podłogi", "Przyjdzie Pan Karol z asystentem", 3, false, "Zaplanowane", new DateTime(2016, month + 1, 09), new TimeSpan(10, 30, 00), null, null, 7, 4, 3));
                 InsertItem(new Activity("Pomiar gazu", "Przyjdzie Pan Jan Kowalski", 1, false, "Zaplanowane", new DateTime(2016, month + 1, 12), new TimeSpan(08, 00, 00), new DateTime(2016, month + 1, 12), new TimeSpan(09, 00, 00), 1, 2, null));
                 InsertItem(new Activity("Kupić farbę", "Biała 10l, zielona 5l", 2, true, "Najblizsze", null, null, new DateTime(2016, month + 1, 21), null, 5, 1, 1));

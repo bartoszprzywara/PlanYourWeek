@@ -20,6 +20,7 @@ namespace Remonty.Helpers
             var selectorItem = container as SelectorItem;
 
             selectorItem.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            selectorItem.MinHeight = 0;
 
             if (act != null && selectorItem != null && act.IsPlaceholder)
             {
