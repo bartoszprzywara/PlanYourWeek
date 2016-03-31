@@ -115,7 +115,7 @@ namespace Remonty
         {
             if (TitleTextBox.Text == "")
             {
-                var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę");
+                var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady");
                 await dialog.ShowAsync();
             }
             else {
@@ -256,15 +256,22 @@ namespace Remonty
 
         private Activity LoadActivityValuesFromControls()
         {
+            DateTimeOffset? StartDateTemp = null;
+            DateTimeOffset? EndDateTemp = null;
+            if (StartDatePicker.Date != null)
+                StartDateTemp = ((DateTimeOffset)StartDatePicker.Date).Date + new TimeSpan(0, 0, 0);
+            if (EndDatePicker.Date != null)
+                EndDateTemp = ((DateTimeOffset)EndDatePicker.Date).Date + new TimeSpan(0, 0, 0);
+
             return new Activity(
                     TitleTextBox.Text,
                     DescriptionTextBox.Text,
                     PriorityComboBox.SelectedIndex + 1,
                     IsAllDayToggleSwitch.IsOn,
                     (string)ListComboBox.SelectedItem,
-                    StartDatePicker.Date,
+                    StartDateTemp,
                     StartHourTimePicker.Time,
-                    EndDatePicker.Date,
+                    EndDateTemp,
                     EndHourTimePicker.Time,
                     (EstimationComboBox.SelectedItem != null) ? EstimationComboBox.SelectedIndex + 1 : (int?)null,
                     (ContextComboBox.SelectedItem != null) ? (int)ContextComboBox.SelectedValue : (int?)null,
@@ -303,7 +310,6 @@ namespace Remonty
                                 "Projekt: " + tempActivity.ProjectUI + "\n" +
                                 "IsDone: " + ((activity != null) ? activity.IsDone : false);
         }
-
         #endregion
 
         #region Clear controls values

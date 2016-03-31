@@ -19,28 +19,28 @@
         </Style>
         <helpers:YourWeekTemplateSelector x:Name="DailyActivitiesListSelector" PlaceholderTemplate="{StaticResource PlaceholderTemplate}" ActivityTemplate="{StaticResource ActivityTemplate}"/>
 
-        <DataTemplate x:Key="PlaceholderTemplate" x:DataType="data:Activity">
-            <RelativePanel BorderThickness="0" BorderBrush="{StaticResource BackgroundMainColor}" Height="25">
+        <DataTemplate x:Key="PlaceholderTemplate" x:DataType="data:PlannedActivity">
+            <RelativePanel BorderThickness="0" BorderBrush="{StaticResource BackgroundMainColor}" Height="30">
                 <Line X2="2000" StrokeDashArray="3,5" StrokeThickness="2" Stroke="{StaticResource BackgroundMainColor}"/>
-                <TextBlock Text="12:00" FontSize="8" Margin="0,2,0,0" Foreground="{StaticResource BackgroundMainColor}" />
+                <TextBlock Text="{x:Bind StartHourUI}" FontSize="9" Margin="0,2,0,0" Foreground="{StaticResource BackgroundMainColor}" />
             </RelativePanel>
         </DataTemplate>
-        
-        <DataTemplate x:Key="ActivityTemplate" x:DataType="data:Activity">
+
+        <DataTemplate x:Key="ActivityTemplate" x:DataType="data:PlannedActivity">
             <Grid>
                 <Line X2="2000" StrokeDashArray="3,5" StrokeThickness="2" Stroke="{StaticResource BackgroundMainColor}"/>
-                <TextBlock Text="12:00" FontSize="8" Margin="0,2,0,0" Foreground="{StaticResource BackgroundMainColor}"/>
+                <TextBlock Text="{x:Bind StartHourUI}" FontSize="9" Margin="0,2,0,0" Foreground="{StaticResource BackgroundMainColor}"/>
 
                 <RelativePanel BorderThickness="1" BorderBrush="{StaticResource BackgroundMainColor}" Height="60" Margin="30,2,15,1">
                     <StackPanel Orientation="Horizontal">
-                        <Ellipse Name="PriorIcon" Fill="{x:Bind PriorityUInew}" Height="10" Width="10" Margin="10,5,0,0"/>
-                        <TextBlock Name="TitleTextBlock" Text="{x:Bind Title}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,5,0,0" />
+                        <Ellipse Name="PriorIcon" Fill="{x:Bind ProposedActivity.PriorityUI}" Height="10" Width="10" Margin="10,5,0,0"/>
+                        <TextBlock Name="TitleTextBlock" Text="{x:Bind ProposedActivity.Title}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,5,0,0" />
                     </StackPanel>
                     <TextBlock Name="ContextLabelTextBlock" Text="" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="0,0,0,5"/>
-                    <TextBlock Name="ContextValueTextBlock" Text="{x:Bind ContextUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="ContextLabelTextBlock" Margin="0,0,0,5"/>
-                    <TextBlock Name="StartDateTextBlock" Text="{x:Bind StartDateUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
-                    <TextBlock Name="StartHourTextBlock" Text="{x:Bind StartHourUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="StartDateTextBlock" Margin="5,0,5,5"/>
-                    <Button Name="DoneButton" DataContext="{x:Bind Id}" Content="DONE" Foreground="{StaticResource ForegroundMainColor}" Background="{StaticResource BackgroundMainColor}" FontSize="{StaticResource YourWeekItemButtonFontSize}" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,5,10,0" Click="DoneButton_Click"/>
+                    <TextBlock Name="ContextValueTextBlock" Text="{x:Bind ProposedActivity.ContextUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="ContextLabelTextBlock" Margin="0,0,0,5"/>
+                    <TextBlock Name="StartDateTextBlock" Text="{x:Bind ProposedActivity.StartDateUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
+                    <TextBlock Name="StartHourTextBlock" Text="{x:Bind ProposedActivity.StartHourUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="StartDateTextBlock" Margin="5,0,5,5"/>
+                    <Button Name="DoneButton" DataContext="{x:Bind ProposedActivity.Id}" Content="DONE" Foreground="{StaticResource ForegroundMainColor}" Background="{StaticResource BackgroundMainColor}" FontSize="{StaticResource YourWeekItemButtonFontSize}" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,5,10,0" Click="DoneButton_Click"/>
                 </RelativePanel>
             </Grid>
         </DataTemplate>
@@ -49,17 +49,17 @@
     <Pivot x:Name="YourWeekPivot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <PivotItem Header="Dzisiaj" Margin="0">
             <ListView
-                ItemsSource="{x:Bind ActivitiesForDay1}"
+                ItemsSource="{x:Bind PlannedDay1}"
                 ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
                 IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
         </PivotItem>
         <PivotItem Header="Jutro" Margin="0">
             <!--Pivot content goes here-->
-            <ListView ItemsSource="{x:Bind ActivitiesForDay2}" ItemTemplate="{StaticResource ActivityTemplate}" ItemContainerStyle="{StaticResource ListItemStyle}" IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+            <ListView ItemsSource="{x:Bind PlannedDay2}" ItemTemplate="{StaticResource ActivityTemplate}" ItemContainerStyle="{StaticResource ListItemStyle}" IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day3}" Margin="0">
             <!--Pivot content goes here-->
-            <ListView ItemsSource="{x:Bind ActivitiesForDay3}" ItemTemplate="{StaticResource PlaceholderTemplate}" ItemContainerStyle="{StaticResource ListItemStyle}" IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+            <ListView ItemsSource="{x:Bind PlannedDay3}" ItemTemplate="{StaticResource PlaceholderTemplate}" ItemContainerStyle="{StaticResource ListItemStyle}" IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day4}" Margin="0">
             <!--Pivot content goes here-->

@@ -60,6 +60,7 @@ namespace Remonty.Models
         public int? ProjectId { get; set; }
         public bool IsDone { get; set; }
         public bool IsPlaceholder { get; set; }
+
         public string StartHourUI
         {
             get
@@ -106,13 +107,6 @@ namespace Remonty.Models
             }
         }
         public string PriorityUI
-        {
-            get
-            {
-                return LocalDatabaseHelper.ReadItem<Priority>((int)PriorityId).Name;
-            }
-        }
-        public string PriorityUInew
         {
             get
             {

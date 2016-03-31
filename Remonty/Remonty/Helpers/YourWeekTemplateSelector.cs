@@ -16,13 +16,13 @@ namespace Remonty.Helpers
         public DataTemplate ActivityTemplate { get; set; }
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            var act = item as Activity;
+            var act = item as PlannedActivity;
             var selectorItem = container as SelectorItem;
 
             selectorItem.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             selectorItem.MinHeight = 0;
 
-            if (act != null && selectorItem != null && act.IsPlaceholder)
+            if (act != null && selectorItem != null && act.ProposedActivity.IsPlaceholder)
             {
                 selectorItem.IsHitTestVisible = false;
                 return PlaceholderTemplate;
