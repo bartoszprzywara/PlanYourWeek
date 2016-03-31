@@ -38,8 +38,8 @@
                     </StackPanel>
                     <TextBlock Name="ContextLabelTextBlock" Text="" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="0,0,0,5"/>
                     <TextBlock Name="ContextValueTextBlock" Text="{x:Bind ProposedActivity.ContextUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="ContextLabelTextBlock" Margin="0,0,0,5"/>
-                    <TextBlock Name="StartDateTextBlock" Text="{x:Bind ProposedActivity.StartDateUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
-                    <TextBlock Name="StartHourTextBlock" Text="{x:Bind ProposedActivity.StartHourUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="StartDateTextBlock" Margin="5,0,5,5"/>
+                    <TextBlock Name="StartDateTextBlock" Text="{x:Bind ProposedActivity.StartDateUI}" Foreground="{x:Bind Color}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
+                    <TextBlock Name="StartHourTextBlock" Text="{x:Bind ProposedActivity.StartHourUI}" Foreground="{x:Bind Color}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="StartDateTextBlock" Margin="5,0,5,5"/>
                     <Button Name="DoneButton" DataContext="{x:Bind ProposedActivity.Id}" Content="DONE" Foreground="{StaticResource ForegroundMainColor}" Background="{StaticResource BackgroundMainColor}" FontSize="{StaticResource YourWeekItemButtonFontSize}" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,5,10,0" Click="DoneButton_Click"/>
                 </RelativePanel>
             </Grid>

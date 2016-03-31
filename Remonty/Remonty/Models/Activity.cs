@@ -75,7 +75,7 @@ namespace Remonty.Models
             get
             {
                 if (StartDate != null)
-                    return ((DateTimeOffset)StartDate).ToString("dd.MM.yyyy");
+                    return ((DateTimeOffset)StartDate).LocalDateTime.ToString("dd.MM.yyyy");
                 return List;
             }
         }
