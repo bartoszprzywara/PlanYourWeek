@@ -21,6 +21,7 @@ namespace Remonty
         public MainPage()
         {
             this.InitializeComponent();
+            SetNextCounter();
 
             if (App.CurrentFrameInMainPage != null)
             {
@@ -30,6 +31,15 @@ namespace Remonty
             }
             else
                 ContentFrame.Navigate(typeof(YourWeek));
+        }
+
+        int NextCounter;
+
+        private void SetNextCounter()
+        {
+            NextCounter = Helpers.LocalDatabaseHelper.CountItems<Models.Activity>("SELECT * FROM Activity WHERE List = 'Nowe'");
+            if (NextCounter > 0)
+                NextCounterRelativePanel.Visibility = Visibility.Visible;
         }
 
         private void SaveState()

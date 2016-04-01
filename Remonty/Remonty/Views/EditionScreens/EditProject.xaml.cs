@@ -68,12 +68,7 @@ namespace Remonty
             if ((int)result.Id == 0)
             {
                 LocalDatabaseHelper.DeleteItem<Project>(project.Id);
-
-                string sqlpath = System.IO.Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "localdb.sqlite");
-                using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
-                {
-                    conn.Execute("UPDATE Activity SET ProjectId = NULL WHERE ProjectID = " + project.Id);
-                }
+                LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET ProjectId = NULL WHERE ProjectID = " + project.Id);
 
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
@@ -82,9 +77,7 @@ namespace Remonty
 
         async private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            int counter = 0;
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                counter = conn.Query<Project>("SELECT * FROM Project WHERE Name = '" + NameTextBox.Text + "' COLLATE NOCASE").Count();
+            int counter = LocalDatabaseHelper.CountItems<Project>("SELECT * FROM Project WHERE Name = '" + NameTextBox.Text + "' COLLATE NOCASE");
 
             if (NameTextBox.Text == "")
             {

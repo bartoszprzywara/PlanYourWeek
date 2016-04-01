@@ -35,40 +35,44 @@ namespace Remonty
             StartWorkingTimePicker.Time = TimeSpan.Parse(settingsList[1].Value);
             EndWorkingTimePicker.Time = TimeSpan.Parse(settingsList[2].Value);
             EndDayTimePicker.Time = TimeSpan.Parse(settingsList[3].Value);
+            WorkingHoursEnabledToggleSwitch.IsOn = bool.Parse(settingsList[4].Value);
         }
 
         private bool screenEntered = false;
 
         private void StartDayTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                conn.Execute("UPDATE Settings SET Value = '" + StartDayTimePicker.Time.ToString() + "' WHERE Name = 'StartDay'");
+            LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + StartDayTimePicker.Time.ToString() + "' WHERE Name = 'StartDay'");
             if (screenEntered)
                 AnimateStartDayStackPanelStoryboard.Begin();
         }
 
         private void StartWorkingTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                conn.Execute("UPDATE Settings SET Value = '" + StartWorkingTimePicker.Time.ToString() + "' WHERE Name = 'StartWorking'");
+            LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + StartWorkingTimePicker.Time.ToString() + "' WHERE Name = 'StartWorking'");
             if (screenEntered)
                 AnimateStartWorkingStackPanelStoryboard.Begin();
         }
 
         private void EndWorkingTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                conn.Execute("UPDATE Settings SET Value = '" + EndWorkingTimePicker.Time.ToString() + "' WHERE Name = 'EndWorking'");
+            LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + EndWorkingTimePicker.Time.ToString() + "' WHERE Name = 'EndWorking'");
             if (screenEntered)
                 AnimateEndWorkingStackPanelStoryboard.Begin();
         }
 
         private void EndDayTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                conn.Execute("UPDATE Settings SET Value = '" + EndDayTimePicker.Time.ToString() + "' WHERE Name = 'EndDay'");
+            LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + EndDayTimePicker.Time.ToString() + "' WHERE Name = 'EndDay'");
             if (screenEntered)
                 AnimateEndDayStackPanelStoryboard.Begin();
+        }
+
+        private void WorkingHoursEnabledToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + WorkingHoursEnabledToggleSwitch.IsOn.ToString() + "' WHERE Name = 'WorkingHoursEnabled'");
+            if (screenEntered)
+                AnimateWorkingHoursStackPanelStoryboard.Begin();
         }
     }
 }

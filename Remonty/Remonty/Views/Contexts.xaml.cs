@@ -31,9 +31,7 @@ namespace Remonty
 
         async private void AddItemButton_Click(object sender, RoutedEventArgs e)
         {
-            int counter = 0;
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                counter = conn.Query<Context>("SELECT * FROM Context WHERE Name = '" + AddItemTextBox.Text + "' COLLATE NOCASE").Count();
+            int counter = LocalDatabaseHelper.CountItems<Context>("SELECT * FROM Context WHERE Name = '" + AddItemTextBox.Text + "' COLLATE NOCASE");
 
             if (AddItemTextBox.Text == "")
             {

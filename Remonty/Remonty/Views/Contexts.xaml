@@ -40,7 +40,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="{x:Bind Name}" FontSize="{StaticResource ItemTitleFontSize}" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                            <Button Grid.Column="1" Content="{x:Bind Counter}" Style="{StaticResource ItemButtonStyle}"/>
+                            <Button Grid.Column="1" Content="{x:Bind ActivitiesCounter}" Style="{StaticResource ItemButtonStyle}"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

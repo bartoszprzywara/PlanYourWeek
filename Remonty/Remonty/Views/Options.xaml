@@ -48,6 +48,15 @@
             </StackPanel>
         </StackPanel>
 
+        <TextBlock Text="Czy uwzględniać godziny pracy?" Margin="{StaticResource SettingsCommonMargin}"/>
+        <StackPanel Orientation="Horizontal" Margin="15,5,0,0">
+            <ToggleSwitch MinWidth="85" Name="WorkingHoursEnabledToggleSwitch" OffContent="Nie" OnContent="Tak" Toggled="WorkingHoursEnabledToggleSwitch_Toggled"/>
+            <StackPanel Opacity="0" Orientation="Horizontal" Name="WorkingHoursStackPanel">
+                <Image Source="../Assets/GreenTick-1024.png" Height="15" Width="15" Margin="7,0,0,0"/>
+                <TextBlock Text="zapisano" VerticalAlignment="Center" FontSize="14" Margin="2,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
+
         <!--
         <TextBlock Text="W które dni pracujesz?" Margin="{StaticResource SettingsCommonMargin}"/>
         -->
@@ -65,7 +74,9 @@
             <Storyboard x:Name="AnimateEndDayStackPanelStoryboard">
                 <DoubleAnimation From="1" To="0" Duration="0:0:1" Storyboard.TargetName="EndDayStackPanel" Storyboard.TargetProperty="Opacity"/>
             </Storyboard>
-
+            <Storyboard x:Name="AnimateWorkingHoursStackPanelStoryboard">
+                <DoubleAnimation From="1" To="0" Duration="0:0:1" Storyboard.TargetName="WorkingHoursStackPanel" Storyboard.TargetProperty="Opacity"/>
+            </Storyboard>
         </StackPanel.Resources>
     </StackPanel>
 </Page>

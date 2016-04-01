@@ -62,17 +62,15 @@ namespace Remonty
 
         private void UnDoneButton_Click(object sender, RoutedEventArgs e)
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                conn.Execute("UPDATE Activity SET IsDone = 0 WHERE Id = " + activity.Id);
-
+            LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 0 WHERE Id = " + activity.Id);
+            
             if (this.Frame.CanGoBack)
                 this.Frame.GoBack();
         }
 
         private void DoneButton_Click(object sender, RoutedEventArgs e)
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                conn.Execute("UPDATE Activity SET IsDone = 1 WHERE Id = " + activity.Id);
+            LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 1 WHERE Id = " + activity.Id);
 
             if (this.Frame.CanGoBack)
                 this.Frame.GoBack();
@@ -237,8 +235,8 @@ namespace Remonty
                 TitleTextBox.Text = activity.Title;
             if (activity.Description != null)
                 DescriptionTextBox.Text = activity.Description;
-            PriorityComboBox.SelectedIndex = (int)activity.PriorityId - 1;
-            IsAllDayToggleSwitch.IsOn = (bool)activity.IsAllDay;
+            PriorityComboBox.SelectedIndex = activity.PriorityId - 1;
+            IsAllDayToggleSwitch.IsOn = activity.IsAllDay;
             ListComboBox.SelectedItem = activity.List;
             StartDatePicker.Date = activity.StartDate;
             if (activity.StartHour != null)

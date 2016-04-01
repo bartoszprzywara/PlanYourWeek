@@ -110,12 +110,12 @@ namespace Remonty.Models
         {
             get
             {
-                if (PriorityId == 1)
-                    return "Gray";
-                else if (PriorityId == 2)
-                    return "Green";
-                else
-                    return "Red";
+                switch (PriorityId)
+                {
+                    case 1: return "Gray";
+                    case 2: return "Green";
+                    default: return "Red";
+                }
             }
         }
     }

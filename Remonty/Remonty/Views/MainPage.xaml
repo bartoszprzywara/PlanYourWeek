@@ -22,7 +22,7 @@
         </Style>
         <Style TargetType="TextBlock" x:Key="HamburgerMenuItemLabelStyle">
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="Margin" Value="10,0,0,2"/>
             <Setter Property="Foreground" Value="{StaticResource ForegroundMainColor}"/>
         </Style>
     </Page.Resources>
@@ -53,6 +53,10 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE734;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
                             <TextBlock Text="Nowe" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
+                            <RelativePanel Margin="5,0,0,0" Name="NextCounterRelativePanel" Visibility="Collapsed">
+                                <Ellipse Name="PriorIcon" Fill="Red" Height="17" Width="17" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
+                                <TextBlock Text="{x:Bind NextCounter}" FontSize="12" Foreground="White" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
+                            </RelativePanel>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="ScheduledListBoxItem">
