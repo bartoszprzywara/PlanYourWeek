@@ -31,10 +31,11 @@
                 <Line X2="2000" StrokeDashArray="3,5" StrokeThickness="2" Stroke="{StaticResource BackgroundMainColor}"/>
                 <TextBlock Text="{x:Bind StartHourUI}" FontSize="9" Margin="0,2,0,0" Foreground="{StaticResource BackgroundMainColor}"/>
 
-                <RelativePanel BorderThickness="1" BorderBrush="{StaticResource BackgroundMainColor}" Height="60" Margin="30,2,15,1">
+                <RelativePanel Height="{x:Bind ItemHeight}" BorderThickness="1" BorderBrush="{StaticResource BackgroundMainColor}" Margin="30,2,15,1">
                     <StackPanel Orientation="Horizontal">
                         <Ellipse Name="PriorIcon" Fill="{x:Bind ProposedActivity.PriorityUI}" Height="10" Width="10" Margin="10,5,0,0"/>
                         <TextBlock Name="TitleTextBlock" Text="{x:Bind ProposedActivity.Title}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,5,0,0" />
+                        <TextBlock Name="EstimationTextBlock" Text="{x:Bind ProposedActivity.EstimationUI}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,5,0,0" />
                     </StackPanel>
                     <TextBlock Name="ContextLabelTextBlock" Text="" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="0,0,0,5"/>
                     <TextBlock Name="ContextValueTextBlock" Text="{x:Bind ProposedActivity.ContextUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="ContextLabelTextBlock" Margin="0,0,0,5"/>

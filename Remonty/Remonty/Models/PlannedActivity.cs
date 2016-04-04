@@ -25,8 +25,9 @@ namespace Remonty.Models
         public int Id { get; set; }
         public TimeSpan StartHour { get; set; }
         public string Color { get; set; } = "Black";
+        public int ItemHeight { get; set; } = 60;
         public Activity ProposedActivity { get; set; }
 
-        public string StartHourUI { get { return ((TimeSpan)StartHour).ToString(@"hh\:mm"); } }
+        public string StartHourUI { get { return StartHour.ToString(@"hh\:mm"); } }
     }
 }
