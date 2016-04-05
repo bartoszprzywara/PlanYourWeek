@@ -225,6 +225,8 @@ namespace Remonty
             DeleteButton.Visibility = Visibility.Visible;
             SaveButton.Click -= new RoutedEventHandler(SaveButton_Click);
             SaveButton.Click += new RoutedEventHandler(SaveExistingButton_Click);
+            DoneButton.Click += new RoutedEventHandler(SaveExistingButton_Click);
+            UnDoneButton.Click += new RoutedEventHandler(SaveExistingButton_Click);
 
             DebugButtonSetVisibility();
         }
@@ -312,9 +314,22 @@ namespace Remonty
 
         #region Clear controls values
 
+        private void StartDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        {
+            // prevent from setting null date
+            if (StartDatePicker.Date == null)
+                StartDatePicker.Date = DateTimeOffset.Now;
+        }
+
         private void EndDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
             EndDateClearButton.Visibility = Visibility.Visible;
+
+            if (EndDatePicker.Date == null)
+            {
+                EndHourTimePicker.Time = new TimeSpan(0, 0, 0);
+                EndDateClearButton.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void EndDateClearButton_Tapped(object sender, TappedRoutedEventArgs e)

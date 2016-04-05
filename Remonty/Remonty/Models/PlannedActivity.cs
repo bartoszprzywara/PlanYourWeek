@@ -24,7 +24,8 @@ namespace Remonty.Models
 
         public int Id { get; set; }
         public TimeSpan StartHour { get; set; }
-        public string Color { get; set; } = "Black";
+        public string DateColor { get; set; } = "Black";
+        public string HourColor { get; set; } = "Black";
         public int ItemHeight { get; set; } = 60;
         public Activity ProposedActivity { get; set; }
 

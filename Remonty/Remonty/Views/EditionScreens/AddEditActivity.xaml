@@ -84,7 +84,7 @@
                 <!-- poczatek -->
                 <RelativePanel Name="StartDateRelativePanel" Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="StartTextBlock" Text="Początek" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
-                    <CalendarDatePicker Name="StartDatePicker" PlaceholderText="wybierz datę" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
+                    <CalendarDatePicker Name="StartDatePicker" PlaceholderText="wybierz datę" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True" DateChanged="StartDatePicker_DateChanged"/>
                 </RelativePanel>
 
                 <RelativePanel Name="StartHourRelativePanel" Margin="{StaticResource ActivityTimePickerMargin}">

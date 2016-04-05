@@ -122,6 +122,7 @@ namespace Remonty
 
             // znajdź w localdb zaplanowane, ale niewykonane aktywności, które zaczynają się dzisiaj i mają określoną godzinę
             // posortuj znalezione aktywności od tych z najwyższym priorytetem i od najkrótszej
+            // na koniec posortuj je godziną rozpoczęcia od najpóźniejszej
             ObservableCollection<Activity> tempActivityList;
             ObservableCollection<Estimation> tempEstimationList = LocalDatabaseHelper.ReadAllItemsFromTable<Estimation>();
             DateTimeOffset TodayTemp = (DateTimeOffset.Now).Date + new TimeSpan(0, 0, 0);
@@ -132,111 +133,58 @@ namespace Remonty
                     "WHERE IsDone = 0 " +
                     "AND List = 'Zaplanowane' " +
                     "AND StartHour IS NOT NULL " +
-                    "AND StartDate >= '" + TodayTemp.UtcTicks + "'" + // TODO: pamiętać o usunięciu znaku '>'
-                    "ORDER BY PriorityId DESC, EstimationId ASC"
+                    "AND StartDate = '" + TodayTemp.UtcTicks + "'" + // TODO: pamiętać o usunięciu znaku '>'
+                    "ORDER BY PriorityId DESC, EstimationId ASC, StartHour DESC"
                     ).ToList());
 
             // każdą taką znalezioną aktywność dodaj do planu dnia pod odpowiednią godziną
             foreach (var act in tempActivityList)
             {
                 int actId = act.StartHour.Value.Hours;
+                int duration = (act.EstimationId > 2) ? (int)tempEstimationList[(int)act.EstimationId - 1].Duration : 1;
+
                 // jeśli aktywność zaczyna się później, niż koniec planu dnia - wydłuż plan dnia
                 if (actId > EndHour)
                 {
-                    for (int i = EndHour + 1; i < actId; i++)
+                    for (int i = EndHour + 1; i < actId + 1; i++)
                         PlannedDay1.Add(new PlannedActivity(i));
-                    EndHour = actId - 1;
-                    PlannedDay1.Add(new PlannedActivity(actId, LocalDatabaseHelper.ReadItem<Activity>(act.Id)));
+                    EndHour = actId + 1;
                 }
+
                 // jeśli aktywność zaczyna się wcześniej, niż początek planu dnia - zacznij plan dnia wcześniej
-                else if (actId < StartHour)
+                if (actId < StartHour)
                 {
-                    for (int i = StartHour - 1; i > actId; i--)
+                    for (int i = StartHour - 1; i > actId - 1; i--)
                         PlannedDay1.Insert(0, new PlannedActivity(i));
                     StartHour = actId;
-                    PlannedDay1.Insert(0, new PlannedActivity(actId, LocalDatabaseHelper.ReadItem<Activity>(act.Id)));
                 }
-                // jeśli aktywność zaczyna sie w godzinach planu dnia - dodaj ją do planu dnia
-                else
+
+                // jeśli aktywność zaczyna się w godzinach planu dnia - dodaj ją do planu dnia
+                for (int i = 0; i < PlannedDay1.Count; i++)
                 {
-                    for (int i = 0; i < PlannedDay1.Count; i++)
+                    if (PlannedDay1[i].Id == actId)
                     {
-                        if (PlannedDay1[i].Id == actId)
-                        {
-                            // dodaj aktywność pod odpowiednią godziną, tylko jeśli jest miejsce
-                            // jeśli nie ma miejsca, to spróbuj wstawić aktywność godzinę później
-                            while (PlannedDay1[i].ProposedActivity.IsPlaceholder != true && i < PlannedDay1.Count - 1)
-                                i++;
-                            if (PlannedDay1[i].ProposedActivity.IsPlaceholder == true)
-                                PlannedDay1[i].ProposedActivity = LocalDatabaseHelper.ReadItem<Activity>(act.Id);
-                            // jeśli aktywność zaczyna się później, niż koniec dnia - dodaj ją mimo wszystko
-                            else if (PlannedDay1[i].Id + 1 < 24)
-                                PlannedDay1.Add(new PlannedActivity(PlannedDay1[i].Id + 1, LocalDatabaseHelper.ReadItem<Activity>(act.Id)));
-                            // aktywność, która zostanie wtedy zaproponowana po północy - traktuj mimo wszystko jako dzisiejszą
-                            else
-                                PlannedDay1.Add(new PlannedActivity(PlannedDay1[i].Id + 1 - 24, LocalDatabaseHelper.ReadItem<Activity>(act.Id)));
-                            break;
-                        }
+                        // dodaj aktywność pod odpowiednią godziną, tylko jeśli jest miejsce
+                        // jeśli nie ma miejsca, to spróbuj wstawić aktywność godzinę później
+                        while (PlannedDay1[i].ProposedActivity.IsPlaceholder != true && i < PlannedDay1.Count - 1)
+                            i++;
+                        if (PlannedDay1[i].ProposedActivity.IsPlaceholder == true)
+                            PlannedDay1[i].ProposedActivity = LocalDatabaseHelper.ReadItem<Activity>(act.Id);
+                        // jeśli aktywność zaczyna się później, niż koniec dnia - dodaj ją mimo wszystko
+                        // aktywność, która zostanie wtedy zaproponowana po północy - traktuj mimo wszystko jako dzisiejszą
+                        else
+                            PlannedDay1.Add(new PlannedActivity((PlannedDay1.Count + StartHour) % 24, LocalDatabaseHelper.ReadItem<Activity>(act.Id)));
+
+                        // jeśli aktywność jest wstawiona później, niż była zaplanowana,oznacz jej godzinę kolorem czerwonym
+                        //Debug.WriteLine(act.Title + " " + actId + " " + PlannedDay1[i].Id);
+                        //if (actId != PlannedDay1[i].Id)
+                            //PlannedDay1[i].HourColor = "Red";
+                        break;
+
+                        // TODO: WAŻNE upewnic sie ze to wydluzanie dnia dziala jak nalezy po sortowaniu wg godziny/ potestowac
                     }
                 }
             }
-
-            /*
-            // --------------- KROK 3 ---------------
-            // w kroku nr 3 trzeba dodać dzisiejsze, niewykonane aktywności bez godziny
-
-            // znajdź w localdb zaplanowane, ale niewykonane aktywności, które zaczynają się dzisiaj, ale NIE MAJĄ określonej godziny
-            // posortuj znalezione aktywności od tych z najwyższym priorytetem i od najkrótszej
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                tempActivityList = new ObservableCollection<Activity>(conn.Query<Activity>(
-                    "SELECT * FROM Activity " +
-                    "WHERE IsDone = 0 " +
-                    "AND List = 'Zaplanowane' " +
-                    "AND StartHour IS NULL " +
-                    "AND StartDate >= '" + TodayTemp.UtcTicks + "'" + // TODO: pamiętać o usunięciu znaku '>'
-                    "ORDER BY PriorityId DESC, EstimationId ASC"
-                    ).ToList());
-
-            // każdą taką znalezioną aktywność dodaj do planu dnia pod pierwszą wolną godziną
-            // ale nie wstawiaj aktywności, jeśli wolne miejsce zawiera się w godzinach pracy
-            foreach (var act in tempActivityList)
-            {
-                bool CanBeAdded = true;
-                int duration = (act.EstimationId > 2) ? (int)tempEstimationList[(int)act.EstimationId - 1].Duration : 1;
-
-                // jeśli nie ma miejsca, to spróbuj wstawić aktywność godzinę później
-                int i = 0;
-                while ((PlannedDay1[i].ProposedActivity.IsPlaceholder != true && i < PlannedDay1.Count - 1)
-                    || (PlannedDay1[i].Id >= StartWork && PlannedDay1[i].Id < EndWork)
-                    || CanBeAdded == false && i < PlannedDay1.Count - 1)
-                {
-                    i++;
-                    CanBeAdded = true;
-                    // sprawdź, czy wszystkie pola dla wstawianej aktywności są puste
-                    for (int j = i; j < i + duration; j++)
-                        if (j < PlannedDay1.Count && PlannedDay1[j].ProposedActivity.IsPlaceholder != true)
-                            CanBeAdded = false;
-                }
-
-                if (PlannedDay1[i].ProposedActivity.IsPlaceholder == true)
-                {
-                    PlannedDay1[i].ProposedActivity = LocalDatabaseHelper.ReadItem<Activity>(act.Id);
-                    // ustaw wysokość itemu w zależności od estymacji aktywności
-                    if (act.EstimationId != null)
-                        PlannedDay1[i].ItemHeight = 60 * duration;
-                    // usuń tyle kolejnych itemów za dodaną właśnie aktywnością, ile wynosi jej estymacja
-                    for (int j = i + duration - 1; j > i; j--)
-                        if (j < PlannedDay1.Count)
-                            PlannedDay1.RemoveAt(j);
-                }
-                // jeśli aktywność zostanie zaproponowana później, niż koniec dnia - zaproponuj ją mimo wszystko
-                else if (PlannedDay1[i].Id + 1 < 24)
-                    PlannedDay1.Add(new PlannedActivity(PlannedDay1[i].Id + 1, LocalDatabaseHelper.ReadItem<Activity>(act.Id)));
-                // aktywność, która zostanie wtedy zaproponowana po północy - traktuj mimo wszystko jako dzisiejszą
-                else
-                    PlannedDay1.Add(new PlannedActivity(PlannedDay1[i].Id + 1 - 24, LocalDatabaseHelper.ReadItem<Activity>(act.Id)));
-            }
-            */
 
 
             // --------------- KROKI 3, 4, 5, 6 ---------------
@@ -249,8 +197,8 @@ namespace Remonty
             // posortuj znalezione aktywności wg kroków, od tych z najwyższym priorytetem i od najkrótszej
             using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
                 tempActivityList = new ObservableCollection<Activity>(conn.Query<Activity>(
-                    "SELECT * FROM(SELECT * FROM Activity WHERE IsDone = 0 AND List = 'Zaplanowane' AND StartHour IS NULL AND StartDate >= '" + TodayTemp.UtcTicks +
-                                                                                                    // TODO: pamiętać o usunięciu znaku '>'
+                    "SELECT * FROM(SELECT * FROM Activity WHERE IsDone = 0 AND List = 'Zaplanowane' AND StartHour IS NULL AND StartDate = '" + TodayTemp.UtcTicks +
+                        // TODO: pamiętać o usunięciu znaku '>'
                         "'ORDER BY PriorityId DESC, EstimationId ASC) UNION ALL " +
                     "SELECT * FROM(SELECT * FROM Activity WHERE IsDone = 0 AND List = 'Zaplanowane' AND StartDate < '" + TodayTemp.UtcTicks +
                         "'ORDER BY PriorityId DESC, EstimationId ASC) UNION ALL " +
@@ -269,43 +217,61 @@ namespace Remonty
 
                 // jeśli nie ma miejsca, to spróbuj wstawić aktywność godzinę później
                 int i = 0;
-                while ((PlannedDay1[i].ProposedActivity.IsPlaceholder != true && i < PlannedDay1.Count - 1)
-                    || (PlannedDay1[i].Id >= StartWork && PlannedDay1[i].Id < EndWork)
-                    || CanBeAdded == false && i < PlannedDay1.Count - 1)
+                while (i < PlannedDay1.Count - 1 && (
+                    (PlannedDay1[i].ProposedActivity.IsPlaceholder != true) ||
+                    (PlannedDay1[i].Id >= StartWork && PlannedDay1[i].Id < EndWork) ||
+                    (CanBeAdded == false)))
                 {
                     i++;
                     CanBeAdded = true;
+
                     // sprawdź, czy wszystkie pola dla wstawianej aktywności są puste
                     for (int j = i; j < i + duration; j++)
                         if (j < PlannedDay1.Count && PlannedDay1[j].ProposedActivity.IsPlaceholder != true)
                             CanBeAdded = false;
+
+                    // sprawdź, czy poranna aktywność nie będzie kończyła się po rozpoczęciu pracy
+                    if (PlannedDay1[i].Id < StartWork && StartWork < (PlannedDay1[i].Id + duration))
+                        CanBeAdded = false;
+
+                    // sprawdź, czy aktywność nie będzie kończyła się po końcu dnia
+                    if (act.List != "Zaplanowane" && (EndHour + 1 < (PlannedDay1[i].Id + duration)))
+                        CanBeAdded = false;
                 }
 
-                if (PlannedDay1[i].ProposedActivity.IsPlaceholder == true)
+                if (PlannedDay1[i].ProposedActivity.IsPlaceholder == true && CanBeAdded == true)
                 {
                     PlannedDay1[i].ProposedActivity = LocalDatabaseHelper.ReadItem<Activity>(act.Id);
-                    // ustaw wysokość itemu w zależności od estymacji aktywności
-                    if (act.EstimationId != null)
-                        PlannedDay1[i].ItemHeight = 60 * duration;
+
                     // dodatkowo datę aktywności z poprzednich dni oznacz kolorem czerwonym
-                    #warning: 'to może nie zadziałać po mergu'
-                    if (PlannedDay1[i].ProposedActivity.StartDate != null)
-                        PlannedDay1[i].Color = "Red";
+                    if (PlannedDay1[i].ProposedActivity.StartDate < TodayTemp)
+                    {
+                        PlannedDay1[i].DateColor = "Red";
+                        PlannedDay1[i].HourColor = "Red";
+                    }
+
                     // usuń tyle kolejnych itemów za dodaną właśnie aktywnością, ile wynosi jej estymacja
                     for (int j = i + duration - 1; j > i; j--)
                         if (j < PlannedDay1.Count)
                             PlannedDay1.RemoveAt(j);
+
+                    // ustaw wysokość itemu w zależności od estymacji aktywności
+                    PlannedDay1[i].ItemHeight = 60 * duration;
                 }
-                // jeśli aktywność zostanie zaproponowana później, niż koniec dnia - NIE proponuj jej
 
-
-
-                // jeśli aktywność zostanie zaproponowana później, niż koniec dnia - zaproponuj ją mimo wszystko
-                else if (PlannedDay1[i].Id + 1 < 24 && act.List == "Zaplanowane")
-                    PlannedDay1.Add(new PlannedActivity(PlannedDay1[i].Id + 1, LocalDatabaseHelper.ReadItem<Activity>(act.Id)));
+                // jeśli aktywność zostanie zaproponowana później, niż koniec dnia:
+                // a) jeśli zaczyna się wcześniej niż dzisiaj - nie proponuj jej
+                // b) jeśli zaczyna się dzisiaj - zaproponuj ją mimo wszystko
                 // aktywność, która zostanie wtedy zaproponowana po północy - traktuj mimo wszystko jako dzisiejszą
-                else if (act.List == "Zaplanowane")
-                    PlannedDay1.Add(new PlannedActivity(PlannedDay1[i].Id + 1 - 24, LocalDatabaseHelper.ReadItem<Activity>(act.Id)));
+                else if (act.StartDate == TodayTemp) // TODO: pamiętać o usunięciu znaku '>'
+                {
+                    int? prevActEstId = PlannedDay1[i].ProposedActivity.EstimationId;
+                    int prevActDuration = (prevActEstId > 2) ? (int)tempEstimationList[(int)prevActEstId - 1].Duration : 1;
+                    PlannedDay1.Add(new PlannedActivity((PlannedDay1[i].Id + prevActDuration) % 24, LocalDatabaseHelper.ReadItem<Activity>(act.Id)));
+
+                    // ustaw wysokość itemu w zależności od estymacji aktywności
+                    PlannedDay1[i + 1].ItemHeight = 60 * duration;
+                }
             }
 
             // KROK 7: Pomiń listę "Nowe" - takie aktywności należy najpierw przejrzeć i umieścić na jakiejś liście
