@@ -134,7 +134,7 @@ namespace Remonty
                     "AND List = 'Zaplanowane' " +
                     "AND StartHour IS NOT NULL " +
                     "AND StartDate = '" + TodayTemp.UtcTicks + "'" + // TODO: pamiętać o usunięciu znaku '>'
-                    "ORDER BY PriorityId DESC, EstimationId ASC, StartHour DESC"
+                    "ORDER BY StartHour DESC, PriorityId DESC, EstimationId ASC"
                     ).ToList());
 
             // każdą taką znalezioną aktywność dodaj do planu dnia pod odpowiednią godziną
@@ -148,7 +148,7 @@ namespace Remonty
                 {
                     for (int i = EndHour + 1; i < actId + 1; i++)
                         PlannedDay1.Add(new PlannedActivity(i));
-                    EndHour = actId + 1;
+                    EndHour = actId;
                 }
 
                 // jeśli aktywność zaczyna się wcześniej, niż początek planu dnia - zacznij plan dnia wcześniej
@@ -169,19 +169,21 @@ namespace Remonty
                         while (PlannedDay1[i].ProposedActivity.IsPlaceholder != true && i < PlannedDay1.Count - 1)
                             i++;
                         if (PlannedDay1[i].ProposedActivity.IsPlaceholder == true)
+                        {
                             PlannedDay1[i].ProposedActivity = LocalDatabaseHelper.ReadItem<Activity>(act.Id);
+                            // jeśli aktywność jest wstawiona później, niż była zaplanowana,oznacz jej godzinę kolorem czerwonym
+                            if (actId != PlannedDay1[i].Id)
+                                PlannedDay1[i].HourColor = "Red";
+                        }
                         // jeśli aktywność zaczyna się później, niż koniec dnia - dodaj ją mimo wszystko
                         // aktywność, która zostanie wtedy zaproponowana po północy - traktuj mimo wszystko jako dzisiejszą
                         else
+                        {
                             PlannedDay1.Add(new PlannedActivity((PlannedDay1.Count + StartHour) % 24, LocalDatabaseHelper.ReadItem<Activity>(act.Id)));
-
-                        // jeśli aktywność jest wstawiona później, niż była zaplanowana,oznacz jej godzinę kolorem czerwonym
-                        //Debug.WriteLine(act.Title + " " + actId + " " + PlannedDay1[i].Id);
-                        //if (actId != PlannedDay1[i].Id)
-                            //PlannedDay1[i].HourColor = "Red";
+                            // godzinę aktywności wstawionej po północy zawsze oznaczaj kolorem czerwonym
+                            PlannedDay1[PlannedDay1.Count - 1].HourColor = "Red";
+                        }
                         break;
-
-                        // TODO: WAŻNE upewnic sie ze to wydluzanie dnia dziala jak nalezy po sortowaniu wg godziny/ potestowac
                     }
                 }
             }
