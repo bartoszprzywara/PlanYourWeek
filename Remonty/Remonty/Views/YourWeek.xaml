@@ -56,27 +56,27 @@
         </PivotItem>
         <PivotItem Header="Jutro" Margin="0">
             <!--Pivot content goes here-->
-            <ListView ItemsSource="{x:Bind PlannedDay2}" ItemTemplate="{StaticResource ActivityTemplate}" ItemContainerStyle="{StaticResource ListItemStyle}" IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+            <TextBlock Text="Content of pivot item 2" Margin="15,10,0,0"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day3}" Margin="0">
             <!--Pivot content goes here-->
-            <ListView ItemsSource="{x:Bind PlannedDay3}" ItemTemplate="{StaticResource PlaceholderTemplate}" ItemContainerStyle="{StaticResource ListItemStyle}" IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+            <TextBlock Text="Content of pivot item 3" Margin="15,10,0,0"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day4}" Margin="0">
             <!--Pivot content goes here-->
-            <TextBlock Text="Content of pivot item 4" Margin="5,0,0,0"/>
+            <TextBlock Text="Content of pivot item 4" Margin="15,10,0,0"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day5}" Margin="0">
             <!--Pivot content goes here-->
-            <TextBlock Text="Content of pivot item 5" Margin="5,0,0,0"/>
+            <TextBlock Text="Content of pivot item 5" Margin="15,10,0,0"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day6}" Margin="0">
             <!--Pivot content goes here-->
-            <TextBlock Text="Content of pivot item 6" Margin="5,0,0,0"/>
+            <TextBlock Text="Content of pivot item 6" Margin="15,10,0,0"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day7}" Margin="0">
             <!--Pivot content goes here-->
-            <TextBlock Text="Content of pivot item 7" Margin="5,0,0,0"/>
+            <TextBlock Text="Content of pivot item 7" Margin="15,10,0,0"/>
         </PivotItem>
     </Pivot>
 </Page>
