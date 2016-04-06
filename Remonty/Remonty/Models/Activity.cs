@@ -14,12 +14,6 @@ namespace Remonty.Models
 
         }
 
-        public Activity(bool isPlaceholderActivity)
-        {
-            IsPlaceholder = isPlaceholderActivity;
-            PriorityId = 1;
-        }
-
         public Activity(string title, string description, int priorityId, bool isAllDay, string list,
                         DateTimeOffset? startDate, TimeSpan? startHour, DateTimeOffset? endDate, TimeSpan? endHour,
                         int? estimationId, int? contextId, int? projectId)
@@ -31,17 +25,16 @@ namespace Remonty.Models
             List = list;
             if (startDate != null && List == "Zaplanowane")
                 StartDate = startDate;
-            if (startHour != null && List == "Zaplanowane" && IsAllDay == false)
+            if (startHour != null && List == "Zaplanowane" && !IsAllDay)
                 StartHour = startHour;
             if (endDate != null)
                 EndDate = endDate;
-            if (endHour != null && IsAllDay == false && EndDate != null)
+            if (endHour != null && !IsAllDay && EndDate != null)
                 EndHour = endHour;
             EstimationId = estimationId;
             ContextId = contextId;
             ProjectId = projectId;
             IsDone = false;
-            IsPlaceholder = false;
         }
 
         [SQLite.Net.Attributes.PrimaryKey, SQLite.Net.Attributes.AutoIncrement]
@@ -59,7 +52,6 @@ namespace Remonty.Models
         public int? ContextId { get; set; }
         public int? ProjectId { get; set; }
         public bool IsDone { get; set; }
-        public bool IsPlaceholder { get; set; }
 
         public string StartHourUI
         {

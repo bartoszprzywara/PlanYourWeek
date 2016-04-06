@@ -79,7 +79,7 @@ namespace Remonty
         {
             int counter = LocalDatabaseHelper.CountItems<Project>("SELECT * FROM Project WHERE Name = '" + NameTextBox.Text + "' COLLATE NOCASE");
 
-            if (NameTextBox.Text == "")
+            if (string.IsNullOrWhiteSpace(NameTextBox.Text))
             {
                 var dialog = new MessageDialog("Projekt musi mieć nazwę", "Nie da rady");
                 await dialog.ShowAsync();

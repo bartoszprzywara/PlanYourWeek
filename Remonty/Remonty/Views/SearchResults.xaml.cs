@@ -24,7 +24,7 @@ namespace Remonty
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            SearchResultsTextBlock.Text = (!String.IsNullOrEmpty((string)e.Parameter)) ? (string)e.Parameter : "nie podano wyrażenia";
+            SearchResultsTextBlock.Text = (!string.IsNullOrEmpty(e.Parameter.ToString())) ? e.Parameter.ToString() : "nie podano wyrażenia";
         }
     }
 }

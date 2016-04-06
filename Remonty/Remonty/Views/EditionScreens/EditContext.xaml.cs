@@ -79,7 +79,7 @@ namespace Remonty
         {
             int counter = LocalDatabaseHelper.CountItems<Context>("SELECT * FROM Context WHERE Name = '" + NameTextBox.Text + "' COLLATE NOCASE");
 
-            if (NameTextBox.Text == "")
+            if (string.IsNullOrWhiteSpace(NameTextBox.Text))
             {
                 var dialog = new MessageDialog("Kontekst musi mieć nazwę", "Nie da rady");
                 await dialog.ShowAsync();

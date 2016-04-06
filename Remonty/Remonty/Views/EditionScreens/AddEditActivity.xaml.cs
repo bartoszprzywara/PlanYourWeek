@@ -42,12 +42,12 @@ namespace Remonty
             if (e.Parameter == null) return;
             activity = e.Parameter as Activity;
 
-            TitleTextBlock.Text = (activity.Title != null) ? activity.Title : "Twoje zadanie";
+            TitleTextBlock.Text = activity.Title ?? "Twoje zadanie";
 
             EditActivityModeSetControls();
             LoadActivityValuesIntoControls();
 
-            if (activity.IsDone == true)
+            if (activity.IsDone)
             {
                 DoneButton.Visibility = Visibility.Collapsed;
                 UnDoneButton.Visibility = Visibility.Visible;
@@ -95,7 +95,7 @@ namespace Remonty
 
         async private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (TitleTextBox.Text == "")
+            if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
             {
                 var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady");
                 await dialog.ShowAsync();
@@ -111,7 +111,7 @@ namespace Remonty
 
         async private void SaveExistingButton_Click(object sender, RoutedEventArgs e)
         {
-            if (TitleTextBox.Text == "")
+            if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
             {
                 var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady");
                 await dialog.ShowAsync();
@@ -156,7 +156,7 @@ namespace Remonty
             }
             else
             {
-                if ((string)ListComboBox.SelectedItem == "Zaplanowane" && StartHourRelativePanel.Visibility != Visibility.Visible)
+                if (ListComboBox.SelectedItem.ToString() == "Zaplanowane" && StartHourRelativePanel.Visibility != Visibility.Visible)
                 {
                     StartHourRelativePanel.Visibility = Visibility.Visible;
                     ShowStartHourRelativePanelStoryboard.Begin();
@@ -233,10 +233,8 @@ namespace Remonty
 
         private void LoadActivityValuesIntoControls()
         {
-            if (activity.Title != null)
-                TitleTextBox.Text = activity.Title;
-            if (activity.Description != null)
-                DescriptionTextBox.Text = activity.Description;
+            TitleTextBox.Text = activity.Title;
+            DescriptionTextBox.Text = activity.Description;
             PriorityComboBox.SelectedIndex = activity.PriorityId - 1;
             IsAllDayToggleSwitch.IsOn = activity.IsAllDay;
             ListComboBox.SelectedItem = activity.List;
@@ -268,14 +266,14 @@ namespace Remonty
                     DescriptionTextBox.Text,
                     PriorityComboBox.SelectedIndex + 1,
                     IsAllDayToggleSwitch.IsOn,
-                    (string)ListComboBox.SelectedItem,
+                    ListComboBox.SelectedItem.ToString(),
                     StartDateTemp,
                     StartHourTimePicker.Time,
                     EndDateTemp,
                     EndHourTimePicker.Time,
                     (EstimationComboBox.SelectedItem != null) ? EstimationComboBox.SelectedIndex + 1 : (int?)null,
-                    (ContextComboBox.SelectedItem != null) ? (int)ContextComboBox.SelectedValue : (int?)null,
-                    (ProjectComboBox.SelectedItem != null) ? (int)ProjectComboBox.SelectedValue : (int?)null
+                    (int?)ContextComboBox.SelectedValue,
+                    (int?)ProjectComboBox.SelectedValue
                     );
         }
         #endregion
@@ -308,7 +306,7 @@ namespace Remonty
                                 "Estim: " + tempActivity.EstimationUI + "\t" +
                                 "Kontekst: " + tempActivity.ContextUI + "\t" +
                                 "Projekt: " + tempActivity.ProjectUI + "\n" +
-                                "IsDone: " + ((activity != null) ? activity.IsDone : false);
+                                "IsDone: " + (activity?.IsDone ?? false);
         }
         #endregion
 

@@ -33,7 +33,7 @@ namespace Remonty
         {
             int counter = LocalDatabaseHelper.CountItems<Project>("SELECT * FROM Project WHERE Name = '" + AddItemTextBox.Text + "' COLLATE NOCASE");
 
-            if (AddItemTextBox.Text == "")
+            if (string.IsNullOrWhiteSpace(AddItemTextBox.Text))
             {
                 var dialog = new MessageDialog("Projekt musi mieć nazwę", "Nie da rady");
                 await dialog.ShowAsync();
@@ -46,13 +46,12 @@ namespace Remonty
             else {
                 LocalDatabaseHelper.InsertItem(new Project(AddItemTextBox.Text));
                 listofItems.Add(LocalDatabaseHelper.ReadLastItem<Project>());
-                AddItemTextBox.Text = "";
+                AddItemTextBox.Text = string.Empty;
             }
         }
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            //var ItemID = ((FrameworkElement)e.OriginalSource).DataContext;
             var selectedContext = (Project)e.ClickedItem;
 
             Frame frame = Window.Current.Content as Frame;

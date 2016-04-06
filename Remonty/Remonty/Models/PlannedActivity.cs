@@ -12,7 +12,7 @@ namespace Remonty.Models
         {
             Id = i;
             StartHour = new TimeSpan(i, 00, 00);
-            ProposedActivity = new Activity(true);
+            ProposedActivity = null;
         }
 
         public PlannedActivity(int i, Activity act)

@@ -22,7 +22,7 @@ namespace Remonty.Helpers
             selectorItem.HorizontalContentAlignment = HorizontalAlignment.Stretch;
             selectorItem.MinHeight = 0;
 
-            if (act != null && selectorItem != null && act.ProposedActivity.IsPlaceholder)
+            if (act?.ProposedActivity == null)
             {
                 selectorItem.IsHitTestVisible = false;
                 return PlaceholderTemplate;

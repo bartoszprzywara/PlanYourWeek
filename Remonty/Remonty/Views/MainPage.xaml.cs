@@ -63,7 +63,7 @@ namespace Remonty
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             SearchSplitView.IsPaneOpen = !SearchSplitView.IsPaneOpen;
-            SearchSplitTextBox.Text = String.Empty;
+            SearchSplitTextBox.Text = string.Empty;
         }
 
         private void SearchSplitButton_Click(object sender, RoutedEventArgs e)

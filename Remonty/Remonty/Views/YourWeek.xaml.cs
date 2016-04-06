@@ -65,10 +65,17 @@ namespace Remonty
 
             LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 1 WHERE Id = " + ItemId);
 
+            int duration = 0;
             int i = 0;
-            while (PlannedDay1[i].ProposedActivity.Id != ItemId)
+            while (PlannedDay1[i].ProposedActivity?.Id != ItemId)
+            {
+                if (PlannedDay1[i].ProposedActivity != null)
+                    duration += (GetActivityDuration(PlannedDay1[i].ProposedActivity) - 1);
                 i++;
-            PlannedDay1[i] = new PlannedActivity(i + StartHour);
+            }
+            for (int j = i + 1; j < i + GetActivityDuration(PlannedDay1[i].ProposedActivity); j++)
+                PlannedDay1.Insert(j, new PlannedActivity(j + StartHour + duration));
+            PlannedDay1[i] = new PlannedActivity(i + StartHour + duration);
         }
 
         #region Pivot Headers
@@ -95,11 +102,9 @@ namespace Remonty
 
         private void PlanYourWeek()
         {
-            // TODO: optymalizacja drugiego kroku (praktycznie robie 2 razy to samo teraz w dwóch foreach-ach
-            // TODO: zająć się przyciskiem done na aktywności w końcu
             // TODO: zrobić ograniczenie (graniczna godzina), żeby aktywności nie dodawały się w nieskończoność
             // TODO: przemyśleć sprawę połówek godziny i startów aktywności o nierównej godzinie
-            // TODO: zająć się pozostałymi dniami w planie tygodnia
+            // TODO: zająć się pozostałymi dniami w planie tygodnia (planowanie dni w pętli)
 
 
             // --------------- KROK 1 ---------------
@@ -164,9 +169,9 @@ namespace Remonty
                         bool CanBeAdded = CanActivityBeAdded(i, duration);
 
                         // dodaj ją do planu dnia tylko, jeśli będzie mogła się znaleźć pod "swoją" godziną
-                        if (PlannedDay1[i].ProposedActivity.IsPlaceholder == true && CanBeAdded == true)
+                        if (PlannedDay1[i].ProposedActivity == null && CanBeAdded)
                         {
-                            PlannedDay1[i].ProposedActivity = LocalDatabaseHelper.ReadItem<Activity>(act.Id);
+                            PlannedDay1[i].ProposedActivity = act;
                             RemoveReservedItems(i, duration);
                             PlannedDay1[i].ItemHeight = 60 * duration;
                         }
@@ -176,7 +181,7 @@ namespace Remonty
                         break;
                     }
                     // jeśli aktywność koliduje z inną (już dodaną) aktywnością, dodaj ją do listy nieobsłużonych aktywności
-                    else if (PlannedDay1[i].Id > actId )
+                    else if (PlannedDay1[i].Id > actId)
                     {
                         tempUnhandledActivityList.Add(act);
                         break;
@@ -206,16 +211,16 @@ namespace Remonty
                         // dodaj aktywność pod odpowiednią godziną, tylko jeśli jest miejsce
                         // jeśli nie ma miejsca, to spróbuj wstawić aktywność godzinę później
                         while (i < PlannedDay1.Count - 1 && (
-                            (PlannedDay1[i].ProposedActivity.IsPlaceholder != true) ||
-                            (CanBeAdded == false)))
+                            (PlannedDay1[i].ProposedActivity != null) ||
+                            (!CanBeAdded)))
                         {
                             i++;
                             CanBeAdded = CanActivityBeAdded(i, duration);
                         }
 
-                        if (PlannedDay1[i].ProposedActivity.IsPlaceholder == true && CanBeAdded == true)
+                        if (PlannedDay1[i].ProposedActivity == null && CanBeAdded)
                         {
-                            PlannedDay1[i].ProposedActivity = LocalDatabaseHelper.ReadItem<Activity>(act.Id);
+                            PlannedDay1[i].ProposedActivity = act;
                             RemoveReservedItems(i, duration);
                             PlannedDay1[i].ItemHeight = 60 * duration;
                             PlannedDay1[i].HourColor = "Red";
@@ -224,7 +229,7 @@ namespace Remonty
                         // aktywność, która zostanie wtedy zaproponowana po północy - traktuj mimo wszystko jako dzisiejszą
                         else
                         {
-                            PlannedDay1.Add(new PlannedActivity((PlannedDay1[i].Id + GetPreviousActivityDuration(i)) % 24, LocalDatabaseHelper.ReadItem<Activity>(act.Id)));
+                            PlannedDay1.Add(new PlannedActivity((PlannedDay1[i].Id + GetPreviousActivityDuration(i)) % 24, act));
                             PlannedDay1[PlannedDay1.Count - 1].ItemHeight = 60 * duration;
                             PlannedDay1[PlannedDay1.Count - 1].HourColor = "Red";
                         }
@@ -265,9 +270,9 @@ namespace Remonty
                 // jeśli nie ma miejsca, to spróbuj wstawić aktywność godzinę później
                 int i = 0;
                 while (i < PlannedDay1.Count - 1 && (
-                    (PlannedDay1[i].ProposedActivity.IsPlaceholder != true) ||
+                    (PlannedDay1[i].ProposedActivity != null) ||
                     (PlannedDay1[i].Id >= StartWork && PlannedDay1[i].Id < EndWork) ||
-                    (CanBeAdded == false)))
+                    (!CanBeAdded)))
                 {
                     i++;
                     CanBeAdded = CanActivityBeAdded(i, duration);
@@ -278,9 +283,9 @@ namespace Remonty
                         CanBeAdded = false;
                 }
 
-                if (PlannedDay1[i].ProposedActivity.IsPlaceholder == true && CanBeAdded == true)
+                if (PlannedDay1[i].ProposedActivity == null && CanBeAdded)
                 {
-                    PlannedDay1[i].ProposedActivity = LocalDatabaseHelper.ReadItem<Activity>(act.Id);
+                    PlannedDay1[i].ProposedActivity = act;
                     RemoveReservedItems(i, duration);
                     PlannedDay1[i].ItemHeight = 60 * duration;
 
@@ -298,7 +303,7 @@ namespace Remonty
                 // aktywność, która zostanie wtedy zaproponowana po północy - traktuj mimo wszystko jako dzisiejszą
                 else if (act.StartDate >= TodayTemp) // TODO: pamiętać o usunięciu znaku '>'
                 {
-                    PlannedDay1.Add(new PlannedActivity((PlannedDay1[i].Id + GetPreviousActivityDuration(i)) % 24, LocalDatabaseHelper.ReadItem<Activity>(act.Id)));
+                    PlannedDay1.Add(new PlannedActivity((PlannedDay1[i].Id + GetPreviousActivityDuration(i)) % 24, act));
                     PlannedDay1[i + 1].ItemHeight = 60 * duration;
                 }
             }
@@ -315,7 +320,7 @@ namespace Remonty
             bool canBeAdded = true;
             for (int j = i; j < i + duration; j++)
             {
-                if (j < PlannedDay1.Count && PlannedDay1[j].ProposedActivity.IsPlaceholder != true)
+                if (j < PlannedDay1.Count && PlannedDay1[j].ProposedActivity != null)
                 {
                     canBeAdded = false;
                     break;
