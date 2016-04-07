@@ -48,7 +48,7 @@ namespace Remonty
         }
 
         bool WorkingHoursEnabled;
-        int StartHour, StartWork, EndWork, EndHour;
+        int StartHour, StartWork, EndWork, EndHour, DayLimit = 26; // 02:00
         private ObservableCollection<PlannedActivity> PlannedDay1 = new ObservableCollection<PlannedActivity>();
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -140,6 +140,7 @@ namespace Remonty
             {
                 int actId = act.StartHour.Value.Hours;
                 int duration = GetActivityDuration(act);
+                bool IsActivityFound = false;
 
                 #region Refresh Day Plan Duration
                 // jeśli aktywność zaczyna się później, niż koniec planu dnia - wydłuż plan dnia
@@ -162,10 +163,9 @@ namespace Remonty
                 // jeśli aktywność zaczyna się w godzinach planu dnia - dodaj ją do planu dnia
                 for (int i = 0; i < PlannedDay1.Count; i++)
                 {
-                    //Debug.WriteLine("EndHour: " + EndHour + " Przetwarzana aktywność (temp): " + act.Title + " PlannedDay1[i].Id: " + PlannedDay1[i].Id + " actId: " + actId);
-
-                    if (PlannedDay1[i].Id == actId)
+                    if (PlannedDay1[i].Id + GetPreviousActivityDuration(i) - 1 == actId)
                     {
+                        IsActivityFound = true;
                         bool CanBeAdded = CanActivityBeAdded(i, duration);
 
                         // dodaj ją do planu dnia tylko, jeśli będzie mogła się znaleźć pod "swoją" godziną
@@ -181,15 +181,20 @@ namespace Remonty
                         break;
                     }
                     // jeśli aktywność koliduje z inną (już dodaną) aktywnością, dodaj ją do listy nieobsłużonych aktywności
-                    else if (PlannedDay1[i].Id > actId)
+                    else if (PlannedDay1[i].Id + GetPreviousActivityDuration(i) - 1 > actId)
                     {
+                        IsActivityFound = true;
                         tempUnhandledActivityList.Add(act);
                         break;
                     }
                 }
 
-                if (PlannedDay1[PlannedDay1.Count - 1].Id < actId)
-                    tempUnhandledActivityList.Add(act);
+                if (!IsActivityFound)
+                {
+                    // pierwotny if: (PlannedDay1[PlannedDay1.Count - 1].Id < actId)
+                    // dla pewności zostawię tego if-a, gdyby kiedyś jakaś aktywność tutaj trafiła
+                    throw new CompletelyUnhandledActivityException("Nieobsłużona aktywność: " + act.Title);
+                }
             }
 
             // w drugiej iteracji każdą nieobsłużoną aktywność spróbuj dodać do planu dnia
@@ -197,15 +202,13 @@ namespace Remonty
             {
                 int actId = act.StartHour.Value.Hours;
                 int duration = GetActivityDuration(act);
+                bool IsActivityFound = false;
 
                 for (int i = 0; i < PlannedDay1.Count; i++)
                 {
-                    int tempId = PlannedDay1[i].Id;
-                    if (i > 0 && PlannedDay1[i].Id < PlannedDay1[i - 1].Id)
-                        tempId += 24;
-
-                    if (tempId >= actId)
+                    if (PlannedDay1[i].Id + GetPreviousActivityDuration(i) - 1 >= actId)
                     {
+                        IsActivityFound = true;
                         bool CanBeAdded = CanActivityBeAdded(i, duration);
 
                         // dodaj aktywność pod odpowiednią godziną, tylko jeśli jest miejsce
@@ -227,14 +230,22 @@ namespace Remonty
                         }
                         // jeśli aktywność zaczyna się później, niż koniec dnia - dodaj ją mimo wszystko
                         // aktywność, która zostanie wtedy zaproponowana po północy - traktuj mimo wszystko jako dzisiejszą
-                        else
+                        // nie dodawaj aktywnośći w ogóle, jeśli przekroczy limit dnia
+                        else if (GetTemporaryPlannedActivityId(i) < DayLimit) // TODO: rozgrzebane
                         {
                             PlannedDay1.Add(new PlannedActivity((PlannedDay1[i].Id + GetPreviousActivityDuration(i)) % 24, act));
                             PlannedDay1[PlannedDay1.Count - 1].ItemHeight = 60 * duration;
                             PlannedDay1[PlannedDay1.Count - 1].HourColor = "Red";
                         }
+                        else
+                            Debug.WriteLine("Nie dodałem: " + act.Title);
                         break;
                     }
+                }
+                if (!IsActivityFound)
+                {
+                    // dla pewności zostawię tego if-a, gdyby kiedyś jakaś aktywność tutaj trafiła
+                    throw new CompletelyUnhandledActivityException("Nieobsłużona aktywność: " + act.Title);
                 }
             }
 
@@ -357,7 +368,7 @@ namespace Remonty
         private int GetPreviousActivityDuration(int i)
         {
             var tempEstimationList = LocalDatabaseHelper.ReadAllItemsFromTable<Estimation>();
-            int? prevActEstId = PlannedDay1[i].ProposedActivity.EstimationId;
+            int? prevActEstId = PlannedDay1[i].ProposedActivity?.EstimationId;
             int prevActDuration = 0;
 
             if (prevActEstId > 2)
@@ -367,6 +378,27 @@ namespace Remonty
 
             return prevActDuration;
         }
+
+        private bool IdDecreased = false;
+
+        private int GetTemporaryPlannedActivityId(int i)
+        {
+            if (i == 0) return PlannedDay1[i].Id;
+
+            if (PlannedDay1[i].Id < PlannedDay1[i - 1].Id)
+                IdDecreased = true;
+
+            if (IdDecreased)
+                return PlannedDay1[i].Id + 24;
+            else
+                return PlannedDay1[i].Id;
+        }
+
+        public class CompletelyUnhandledActivityException : Exception
+        {
+            public CompletelyUnhandledActivityException(string message) : base(message) { }
+        }
+
         #endregion
     }
 }
