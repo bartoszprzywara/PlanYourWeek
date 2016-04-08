@@ -47,36 +47,48 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Pivot x:Name="YourWeekPivot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Pivot x:Name="YourWeekPivot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SelectionChanged="YourWeekPivot_SelectionChanged">
         <PivotItem Header="Dzisiaj" Margin="0">
             <ListView
-                ItemsSource="{x:Bind PlannedDay1}"
+                ItemsSource="{x:Bind PlannedDay[0]}"
                 ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
                 IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
         </PivotItem>
         <PivotItem Header="Jutro" Margin="0">
-            <!--Pivot content goes here-->
-            <TextBlock Text="Content of pivot item 2" Margin="15,10,0,0"/>
+            <ListView
+                ItemsSource="{x:Bind PlannedDay[1]}"
+                ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
+                IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day3}" Margin="0">
-            <!--Pivot content goes here-->
-            <TextBlock Text="Content of pivot item 3" Margin="15,10,0,0"/>
+            <ListView
+                ItemsSource="{x:Bind PlannedDay[2]}"
+                ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
+                IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day4}" Margin="0">
-            <!--Pivot content goes here-->
-            <TextBlock Text="Content of pivot item 4" Margin="15,10,0,0"/>
+            <ListView
+                ItemsSource="{x:Bind PlannedDay[3]}"
+                ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
+                IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day5}" Margin="0">
-            <!--Pivot content goes here-->
-            <TextBlock Text="Content of pivot item 5" Margin="15,10,0,0"/>
+            <ListView
+                ItemsSource="{x:Bind PlannedDay[4]}"
+                ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
+                IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day6}" Margin="0">
-            <!--Pivot content goes here-->
-            <TextBlock Text="Content of pivot item 6" Margin="15,10,0,0"/>
+            <ListView
+                ItemsSource="{x:Bind PlannedDay[5]}"
+                ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
+                IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day7}" Margin="0">
-            <!--Pivot content goes here-->
-            <TextBlock Text="Content of pivot item 7" Margin="15,10,0,0"/>
+            <ListView
+                ItemsSource="{x:Bind PlannedDay[6]}"
+                ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
+                IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
         </PivotItem>
     </Pivot>
 </Page>

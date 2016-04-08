@@ -52,6 +52,7 @@ namespace Remonty.Models
         public int? ContextId { get; set; }
         public int? ProjectId { get; set; }
         public bool IsDone { get; set; }
+        public bool IsAdded { get; set; } = false;
 
         public string StartHourUI
         {

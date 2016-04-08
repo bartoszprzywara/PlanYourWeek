@@ -22,6 +22,7 @@ namespace Remonty
     /// </summary>
     sealed partial class App : Application
     {
+        internal static int LastPivotItem;
         internal static Type CurrentFrameInMainPage;
         internal static string TitleTextBlockText;
 
