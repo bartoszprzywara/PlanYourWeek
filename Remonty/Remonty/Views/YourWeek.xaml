@@ -48,13 +48,13 @@
     </Page.Resources>
 
     <Pivot x:Name="YourWeekPivot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SelectionChanged="YourWeekPivot_SelectionChanged">
-        <PivotItem Header="Dzisiaj" Margin="0">
+        <PivotItem Header="dzisiaj" Margin="0">
             <ListView
                 ItemsSource="{x:Bind PlannedDay[0]}"
                 ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
                 IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
         </PivotItem>
-        <PivotItem Header="Jutro" Margin="0">
+        <PivotItem Header="jutro" Margin="0">
             <ListView
                 ItemsSource="{x:Bind PlannedDay[1]}"
                 ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"

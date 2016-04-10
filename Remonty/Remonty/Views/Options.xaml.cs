@@ -44,35 +44,54 @@ namespace Remonty
         {
             LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + StartDayTimePicker.Time.ToString() + "' WHERE Name = 'StartDay'");
             if (screenEntered)
+            {
                 AnimateStartDayStackPanelStoryboard.Begin();
+                App.PlanNeedsToBeReloaded = true;
+            }
         }
 
         private void StartWorkingTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
             LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + StartWorkingTimePicker.Time.ToString() + "' WHERE Name = 'StartWorking'");
             if (screenEntered)
+            {
                 AnimateStartWorkingStackPanelStoryboard.Begin();
+                App.PlanNeedsToBeReloaded = true;
+            }
         }
 
         private void EndWorkingTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
             LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + EndWorkingTimePicker.Time.ToString() + "' WHERE Name = 'EndWorking'");
             if (screenEntered)
+            {
                 AnimateEndWorkingStackPanelStoryboard.Begin();
+                App.PlanNeedsToBeReloaded = true;
+            }
         }
 
         private void EndDayTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
             LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + EndDayTimePicker.Time.ToString() + "' WHERE Name = 'EndDay'");
             if (screenEntered)
+            {
                 AnimateEndDayStackPanelStoryboard.Begin();
+                App.PlanNeedsToBeReloaded = true;
+            }
         }
 
         private void WorkingHoursEnabledToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
             LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + WorkingHoursEnabledToggleSwitch.IsOn.ToString() + "' WHERE Name = 'WorkingHoursEnabled'");
             if (screenEntered)
+            {
                 AnimateWorkingHoursStackPanelStoryboard.Begin();
+                App.PlanNeedsToBeReloaded = true;
+
+                // var tempYouWeekScreen = new YourWeek();
+                // TODO: powyższe zadziałało, ale można to zrobić w wątku (w tle)
+                // TODO: ale najpierw muszę przenieść planowanie tygodnia do helpera
+            }
         }
     }
 }

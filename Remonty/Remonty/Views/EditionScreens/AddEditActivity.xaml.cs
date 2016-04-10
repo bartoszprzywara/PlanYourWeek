@@ -39,6 +39,9 @@ namespace Remonty
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if (!Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+                BackButton.Visibility = Visibility.Collapsed;
+
             if (e.Parameter == null) return;
             activity = e.Parameter as Activity;
 
@@ -63,7 +66,8 @@ namespace Remonty
         private void UnDoneButton_Click(object sender, RoutedEventArgs e)
         {
             LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 0 WHERE Id = " + activity.Id);
-            
+            App.PlanNeedsToBeReloaded = true;
+
             if (this.Frame.CanGoBack)
                 this.Frame.GoBack();
         }
@@ -71,6 +75,7 @@ namespace Remonty
         private void DoneButton_Click(object sender, RoutedEventArgs e)
         {
             LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 1 WHERE Id = " + activity.Id);
+            App.PlanNeedsToBeReloaded = true;
 
             if (this.Frame.CanGoBack)
                 this.Frame.GoBack();
@@ -88,6 +93,7 @@ namespace Remonty
             if ((int)result.Id == 0)
             {
                 LocalDatabaseHelper.DeleteItem<Activity>(activity.Id);
+                App.PlanNeedsToBeReloaded = true;
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
             }
@@ -101,8 +107,8 @@ namespace Remonty
                 await dialog.ShowAsync();
             }
             else {
-                Activity tempActivity = LoadActivityValuesFromControls();
-                LocalDatabaseHelper.InsertItem<Activity>(tempActivity);
+                LocalDatabaseHelper.InsertItem<Activity>(LoadActivityValuesFromControls());
+                App.PlanNeedsToBeReloaded = true;
 
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
@@ -117,8 +123,8 @@ namespace Remonty
                 await dialog.ShowAsync();
             }
             else {
-                Activity tempActivity = LoadActivityValuesFromControls();
-                LocalDatabaseHelper.UpdateActivity(activity.Id, tempActivity);
+                LocalDatabaseHelper.UpdateActivity(activity.Id, LoadActivityValuesFromControls());
+                App.PlanNeedsToBeReloaded = true;
 
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();

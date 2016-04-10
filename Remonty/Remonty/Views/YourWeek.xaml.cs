@@ -25,37 +25,56 @@ namespace Remonty
         {
             this.InitializeComponent();
             GetSettings();
-            PlanYourWeek();
+            GetPlannedWeek();
             YourWeekPivot.SelectedIndex = App.LastPivotItem;
         }
 
         private void GetSettings()
         {
-            ObservableCollection<Settings>[] savedSettings = new ObservableCollection<Settings>[7];
+            ObservableCollection<Settings> savedSettings = LocalDatabaseHelper.ReadAllItemsFromTable<Settings>();
 
-            for (int i = 0; i < 7; i++)
+            StartHour[0] = TimeSpan.Parse(savedSettings[0].Value).Hours;
+            StartWork[0] = TimeSpan.Parse(savedSettings[1].Value).Hours;
+            EndWork[0] = TimeSpan.Parse(savedSettings[2].Value).Hours;
+            EndHour[0] = TimeSpan.Parse(savedSettings[3].Value).Hours - 1;
+            if (EndHour[0] < 0 || EndHour[0] < StartHour[0])
+                EndHour[0] += 24;
+            WorkingHoursEnabled[0] = bool.Parse(savedSettings[4].Value);
+
+            if (!WorkingHoursEnabled[0])
             {
-                savedSettings[i] = LocalDatabaseHelper.ReadAllItemsFromTable<Settings>();
-
-                StartHour[i] = TimeSpan.Parse(savedSettings[i][0].Value).Hours;
-                StartWork[i] = TimeSpan.Parse(savedSettings[i][1].Value).Hours;
-                EndWork[i] = TimeSpan.Parse(savedSettings[i][2].Value).Hours;
-                EndHour[i] = TimeSpan.Parse(savedSettings[i][3].Value).Hours - 1;
-                if (EndHour[i] < 0 || EndHour[i] < StartHour[i])
-                    EndHour[i] = 24 + EndHour[i];
-                WorkingHoursEnabled[i] = bool.Parse(savedSettings[i][4].Value);
-
-                if (!WorkingHoursEnabled[i])
-                {
-                    StartWork[i] = -1;
-                    EndWork[i] = -1;
-                }
+                StartWork[0] = -1;
+                EndWork[0] = -1;
             }
+
+            for (int i = 1; i < 7; i++)
+            {
+                StartHour[i] = StartHour[0];
+                StartWork[i] = StartWork[0];
+                EndWork[i] = EndWork[0];
+                EndHour[i] = EndHour[0];
+                WorkingHoursEnabled[i] = WorkingHoursEnabled[0];
+            }
+        }
+
+        public void GetPlannedWeek()
+        {
+            if (App.PlanNeedsToBeReloaded)
+            {
+                PlanYourWeek();
+                Debug.WriteLine("Your Week has just been reloaded (" + DateTime.Now + ")");
+                App.BackupWeekPlan = PlannedDay;
+            }
+            else
+                PlannedDay = App.BackupWeekPlan;
+
+            App.PlanNeedsToBeReloaded = false;
         }
 
         private void PlanYourWeek()
         {
             LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsAdded = 0");
+            App.PlanNeedsToBeReloaded = true;
 
             for (int i = 0; i < 7; i++)
             {
@@ -117,13 +136,13 @@ namespace Remonty
 
         private string GetDayOfWeek(int day)
         {
-            if (day == 1) return "Pon";
-            if (day == 2) return "Wto";
-            if (day == 3) return "Śro";
-            if (day == 4) return "Czw";
-            if (day == 5) return "Pią";
-            if (day == 6) return "Sob";
-            else return "Nie";
+            if (day == 1) return "pon";
+            if (day == 2) return "wto";
+            if (day == 3) return "śro";
+            if (day == 4) return "czw";
+            if (day == 5) return "pią";
+            if (day == 6) return "sob";
+            else return "nie";
         }
 
         #endregion

@@ -69,6 +69,7 @@ namespace Remonty
             {
                 LocalDatabaseHelper.DeleteItem<Context>(context.Id);
                 LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET ContextId = NULL WHERE ContextID = " + context.Id);
+                App.PlanNeedsToBeReloaded = true;
 
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
@@ -91,6 +92,7 @@ namespace Remonty
             }
             else {
                 LocalDatabaseHelper.UpdateNameInTable<Context>(context.Id, NameTextBox.Text);
+                App.PlanNeedsToBeReloaded = true;
 
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
