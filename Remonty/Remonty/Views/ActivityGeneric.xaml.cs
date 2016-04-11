@@ -31,18 +31,17 @@ namespace Remonty
             string list = e.Parameter.ToString();
 
             if (list != "Zrobione")
-                using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                    listofActivities = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0 AND List = '" + list + "'").ToList());
+                using (LocalDatabaseHelper.conn.Lock())
+                    listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0 AND List = '" + list + "'").ToList());
             else
-                using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                    listofActivities = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 1").ToList());
+                using (LocalDatabaseHelper.conn.Lock())
+                    listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 1").ToList());
 
             if (App.PlannedWeekNeedsToBeReloaded)
             {
                 App.ReloadPlannedWeekTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
                 {
-                    var tempPlannedWeek = new YourWeekPlanningHelper();
-                    tempPlannedWeek.GetPlannedWeek();
+                    (new YourWeekPlanningHelper()).GetPlannedWeek();
                     App.PlannedWeekNeedsToBeReloaded = false;
                 });
             }

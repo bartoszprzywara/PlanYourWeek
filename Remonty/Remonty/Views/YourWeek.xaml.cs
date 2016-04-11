@@ -28,7 +28,9 @@ namespace Remonty
             GetPlannedWeek();
             YourWeekPivot.SelectedIndex = App.LastPivotItem;
 
-            // TODO: assertion failed sqlite3 .net
+            // TODO: dopracowanie UI:
+            // TODO: tło ekranów zgodne z aktualnym akcentem z dodaną alfą
+            // TODO: przycisk Done - szary tick z kolorowym borderem dla akywności niewykonanej
         }
 
         // List of planned days which goes to UI
@@ -38,8 +40,7 @@ namespace Remonty
         {
             if (App.PlannedWeekNeedsToBeReloaded)
             {
-                var tempObj = new YourWeekPlanningHelper();
-                tempObj.GetPlannedWeek();
+                (new YourWeekPlanningHelper()).GetPlannedWeek();
                 App.PlannedWeekNeedsToBeReloaded = false;
             }
             PlannedDay = App.FinalPlannedWeek;

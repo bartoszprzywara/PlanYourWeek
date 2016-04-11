@@ -1,4 +1,5 @@
 ﻿using Remonty.Models;
+using SQLite.Net;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +12,12 @@ namespace Remonty.Helpers
 {
     public class LocalDatabaseHelper
     {
-        public static readonly string sqlpath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "localdb.sqlite");
+        private static string sqlpath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "localdb.sqlite");
+        private static SQLiteConnectionString sqlconnstring = new SQLiteConnectionString(sqlpath, true);
+        private static SQLiteConnectionWithLock _conn;
+
+        public static SQLiteConnectionWithLock conn => _conn ??
+            (_conn = new SQLiteConnectionWithLock(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlconnstring));
 
         public static void InitializeLocalDB()
         {
@@ -82,7 +88,7 @@ namespace Remonty.Helpers
 
         public static void CreateDatabase()
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            using (conn.Lock())
             {
                 conn.CreateTable<Activity>();
                 conn.CreateTable<Context>();
@@ -95,7 +101,7 @@ namespace Remonty.Helpers
 
         public static void InsertItem<T>(T objItem) where T : class
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            using (conn.Lock())
             {
                 conn.RunInTransaction(() =>
                 {
@@ -106,7 +112,7 @@ namespace Remonty.Helpers
 
         public static T ReadItem<T>(int itemId) where T : class
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            using (conn.Lock())
             {
                 var existingItem = conn.Query<T>("SELECT * FROM " + typeof(T).Name + " WHERE Id =" + itemId).FirstOrDefault();
                 return existingItem;
@@ -115,7 +121,7 @@ namespace Remonty.Helpers
 
         public static int ReadItemIndex<T>(string columnName, int itemId) where T : class
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            using (conn.Lock())
             {
                 var itemIndex = conn.Query<T>("SELECT * FROM " + typeof(T).Name + " WHERE " + columnName + " <" + itemId).Count;
                 return itemIndex;
@@ -124,7 +130,7 @@ namespace Remonty.Helpers
 
         public static T ReadLastItem<T>() where T : class
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            using (conn.Lock())
             {
                 var lastItem = conn.Query<T>("SELECT * FROM " + typeof(T).Name + " ORDER BY id DESC LIMIT 1").FirstOrDefault();
                 return lastItem;
@@ -133,7 +139,7 @@ namespace Remonty.Helpers
 
         public static ObservableCollection<T> ReadAllItemsFromTable<T>() where T : class
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            using (conn.Lock())
             {
                 List<T> tempCollection = conn.Table<T>().ToList();
                 ObservableCollection<T> myCollection = new ObservableCollection<T>(tempCollection);
@@ -143,7 +149,7 @@ namespace Remonty.Helpers
 
         public static ObservableCollection<string> ReadNamesFromTable<T>() where T : class, IHasName
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            using (conn.Lock())
             {
                 List<T> tempCollection = conn.Table<T>().ToList();
                 ObservableCollection<string> myCollection = new ObservableCollection<string>();
@@ -155,7 +161,7 @@ namespace Remonty.Helpers
 
         public static void UpdateNameInTable<T>(int Id, string editedName) where T : class, IHasName
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            using (conn.Lock())
             {
                 var existingItem = conn.Query<T>("SELECT * FROM " + typeof(T).Name + " WHERE Id =" + Id.ToString()).FirstOrDefault();
                 if (existingItem != null)
@@ -171,7 +177,7 @@ namespace Remonty.Helpers
 
         public static void UpdateActivity(int Id, Activity editedActivity)
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            using (conn.Lock())
             {
                 var existingActivity = conn.Query<Activity>("SELECT * FROM Activity WHERE Id =" + Id.ToString()).FirstOrDefault();
                 if (existingActivity != null)
@@ -199,7 +205,7 @@ namespace Remonty.Helpers
 
         public static void DeleteAllItemsInTable<T>() where T : class
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            using (var conn = new SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
             {
                 conn.DropTable<T>();
                 conn.CreateTable<T>();
@@ -210,7 +216,7 @@ namespace Remonty.Helpers
 
         public static void DeleteItem<T>(int itemId) where T : class
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            using (conn.Lock())
             {
                 var existingItem = conn.Query<T>("SELECT * FROM " + typeof(T).Name + " WHERE Id =" + itemId).FirstOrDefault();
                 if (existingItem != null)
@@ -225,13 +231,13 @@ namespace Remonty.Helpers
 
         public static void ExecuteQuery(string sqlquery)
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            using (conn.Lock())
                 conn.Execute(sqlquery);
         }
 
         public static int CountItems<T>(string sqlquery) where T : class
         {
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), sqlpath))
+            using (conn.Lock())
             {
                 var counter = conn.Query<T>(sqlquery).Count;
                 return counter;

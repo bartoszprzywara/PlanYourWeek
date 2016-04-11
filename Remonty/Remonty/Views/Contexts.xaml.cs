@@ -30,8 +30,7 @@ namespace Remonty
             {
                 App.ReloadPlannedWeekTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
                 {
-                    var tempPlannedWeek = new YourWeekPlanningHelper();
-                    tempPlannedWeek.GetPlannedWeek();
+                    (new YourWeekPlanningHelper()).GetPlannedWeek();
                     App.PlannedWeekNeedsToBeReloaded = false;
                 });
             }

@@ -89,8 +89,8 @@ namespace Remonty.Helpers
             ObservableCollection<Activity> tempUnhandledActivityList = new ObservableCollection<Activity>();
             DateTimeOffset tempToday = ((DateTimeOffset.Now).Date + new TimeSpan(0, 0, 0)).AddDays(day);
 
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                tempActivityList = new ObservableCollection<Activity>(conn.Query<Activity>(
+            using (LocalDatabaseHelper.conn.Lock())
+                tempActivityList = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>(
                     "SELECT * FROM Activity " +
                     "WHERE IsDone = 0 " +
                     "AND IsAdded = 0 " +
@@ -224,8 +224,8 @@ namespace Remonty.Helpers
 
             // znajdź w localdb odpowiednie aktywności dla kroków od 3 do 6
             // posortuj znalezione aktywności wg kroków, od tych z najwyższym priorytetem i od najkrótszej
-            using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
-                tempActivityList = new ObservableCollection<Activity>(conn.Query<Activity>(
+            using (LocalDatabaseHelper.conn.Lock())
+                tempActivityList = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>(
                     "SELECT * FROM(SELECT * FROM Activity WHERE IsDone = 0 AND IsAdded = 0 AND List = 'Zaplanowane' AND StartHour IS NULL AND StartDate = '" + tempToday.UtcTicks +
                         "'ORDER BY PriorityId DESC, EstimationId ASC) UNION ALL " +
                     "SELECT * FROM(SELECT * FROM Activity WHERE IsDone = 0 AND IsAdded = 0 AND List = 'Zaplanowane' AND StartDate < '" + tempToday.AddDays(-day).UtcTicks +
