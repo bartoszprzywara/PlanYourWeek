@@ -46,7 +46,7 @@ namespace Remonty
             if (screenEntered)
             {
                 AnimateStartDayStackPanelStoryboard.Begin();
-                App.PlanNeedsToBeReloaded = true;
+                ReloadPlannedWeek();
             }
         }
 
@@ -56,7 +56,7 @@ namespace Remonty
             if (screenEntered)
             {
                 AnimateStartWorkingStackPanelStoryboard.Begin();
-                App.PlanNeedsToBeReloaded = true;
+                ReloadPlannedWeek();
             }
         }
 
@@ -66,7 +66,7 @@ namespace Remonty
             if (screenEntered)
             {
                 AnimateEndWorkingStackPanelStoryboard.Begin();
-                App.PlanNeedsToBeReloaded = true;
+                ReloadPlannedWeek();
             }
         }
 
@@ -76,7 +76,7 @@ namespace Remonty
             if (screenEntered)
             {
                 AnimateEndDayStackPanelStoryboard.Begin();
-                App.PlanNeedsToBeReloaded = true;
+                ReloadPlannedWeek();
             }
         }
 
@@ -86,12 +86,18 @@ namespace Remonty
             if (screenEntered)
             {
                 AnimateWorkingHoursStackPanelStoryboard.Begin();
-                App.PlanNeedsToBeReloaded = true;
-
-                // var tempYouWeekScreen = new YourWeek();
-                // TODO: powyższe zadziałało, ale można to zrobić w wątku (w tle)
-                // TODO: ale najpierw muszę przenieść planowanie tygodnia do helpera
+                ReloadPlannedWeek();
             }
+        }
+
+        private void ReloadPlannedWeek()
+        {
+            App.ReloadPlannedWeekTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                var tempPlannedWeek = new YourWeekPlanningHelper();
+                tempPlannedWeek.GetPlannedWeek();
+                App.PlannedWeekNeedsToBeReloaded = false;
+            });
         }
     }
 }

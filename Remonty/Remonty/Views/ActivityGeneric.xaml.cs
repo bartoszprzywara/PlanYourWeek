@@ -36,6 +36,16 @@ namespace Remonty
             else
                 using (var conn = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), LocalDatabaseHelper.sqlpath))
                     listofActivities = new ObservableCollection<Activity>(conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 1").ToList());
+
+            if (App.PlannedWeekNeedsToBeReloaded)
+            {
+                App.ReloadPlannedWeekTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                {
+                    var tempPlannedWeek = new YourWeekPlanningHelper();
+                    tempPlannedWeek.GetPlannedWeek();
+                    App.PlannedWeekNeedsToBeReloaded = false;
+                });
+            }
         }
 
         private ObservableCollection<Activity> listofActivities;

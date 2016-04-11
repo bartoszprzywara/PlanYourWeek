@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -26,9 +27,10 @@ namespace Remonty
     {
         internal static int LastPivotItem;
         internal static string TitleTextBlockText;
+        internal static Task ReloadPlannedWeekTask;
         internal static Type CurrentFrameInMainPage;
-        internal static bool PlanNeedsToBeReloaded = true;
-        internal static ObservableCollection<Models.PlannedActivity>[] BackupWeekPlan;
+        internal static bool PlannedWeekNeedsToBeReloaded = true;
+        internal static ObservableCollection<Models.PlannedActivity>[] FinalPlannedWeek;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code

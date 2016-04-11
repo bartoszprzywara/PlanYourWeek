@@ -41,7 +41,7 @@ namespace Remonty.Helpers
                 InsertItem(new Activity("Pomalować kuchnię", "Na zielono", 2, false, "Zaplanowane", DateTime.Today.AddDays(1), new TimeSpan(16, 00, 00), DateTime.Today.AddDays(9), new TimeSpan(21, 00, 00), 5, 6, 1));
                 InsertItem(new Activity("Kupić płytki", "Do kuchni i łazienki", 2, true, "Zaplanowane", DateTime.Today.AddDays(2), null, DateTime.Today.AddDays(11), null, 4, 1, 3));
                 InsertItem(new Activity("Mają przywieźć kanapę", "Zadzwonią godzinę przed", 2, true, "Zaplanowane", DateTime.Today.AddDays(3), null, null, null, 3, 9, null));
-                InsertItem(new Activity("Cyklinowanie podłogi", "Przyjdzie Pan Karol z asystentem", 3, false, "Zaplanowane", DateTime.Today, new TimeSpan(10, 30, 00), null, null, 5, 4, 3));
+                InsertItem(new Activity("Cyklinowanie podłogi", "Przyjdzie Pan Karol z asystentem", 2, false, "Zaplanowane", DateTime.Today, new TimeSpan(10, 30, 00), null, null, 5, 4, 3));
                 InsertItem(new Activity("Pomiar gazu", "Przyjdzie Pan Jan Kowalski", 1, false, "Zaplanowane", DateTime.Today, new TimeSpan(08, 00, 00), DateTime.Today, new TimeSpan(09, 00, 00), 1, 2, null));
                 InsertItem(new Activity("Kupić farbę", "Biała 10l, zielona 5l", 2, true, "Najblizsze", null, null, DateTime.Today.AddDays(2), null, 4, 1, 1));
                 InsertItem(new Activity("Zmierzyć ile trzeba płytek", "Kuchnia i łazienka", 3, true, "Najblizsze", null, null, DateTime.Today.AddDays(1), null, 2, 4, 3));

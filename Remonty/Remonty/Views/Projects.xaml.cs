@@ -25,6 +25,16 @@ namespace Remonty
         {
             this.InitializeComponent();
             listofItems = LocalDatabaseHelper.ReadAllItemsFromTable<Project>();
+
+            if (App.PlannedWeekNeedsToBeReloaded)
+            {
+                App.ReloadPlannedWeekTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                {
+                    var tempPlannedWeek = new YourWeekPlanningHelper();
+                    tempPlannedWeek.GetPlannedWeek();
+                    App.PlannedWeekNeedsToBeReloaded = false;
+                });
+            }
         }
 
         private ObservableCollection<Project> listofItems;

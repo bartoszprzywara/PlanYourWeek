@@ -63,22 +63,40 @@ namespace Remonty
                 this.Frame.GoBack();
         }
 
-        private void UnDoneButton_Click(object sender, RoutedEventArgs e)
+        private async void UnDoneButton_Click(object sender, RoutedEventArgs e)
         {
-            LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 0 WHERE Id = " + activity.Id);
-            App.PlanNeedsToBeReloaded = true;
+            if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
+            {
+                var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady");
+                await dialog.ShowAsync();
+            }
+            else
+            {
+                LocalDatabaseHelper.UpdateActivity(activity.Id, LoadActivityValuesFromControls());
+                LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 0 WHERE Id = " + activity.Id);
+                App.PlannedWeekNeedsToBeReloaded = true;
 
-            if (this.Frame.CanGoBack)
-                this.Frame.GoBack();
+                if (this.Frame.CanGoBack)
+                    this.Frame.GoBack();
+            }
         }
 
-        private void DoneButton_Click(object sender, RoutedEventArgs e)
+        private async void DoneButton_Click(object sender, RoutedEventArgs e)
         {
-            LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 1 WHERE Id = " + activity.Id);
-            App.PlanNeedsToBeReloaded = true;
+            if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
+            {
+                var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady");
+                await dialog.ShowAsync();
+            }
+            else
+            {
+                LocalDatabaseHelper.UpdateActivity(activity.Id, LoadActivityValuesFromControls());
+                LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 1 WHERE Id = " + activity.Id);
+                App.PlannedWeekNeedsToBeReloaded = true;
 
-            if (this.Frame.CanGoBack)
-                this.Frame.GoBack();
+                if (this.Frame.CanGoBack)
+                    this.Frame.GoBack();
+            }
         }
 
         async private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -93,7 +111,7 @@ namespace Remonty
             if ((int)result.Id == 0)
             {
                 LocalDatabaseHelper.DeleteItem<Activity>(activity.Id);
-                App.PlanNeedsToBeReloaded = true;
+                App.PlannedWeekNeedsToBeReloaded = true;
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
             }
@@ -106,9 +124,10 @@ namespace Remonty
                 var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady");
                 await dialog.ShowAsync();
             }
-            else {
+            else
+            {
                 LocalDatabaseHelper.InsertItem<Activity>(LoadActivityValuesFromControls());
-                App.PlanNeedsToBeReloaded = true;
+                App.PlannedWeekNeedsToBeReloaded = true;
 
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
@@ -122,9 +141,10 @@ namespace Remonty
                 var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady");
                 await dialog.ShowAsync();
             }
-            else {
+            else
+            {
                 LocalDatabaseHelper.UpdateActivity(activity.Id, LoadActivityValuesFromControls());
-                App.PlanNeedsToBeReloaded = true;
+                App.PlannedWeekNeedsToBeReloaded = true;
 
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
@@ -231,8 +251,6 @@ namespace Remonty
             DeleteButton.Visibility = Visibility.Visible;
             SaveButton.Click -= new RoutedEventHandler(SaveButton_Click);
             SaveButton.Click += new RoutedEventHandler(SaveExistingButton_Click);
-            DoneButton.Click += new RoutedEventHandler(SaveExistingButton_Click);
-            UnDoneButton.Click += new RoutedEventHandler(SaveExistingButton_Click);
 
             DebugButtonSetVisibility();
         }
@@ -339,7 +357,7 @@ namespace Remonty
         private void EndDateClearButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             EndDatePicker.Date = null;
-            EndHourTimePicker.Time = new TimeSpan(0,0,0);
+            EndHourTimePicker.Time = new TimeSpan(0, 0, 0);
             EndDateClearButton.Visibility = Visibility.Collapsed;
         }
 

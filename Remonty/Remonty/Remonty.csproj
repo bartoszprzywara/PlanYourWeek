@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\ProjectConverter.cs" />
+    <Compile Include="Helpers\YourWeekPlanningHelper.cs" />
     <Compile Include="Helpers\YourWeekTemplateSelector.cs" />
     <Compile Include="Models\PlannedActivity.cs" />
     <Compile Include="Models\Settings.cs" />
