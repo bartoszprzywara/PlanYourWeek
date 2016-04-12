@@ -31,7 +31,7 @@ namespace Remonty.Helpers
                 DeleteAllItemsInTable<Estimation>();
                 DeleteAllItemsInTable<Priority>();
                 DeleteAllItemsInTable<Settings>();
-#if DEBUG
+//#if DEBUG
                 // konstruktor: tytuł, opis, prior, calydzien, lista, start, godz, end, godz, est, kont, proj
                 // lista: Nowe, Zaplanowane, Najblizsze, Kiedys, Oddelegowane
                 // est: 1-"15 min", 2-"30 min", 3-"1 godz", 4-"2 godz", 5-"3 godz", 6-"4 godz", 7-"6 godz", 8-"10 godz"
@@ -65,7 +65,7 @@ namespace Remonty.Helpers
                 string[] projects = { "Malowanie", "Kaloryfery", "Podłogi", "Okna" };
                 foreach (string value in projects)
                     InsertItem(new Project(value));
-#endif
+//#endif
                 string[] contexts = { "Zakupy", "Spotkanie", "Telefon", "Prace", "Komputer", "Kuchnia", "Łazienka", "Przedpokój", "Salon", "Sypialnia" };
                 foreach (string value in contexts)
                     InsertItem(new Context(value));

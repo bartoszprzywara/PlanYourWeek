@@ -9,6 +9,6 @@
         <SolidColorBrush x:Key="ForegroundMainColor" Color="White"/>
         <SolidColorBrush x:Key="BackgroundMainColor" Color="{ThemeResource SystemAccentColor}"/>
         <SolidColorBrush x:Key="LightAccentColor" Color="{ThemeResource SystemControlHighlightListAccentLowBrush}"/>
-        <SolidColorBrush x:Key="LightGrayColor" Color="#FFF4F4F4"/>
+        <SolidColorBrush x:Key="LightGrayColor" Color="#FFF3F3F3"/>
     </Application.Resources>
 </Application>
