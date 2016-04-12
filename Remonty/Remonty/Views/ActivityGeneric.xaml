@@ -26,7 +26,8 @@
         </Style>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock FontSize="{StaticResource YourWeekItemTitleFontSize}" Visibility="Collapsed" Margin="19,10,0,0"/>
         <ListView ItemsSource="{x:Bind listofActivities}" Margin="0,10,0,0" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
@@ -49,5 +50,5 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </Grid>
+    </StackPanel>
 </Page>

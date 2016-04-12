@@ -47,6 +47,7 @@ namespace Remonty
             }
         }
 
+        //Text="Wyniki dla: "
         //private Windows.UI.Color DoneButtonTickColor = Windows.UI.Colors.LightGray;
         private string listType;
         private ObservableCollection<Activity> listofActivities;

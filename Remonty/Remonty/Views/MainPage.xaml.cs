@@ -69,7 +69,7 @@ namespace Remonty
         private void SearchSplitButton_Click(object sender, RoutedEventArgs e)
         {
             ContentFrame.Navigate(typeof(SearchResults), SearchSplitTextBox.Text);
-            TitleTextBlock.Text = "Wyniki";
+            TitleTextBlock.Text = "Szukaj";
             SearchSplitView.IsPaneOpen = false;
         }
 
