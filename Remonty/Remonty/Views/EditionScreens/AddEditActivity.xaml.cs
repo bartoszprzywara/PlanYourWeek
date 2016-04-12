@@ -45,7 +45,7 @@ namespace Remonty
             if (e.Parameter == null) return;
             activity = e.Parameter as Activity;
 
-            TitleTextBlock.Text = activity.Title ?? "Twoje zadanie";
+            TitleTextBlock.Text = "Edytuj zadanie";
 
             EditActivityModeSetControls();
             LoadActivityValuesIntoControls();
@@ -102,8 +102,8 @@ namespace Remonty
         async private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new MessageDialog("Na pewno chcesz bezpowrotnie usunąć to zadanie?", "Na pewno?");
-            dialog.Commands.Add(new UICommand("Yes") { Id = 0 });
-            dialog.Commands.Add(new UICommand("No") { Id = 1 });
+            dialog.Commands.Add(new UICommand("Tak") { Id = 0 });
+            dialog.Commands.Add(new UICommand("Nie") { Id = 1 });
             dialog.CancelCommandIndex = 1;
 
             var result = await dialog.ShowAsync();

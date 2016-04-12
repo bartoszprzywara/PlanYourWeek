@@ -17,6 +17,17 @@
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="MinHeight" Value="0" />
         </Style>
+        <Style TargetType="Button" x:Key="DoneButtonStyle">
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BackgroundMainColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="RelativePanel.AlignRightWithPanel" Value="True"/>
+        </Style>
         <helpers:YourWeekTemplateSelector x:Name="DailyActivitiesListSelector" PlaceholderTemplate="{StaticResource PlaceholderTemplate}" ActivityTemplate="{StaticResource ActivityTemplate}"/>
 
         <DataTemplate x:Key="PlaceholderTemplate" x:DataType="data:PlannedActivity">
@@ -30,18 +41,18 @@
             <Grid>
                 <Line X2="2000" StrokeDashArray="3,5" StrokeThickness="2" Stroke="{StaticResource BackgroundMainColor}"/>
                 <TextBlock Text="{x:Bind StartHourUI}" FontSize="9" Margin="0,2,0,0" Foreground="{StaticResource BackgroundMainColor}"/>
-
-                <RelativePanel Height="{x:Bind ItemHeight}" BorderThickness="1" BorderBrush="{StaticResource BackgroundMainColor}" Margin="30,2,15,1">
-                    <StackPanel Orientation="Horizontal">
+                
+                <RelativePanel Background="{StaticResource LightGrayColor}" Height="{x:Bind ItemHeight}" BorderThickness="1" BorderBrush="{StaticResource BackgroundMainColor}" Margin="30,2,15,1">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,50,0">
                         <Ellipse Name="PriorIcon" Fill="{x:Bind ProposedActivity.PriorityUI}" Height="10" Width="10" Margin="10,5,0,0"/>
-                        <TextBlock Name="TitleTextBlock" Text="{x:Bind ProposedActivity.Title}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,5,0,0" />
-                        <TextBlock Name="EstimationTextBlock" Text="{x:Bind ProposedActivity.EstimationUI}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,5,0,0" />
+                        <TextBlock Name="TitleTextBlock" Text="{x:Bind ProposedActivity.Title}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,5,0,0" TextWrapping="Wrap"/>
                     </StackPanel>
                     <TextBlock Name="ContextLabelTextBlock" Text="" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="0,0,0,5"/>
                     <TextBlock Name="ContextValueTextBlock" Text="{x:Bind ProposedActivity.ContextUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="ContextLabelTextBlock" Margin="0,0,0,5"/>
                     <TextBlock Name="StartDateTextBlock" Text="{x:Bind ProposedActivity.StartDateUI}" Foreground="{x:Bind DateColor}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
                     <TextBlock Name="StartHourTextBlock" Text="{x:Bind ProposedActivity.StartHourUI}" Foreground="{x:Bind HourColor}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="StartDateTextBlock" Margin="5,0,5,5"/>
-                    <Button Name="DoneButton" DataContext="{x:Bind ProposedActivity.Id}" Content="DONE" Foreground="{StaticResource ForegroundMainColor}" Background="{StaticResource BackgroundMainColor}" FontSize="{StaticResource YourWeekItemButtonFontSize}" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Margin="0,5,10,0" Click="DoneButton_Click"/>
+                    <Button Name="DoneButton" Content="&#xE001;" DataContext="{x:Bind ProposedActivity.Id}" Style="{StaticResource DoneButtonStyle}" Click="DoneButton_Click" Margin="0,9,9,0"/>
+                    <TextBlock Name="EstimationTextBlock" Text="{x:Bind ProposedActivity.EstimationUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="0,0,20,5" />
                 </RelativePanel>
             </Grid>
         </DataTemplate>

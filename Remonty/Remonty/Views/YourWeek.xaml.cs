@@ -27,10 +27,6 @@ namespace Remonty
             this.InitializeComponent();
             GetPlannedWeek();
             YourWeekPivot.SelectedIndex = App.LastPivotItem;
-
-            // TODO: dopracowanie UI:
-            // TODO: tło ekranów zgodne z aktualnym akcentem z dodaną alfą
-            // TODO: przycisk Done - szary tick z kolorowym borderem dla akywności niewykonanej
         }
 
         // List of planned days which goes to UI

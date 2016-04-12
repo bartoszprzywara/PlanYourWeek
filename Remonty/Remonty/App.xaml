@@ -6,7 +6,9 @@
     RequestedTheme="Light">
 
     <Application.Resources>
-        <SolidColorBrush x:Key="BackgroundMainColor" Color="{ThemeResource SystemAccentColor}"/>
         <SolidColorBrush x:Key="ForegroundMainColor" Color="White"/>
+        <SolidColorBrush x:Key="BackgroundMainColor" Color="{ThemeResource SystemAccentColor}"/>
+        <SolidColorBrush x:Key="LightAccentColor" Color="{ThemeResource SystemControlHighlightListAccentLowBrush}"/>
+        <SolidColorBrush x:Key="LightGrayColor" Color="#FFF4F4F4"/>
     </Application.Resources>
 </Application>

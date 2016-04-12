@@ -11,8 +11,8 @@
     <Page.Resources>
         <x:Double x:Key="ItemTitleFontSize">16</x:Double>
         <Style TargetType="Button" x:Key="ItemButtonStyle">
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="Width" Value="35"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Width" Value="34"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="{StaticResource ForegroundMainColor}"/>
             <Setter Property="Background" Value="{StaticResource BackgroundMainColor}"/>
@@ -29,12 +29,11 @@
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="Margin" Value="-11,0,-11,0" />
                     </Style>
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="data:Context">
-                        <Grid BorderThickness="2" BorderBrush="{StaticResource BackgroundMainColor}" Margin="15,5,15,5">
+                        <Grid Background="{StaticResource LightGrayColor}" BorderThickness="1" BorderBrush="{StaticResource BackgroundMainColor}" Margin="4,5,4,5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -46,12 +45,12 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Grid Grid.Row="1" BorderThickness="2" BorderBrush="{StaticResource BackgroundMainColor}" Margin="15.5,5,15.5,5">
+            <Grid Grid.Row="1" Background="{StaticResource LightGrayColor}" BorderThickness="1" BorderBrush="{StaticResource BackgroundMainColor}" Margin="15.5,5,15.5,5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Name="AddItemTextBox" PlaceholderText="Dodaj nowy" BorderBrush="White" FontSize="{StaticResource ItemTitleFontSize}"/>
+                <TextBox Grid.Column="0" Name="AddItemTextBox" Background="{StaticResource LightGrayColor}" PlaceholderText="Dodaj nowy" BorderBrush="{StaticResource LightGrayColor}" FontSize="{StaticResource ItemTitleFontSize}" VerticalAlignment="Center"/>
                 <Button Grid.Column="1" Name="AddItemButton" Content="&#xE109;" FontFamily="Segoe MDL2 Assets" Style="{StaticResource ItemButtonStyle}" Click="AddItemButton_Click"/>
             </Grid>
         </Grid>

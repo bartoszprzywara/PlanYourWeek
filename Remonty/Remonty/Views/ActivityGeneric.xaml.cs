@@ -28,11 +28,11 @@ namespace Remonty
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter == null) return;
-            string list = e.Parameter.ToString();
+            listType = e.Parameter.ToString();
 
-            if (list != "Zrobione")
+            if (listType != "Zrobione")
                 using (LocalDatabaseHelper.conn.Lock())
-                    listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0 AND List = '" + list + "'").ToList());
+                    listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0 AND List = '" + listType + "'").ToList());
             else
                 using (LocalDatabaseHelper.conn.Lock())
                     listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 1").ToList());
@@ -47,6 +47,8 @@ namespace Remonty
             }
         }
 
+        //private Windows.UI.Color DoneButtonTickColor = Windows.UI.Colors.LightGray;
+        private string listType;
         private ObservableCollection<Activity> listofActivities;
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
@@ -55,6 +57,27 @@ namespace Remonty
 
             Frame frame = Window.Current.Content as Frame;
             frame.Navigate(typeof(AddEditActivity), selectedActivity);
+        }
+
+        private void DoneButton_Click(object sender, RoutedEventArgs e)
+        {
+            int ItemId = (int)((FrameworkElement)e.OriginalSource).DataContext;
+
+            if (listType != "Zrobione")
+                LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 1 WHERE Id = " + ItemId);
+            else
+                LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 0 WHERE Id = " + ItemId);
+
+            int i = 0;
+            while (listofActivities[i].Id != ItemId)
+                i++;
+
+            listofActivities.RemoveAt(i);
+
+            App.ReloadPlannedWeekTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                (new YourWeekPlanningHelper()).GetPlannedWeek();
+            });
         }
     }
 }

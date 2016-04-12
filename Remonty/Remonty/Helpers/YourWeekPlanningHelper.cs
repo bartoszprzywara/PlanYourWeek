@@ -138,7 +138,7 @@ namespace Remonty.Helpers
                         {
                             PlannedWeek[day][i].ProposedActivity = act;
                             RemoveReservedItems(day, i, duration);
-                            PlannedWeek[day][i].ItemHeight = 60 * duration;
+                            PlannedWeek[day][i].ItemHeight = CalculateHeight(duration);
                             LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsAdded = 1 WHERE Id = " + act.Id);
                         }
                         // jeśli aktywność koliduje z inną (już dodaną) aktywnością, dodaj ją do listy nieobsłużonych aktywności
@@ -191,7 +191,7 @@ namespace Remonty.Helpers
                         {
                             PlannedWeek[day][i].ProposedActivity = act;
                             RemoveReservedItems(day, i, duration);
-                            PlannedWeek[day][i].ItemHeight = 60 * duration;
+                            PlannedWeek[day][i].ItemHeight = CalculateHeight(duration);
                             PlannedWeek[day][i].HourColor = "Red";
                             LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsAdded = 1 WHERE Id = " + act.Id);
                         }
@@ -201,7 +201,7 @@ namespace Remonty.Helpers
                         else if (GetTemporaryPlannedActivityId(day, i) + duration - 1 < DayLimit)
                         {
                             PlannedWeek[day].Add(new PlannedActivity((PlannedWeek[day][i].Id + GetPreviousActivityDuration(day, i)) % 24, act));
-                            PlannedWeek[day][PlannedWeek[day].Count - 1].ItemHeight = 60 * duration;
+                            PlannedWeek[day][PlannedWeek[day].Count - 1].ItemHeight = CalculateHeight(duration);
                             PlannedWeek[day][PlannedWeek[day].Count - 1].HourColor = "Red";
                             LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsAdded = 1 WHERE Id = " + act.Id);
                         }
@@ -266,7 +266,7 @@ namespace Remonty.Helpers
                 {
                     PlannedWeek[day][i].ProposedActivity = act;
                     RemoveReservedItems(day, i, duration);
-                    PlannedWeek[day][i].ItemHeight = 60 * duration;
+                    PlannedWeek[day][i].ItemHeight = CalculateHeight(duration);
 
                     // dodatkowo datę aktywności z poprzednich dni oznacz kolorem czerwonym
                     if (PlannedWeek[day][i].ProposedActivity.StartDate < tempToday)
@@ -285,7 +285,7 @@ namespace Remonty.Helpers
                 else if (act.StartDate == tempToday && GetTemporaryPlannedActivityId(day, i) + duration - 1 < DayLimit)
                 {
                     PlannedWeek[day].Add(new PlannedActivity((PlannedWeek[day][i].Id + GetPreviousActivityDuration(day, i)) % 24, act));
-                    PlannedWeek[day][i + 1].ItemHeight = 60 * duration;
+                    PlannedWeek[day][i + 1].ItemHeight = CalculateHeight(duration);
                     LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsAdded = 1 WHERE Id = " + act.Id);
                 }
             }
@@ -363,6 +363,12 @@ namespace Remonty.Helpers
                 return PlannedWeek[day][i].Id + 24;
             else
                 return PlannedWeek[day][i].Id;
+        }
+
+        private int CalculateHeight(int duration)
+        {
+            //return 60 * duration;
+            return 55 + 40 * (duration - 1);
         }
 
         public class CompletelyUnhandledActivityException : Exception

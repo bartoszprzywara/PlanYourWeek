@@ -46,7 +46,7 @@ namespace Remonty
             if (e.Parameter == null) return;
             project = e.Parameter as Project;
 
-            NameTextBlock.Text = "Kontekst " + project.Name;
+            NameTextBlock.Text = "Edytuj projekt";
             NameTextBox.Text = project.Name;
         }
 
@@ -58,9 +58,9 @@ namespace Remonty
 
         async private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new MessageDialog("Na pewno chcesz bezpowrotnie usunąć ten kontekst? Wszystkie zadania mające ten kontekst stracą go", "Na pewno?");
-            dialog.Commands.Add(new UICommand("Yes") { Id = 0 });
-            dialog.Commands.Add(new UICommand("No") { Id = 1 });
+            var dialog = new MessageDialog("Na pewno chcesz bezpowrotnie usunąć ten projekt? Wszystkie zadania mające ten projekt stracą go", "Na pewno?");
+            dialog.Commands.Add(new UICommand("Tak") { Id = 0 });
+            dialog.Commands.Add(new UICommand("Nie") { Id = 1 });
             dialog.CancelCommandIndex = 1;
 
             var result = await dialog.ShowAsync();

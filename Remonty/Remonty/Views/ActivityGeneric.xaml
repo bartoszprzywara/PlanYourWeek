@@ -9,9 +9,21 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <x:Double x:Key="YourWeekItemTitleFontSize">18</x:Double>
-        <x:Double x:Key="YourWeekItemLabelFontSize">14</x:Double>
-        <x:Double x:Key="YourWeekItemButtonFontSize">12</x:Double>
+        <x:Double x:Key="YourWeekItemTitleFontSize">16</x:Double>
+        <x:Double x:Key="YourWeekItemLabelFontSize">12</x:Double>
+        <x:Double x:Key="YourWeekItemButtonFontSize">10</x:Double>
+        <Style TargetType="Button" x:Key="DoneButtonStyle">
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BackgroundMainColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="RelativePanel.AlignRightWithPanel" Value="True"/>
+            <Setter Property="RelativePanel.AlignVerticalCenterWithPanel" Value="True"/>
+        </Style>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -23,12 +35,16 @@
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:Activity">
-                    <RelativePanel BorderThickness="2" BorderBrush="{StaticResource BackgroundMainColor}" Height="55" Margin="4,5,4,5">
-                        <TextBlock Name="TitleTextBlock" Text="{x:Bind Title}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="10,5,0,0" />
-                        <TextBlock Name="PriorLabelTextBlock" Text="Priorytet:" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
-                        <TextBlock Name="PriorValueTextBlock" Text="{x:Bind PriorityUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="PriorLabelTextBlock" Margin="3,0,0,5"/>
-                        <TextBlock Name="ContextLabelTextBlock" Text="" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="40,0,0,5"/>
+                    <RelativePanel Background="{StaticResource LightGrayColor}" BorderThickness="1" BorderBrush="{StaticResource BackgroundMainColor}" Height="55" Margin="4,5,4,5">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,50,0">
+                            <Ellipse Name="PriorIcon" Fill="{x:Bind PriorityUI}" Height="10" Width="10" Margin="10,5,0,0"/>
+                            <TextBlock Name="TitleTextBlock" Text="{x:Bind Title}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,5,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                        <TextBlock Name="ContextLabelTextBlock" Text="" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="0,0,0,5"/>
                         <TextBlock Name="ContextValueTextBlock" Text="{x:Bind ContextUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="ContextLabelTextBlock" Margin="0,0,0,5"/>
+                        <TextBlock Name="StartDateTextBlock" Text="{x:Bind StartDateUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" Margin="10,0,0,5"/>
+                        <TextBlock Name="StartHourTextBlock" Text="{x:Bind StartHourUI}" FontSize="{StaticResource YourWeekItemLabelFontSize}" RelativePanel.AlignBottomWithPanel="True" RelativePanel.RightOf="StartDateTextBlock" Margin="5,0,5,5"/>
+                        <Button Name="DoneButton" Content="&#xE001;" DataContext="{x:Bind Id}" Style="{StaticResource DoneButtonStyle}" Margin="0,0,9,0" Click="DoneButton_Click"/>
                     </RelativePanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
