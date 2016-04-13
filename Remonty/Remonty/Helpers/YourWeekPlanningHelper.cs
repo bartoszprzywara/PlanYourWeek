@@ -273,13 +273,13 @@ namespace Remonty.Helpers
             // na koniec posortuj je ostatnim kryterium sortowania od najwcześniejszej godziny rozpoczęcia
             using (LocalDatabaseHelper.conn.Lock())
                 tempActivityList = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>(
-                    "SELECT * FROM(SELECT * FROM Activity WHERE IsDone = 0 AND IsAdded = 0 AND List = 'Zaplanowane' AND StartHour IS NULL AND StartDate = '" + tempToday.UtcTicks +
+                    "SELECT * FROM(SELECT * FROM Activity WHERE IsDone = 0 AND IsAdded = 0 AND List like 'Zaplanowane' AND StartHour IS NULL AND StartDate = '" + tempToday.UtcTicks +
                         "'ORDER BY PriorityId DESC, EstimationId ASC) UNION ALL " +
-                    "SELECT * FROM(SELECT * FROM Activity WHERE IsDone = 0 AND IsAdded = 0 AND List = 'Zaplanowane' AND StartDate < '" + tempToday.AddDays(-day).UtcTicks +
+                    "SELECT * FROM(SELECT * FROM Activity WHERE IsDone = 0 AND IsAdded = 0 AND List like 'Zaplanowane' AND StartDate < '" + tempToday.AddDays(-day).UtcTicks +
                         "'ORDER BY PriorityId DESC, EstimationId ASC) UNION ALL " +
-                    "SELECT * FROM(SELECT * FROM Activity WHERE IsDone = 0 AND IsAdded = 0 AND List = 'Najblizsze' " +
+                    "SELECT * FROM(SELECT * FROM Activity WHERE IsDone = 0 AND IsAdded = 0 AND List like 'Najbli_sze' " +
                         "ORDER BY PriorityId DESC, EstimationId ASC) UNION ALL " +
-                    "SELECT * FROM(SELECT * FROM Activity WHERE IsDone = 0 AND IsAdded = 0 AND List = 'Kiedys' " +
+                    "SELECT * FROM(SELECT * FROM Activity WHERE IsDone = 0 AND IsAdded = 0 AND List like 'Kiedy_' " +
                         "ORDER BY PriorityId DESC, EstimationId ASC)"
                     ).ToList());
             // co daje krok 3a, 4a, 5a, 6a: mamy listy odpowiednich aktywności dla kroków od 3 do 6
@@ -298,7 +298,7 @@ namespace Remonty.Helpers
                 // powtarzaj czynność aż do skutku (czyli aż do końca planu dnia)
                 int i = 0;
                 while (i < PlannedWeek[day].Count - 1 && (
-                    // sprawdź, czy pierwsze godzina dla wstawianej aktywności jest pusta w planie dnia
+                    // sprawdź, czy pierwsza godzina dla wstawianej aktywności jest pusta w planie dnia
                     (PlannedWeek[day][i].ProposedActivity != null) ||
                     // sprawdź, czy aktywność nie będzie zaczynać się w godzinach pracy
                     (PlannedWeek[day][i].Id >= StartWork[day] && PlannedWeek[day][i].Id < EndWork[day]) ||

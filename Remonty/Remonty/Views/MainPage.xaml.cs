@@ -68,9 +68,11 @@ namespace Remonty
 
         private void SearchSplitButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentFrame.Navigate(typeof(SearchResults), SearchSplitTextBox.Text);
+            App.LastSearchValue = SearchSplitTextBox.Text;
+            ContentFrame.Navigate(typeof(ActivityGeneric), "Szukaj");
             TitleTextBlock.Text = "Szukaj";
             SearchSplitView.IsPaneOpen = false;
+            SaveState();
         }
 
         private void MenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -79,72 +81,55 @@ namespace Remonty
             {
                 TitleTextBlock.Text = "Twój tydzień";
                 ContentFrame.Navigate(typeof(YourWeek));
-                MenuSplitView.IsPaneOpen = false;
-                SaveState();
             }
             else if (IncomingListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Nowe";
                 ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
-                MenuSplitView.IsPaneOpen = false;
-                SaveState();
             }
             else if (ScheduledListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Zaplanowane";
                 ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
-                MenuSplitView.IsPaneOpen = false;
-                SaveState();
             }
             else if (NextListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = "Najblizsze"; // nie działają mi polskie znaki w sqlite
+                TitleTextBlock.Text = "Najbliższe";
                 ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
-                MenuSplitView.IsPaneOpen = false;
-                SaveState();
             }
             else if (SomedayListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = "Kiedys"; // nie działają mi polskie znaki w sqlite
+                TitleTextBlock.Text = "Kiedyś";
                 ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
-                MenuSplitView.IsPaneOpen = false;
-                SaveState();
             }
             else if (WaitingListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Oddelegowane";
                 ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
-                MenuSplitView.IsPaneOpen = false;
-                SaveState();
             }
             else if (DoneListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Zrobione";
                 ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
-                MenuSplitView.IsPaneOpen = false;
-                SaveState();
-            }
+             }
             else if (ProjectsListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Projekty";
                 ContentFrame.Navigate(typeof(Projects));
-                MenuSplitView.IsPaneOpen = false;
-                SaveState();
             }
             else if (ContextsListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Konteksty";
                 ContentFrame.Navigate(typeof(Contexts));
-                MenuSplitView.IsPaneOpen = false;
-                SaveState();
             }
-            else if (SettingsListBoxItem.IsSelected)
+            else if (OptionsListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Ustawienia";
                 ContentFrame.Navigate(typeof(Options));
-                MenuSplitView.IsPaneOpen = false;
-                SaveState();
             }
+            MenuListBox.SelectedItem = null;
+            MenuSplitView.IsPaneOpen = false;
+            SaveState();
         }
     }
 }

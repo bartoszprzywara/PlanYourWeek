@@ -215,7 +215,7 @@ namespace Remonty
 
         private void InitializeComboBoxes()
         {
-            ListComboBox.ItemsSource = new string[] { "Nowe", "Zaplanowane", "Najblizsze", "Kiedys", "Oddelegowane" };
+            ListComboBox.ItemsSource = new string[] { "Nowe", "Zaplanowane", "Najbliższe", "Kiedyś", "Oddelegowane" };
             PriorityComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Priority>();
             EstimationComboBox.ItemsSource = LocalDatabaseHelper.ReadNamesFromTable<Estimation>();
             listOfContexts = LocalDatabaseHelper.ReadAllItemsFromTable<Context>();

@@ -101,7 +101,7 @@
                             <TextBlock Text="Konteksty" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
                         </StackPanel>
                     </ListBoxItem>
-                    <ListBoxItem Name="SettingsListBoxItem">
+                    <ListBoxItem Name="OptionsListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE115;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
                             <TextBlock Text="Ustawienia" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>

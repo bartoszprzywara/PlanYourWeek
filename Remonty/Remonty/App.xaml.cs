@@ -27,6 +27,7 @@ namespace Remonty
     {
         internal static int LastPivotItem;
         internal static string TitleTextBlockText;
+        internal static string LastSearchValue;
         internal static Task ReloadPlannedWeekTask;
         internal static Type CurrentFrameInMainPage;
         internal static bool PlannedWeekNeedsToBeReloaded = true;

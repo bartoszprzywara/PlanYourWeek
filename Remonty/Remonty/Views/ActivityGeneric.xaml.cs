@@ -30,12 +30,23 @@ namespace Remonty
             if (e.Parameter == null) return;
             listType = e.Parameter.ToString();
 
-            if (listType != "Zrobione")
+            if (listType.Contains("Szukaj"))
+            {
+                SearchValueTextBlock.Visibility = Visibility.Visible;
+                SearchValueTextBlock.Text = "Wyniki dla: " + App.LastSearchValue;
+                string searchValue = App.LastSearchValue.ToLower();
+
                 using (LocalDatabaseHelper.conn.Lock())
-                    listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0 AND List = '" + listType + "'").ToList());
-            else
+                    listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0").Where(
+                        v => v.Title.Contains(searchValue) || v.Description.Contains(searchValue)).ToList());
+            }
+            else if (listType == "Zrobione")
                 using (LocalDatabaseHelper.conn.Lock())
                     listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 1").ToList());
+            else
+                using (LocalDatabaseHelper.conn.Lock())
+                    listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0").Where(
+                        v => v.List == listType).ToList());
 
             if (App.PlannedWeekNeedsToBeReloaded)
             {
@@ -47,8 +58,6 @@ namespace Remonty
             }
         }
 
-        //Text="Wyniki dla: "
-        //private Windows.UI.Color DoneButtonTickColor = Windows.UI.Colors.LightGray;
         private string listType;
         private ObservableCollection<Activity> listofActivities;
 
