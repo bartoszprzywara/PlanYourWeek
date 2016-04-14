@@ -395,5 +395,41 @@ namespace Remonty
         }
 
         #endregion
+
+        private async void CalendarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var appointment = new Windows.ApplicationModel.Appointments.Appointment();
+
+            appointment.Subject = "Test Calendar Entry";
+            appointment.Details = "Appointment Details";
+            appointment.Location = "Japan";
+            appointment.StartTime = DateTimeOffset.Now; // DateTime.Now;
+            appointment.Duration = new TimeSpan(10000);
+            appointment.AllDay = true;
+            appointment.Reminder = TimeSpan.FromDays(1);
+            appointment.BusyStatus = Windows.ApplicationModel.Appointments.AppointmentBusyStatus.WorkingElsewhere;
+            appointment.Sensitivity = Windows.ApplicationModel.Appointments.AppointmentSensitivity.Public;
+
+            var rect = new Rect(new Point(Window.Current.Bounds.Width / 2, Window.Current.Bounds.Height / 2), new Size());
+            string appointmentId = await Windows.ApplicationModel.Appointments.AppointmentManager.ShowAddAppointmentAsync(appointment, rect, Placement.Default);
+        }
+
+        async private System.Threading.Tasks.Task CreateCalenderEntry()
+        {
+            // 1. get access to appointmentstore 
+            var appointmentStore = await Windows.ApplicationModel.Appointments.AppointmentManager.RequestStoreAsync(Windows.ApplicationModel.Appointments.AppointmentStoreAccessType.AppCalendarsReadWrite);
+
+            // 2. get calendar 
+            var appCustomApptCalendar = await appointmentStore.CreateAppointmentCalendarAsync("MyCalendar");
+
+            // 3. create new Appointment 
+            var appointment = new Windows.ApplicationModel.Appointments.Appointment();
+            appointment.AllDay = true;
+            appointment.Subject = "Mein Termin";
+            appointment.StartTime = DateTime.Now;
+
+            //  4. add 
+            await appCustomApptCalendar.SaveAppointmentAsync(appointment);
+        }
     }
 }

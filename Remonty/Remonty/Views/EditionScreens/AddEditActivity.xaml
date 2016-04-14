@@ -125,6 +125,8 @@
                     <ComboBox Name="ProjectComboBox" ItemsSource="{x:Bind listOfProjects}" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedItem="{x:Bind project, Mode=TwoWay, Converter={StaticResource ProjectConverter}}" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True" SelectionChanged="ProjectComboBox_SelectionChanged"/>
                 </RelativePanel>
 
+                <Button Name="CalendarButton" Content="Dodaj do kalendarza" Foreground="{StaticResource ForegroundMainColor}" Background="{StaticResource BackgroundMainColor}" Margin="15,35,15,0" Click="CalendarButton_Click"/>
+
                 <StackPanel Name="DebugAreaStrackPanel">
                     <StackPanel Orientation="Horizontal" Margin="15,35,15,0">
                         <Button Content="Pokaż podsumowanie" Foreground="{StaticResource ForegroundMainColor}" Background="{StaticResource BackgroundMainColor}" Click="DebugButton_Click" />
