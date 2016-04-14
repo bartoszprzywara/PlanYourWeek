@@ -77,9 +77,12 @@ namespace Remonty
 
         private void SearchSplitTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            App.LastSearchValue = SearchSplitTextBox.Text;
-            ContentFrame.Navigate(typeof(ActivityGeneric), "Szukaj");
-            TitleTextBlock.Text = "Szukaj";
+            if (!string.IsNullOrEmpty(SearchSplitTextBox.Text))
+            {
+                App.LastSearchValue = SearchSplitTextBox.Text;
+                ContentFrame.Navigate(typeof(ActivityGeneric), "Szukaj");
+                TitleTextBlock.Text = "Szukaj";
+            }
             SaveState();
         }
 
