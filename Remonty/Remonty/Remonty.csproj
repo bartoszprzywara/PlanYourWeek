@@ -101,24 +101,19 @@
     <Compile Include="Helpers\ProjectConverter.cs" />
     <Compile Include="Helpers\YourWeekPlanningHelper.cs" />
     <Compile Include="Helpers\YourWeekTemplateSelector.cs" />
+    <Compile Include="Models\IComplexProperty.cs" />
     <Compile Include="Models\PlannedActivity.cs" />
     <Compile Include="Models\Settings.cs" />
-    <Compile Include="Views\EditionScreens\EditProject.xaml.cs">
-      <DependentUpon>EditProject.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\ContextConverter.cs" />
-    <Compile Include="Views\EditionScreens\EditContext.xaml.cs">
-      <DependentUpon>EditContext.xaml</DependentUpon>
+    <Compile Include="Views\EditionScreens\EditGenericProperty.xaml.cs">
+      <DependentUpon>EditGenericProperty.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\LocalDatabaseHelper.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\Estimation.cs" />
-    <Compile Include="Models\IHasName.cs" />
+    <Compile Include="Models\ComplexProperty.cs" />
     <Compile Include="Models\Priority.cs" />
     <Compile Include="Models\Project.cs" />
-    <Compile Include="Views\Projects.xaml.cs">
-      <DependentUpon>Projects.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\EditionScreens\AddEditActivity.xaml.cs">
       <DependentUpon>AddEditActivity.xaml</DependentUpon>
     </Compile>
@@ -126,8 +121,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Contexts.xaml.cs">
-      <DependentUpon>Contexts.xaml</DependentUpon>
+    <Compile Include="Views\ActivityGenericProperty.xaml.cs">
+      <DependentUpon>ActivityGenericProperty.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ActivityGeneric.xaml.cs">
       <DependentUpon>ActivityGeneric.xaml</DependentUpon>
@@ -165,15 +160,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\EditionScreens\EditProject.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EditionScreens\EditContext.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Projects.xaml">
+    <Page Include="Views\EditionScreens\EditGenericProperty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -181,7 +168,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Contexts.xaml">
+    <Page Include="Views\ActivityGenericProperty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

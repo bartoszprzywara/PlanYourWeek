@@ -147,7 +147,7 @@ namespace Remonty.Helpers
             }
         }
 
-        public static ObservableCollection<string> ReadNamesFromTable<T>() where T : class, IHasName
+        public static ObservableCollection<string> ReadNamesFromTable<T>() where T : class, IComplexProperty
         {
             using (conn.Lock())
             {
@@ -156,22 +156,6 @@ namespace Remonty.Helpers
                 foreach (T item in tempCollection)
                     myCollection.Add(item.Name);
                 return myCollection;
-            }
-        }
-
-        public static void UpdateNameInTable<T>(int Id, string editedName) where T : class, IHasName
-        {
-            using (conn.Lock())
-            {
-                var existingItem = conn.Query<T>("SELECT * FROM " + typeof(T).Name + " WHERE Id =" + Id.ToString()).FirstOrDefault();
-                if (existingItem != null)
-                {
-                    existingItem.Name = editedName;
-                    conn.RunInTransaction(() =>
-                    {
-                        conn.Update(existingItem);
-                    });
-                }
             }
         }
 
@@ -211,21 +195,6 @@ namespace Remonty.Helpers
                 conn.CreateTable<T>();
                 conn.Dispose();
                 conn.Close();
-            }
-        }
-
-        public static void DeleteItem<T>(int itemId) where T : class
-        {
-            using (conn.Lock())
-            {
-                var existingItem = conn.Query<T>("SELECT * FROM " + typeof(T).Name + " WHERE Id =" + itemId).FirstOrDefault();
-                if (existingItem != null)
-                {
-                    conn.RunInTransaction(() =>
-                    {
-                        conn.Delete(existingItem);
-                    });
-                }
             }
         }
 

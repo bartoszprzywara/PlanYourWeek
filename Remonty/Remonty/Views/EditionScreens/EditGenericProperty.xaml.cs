@@ -19,9 +19,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Remonty
 {
-    public sealed partial class EditProject : Page
+    public sealed partial class EditGenericProperty : Page
     {
-        public EditProject()
+        public EditGenericProperty()
         {
             this.InitializeComponent();
             SetUpPageAnimation();
@@ -39,16 +39,30 @@ namespace Remonty
             this.Transitions = collection;
         }
 
-        private Project project;
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter == null) return;
-            project = e.Parameter as Project;
+            complexPropertyName = e.Parameter.ToString().Split('|')[0];
+            int itemId = int.Parse(e.Parameter.ToString().Split('|')[1]);
 
-            NameTextBlock.Text = "Edytuj projekt";
-            NameTextBox.Text = project.Name;
+            if (complexPropertyName == "Kontekst")
+            {
+                complexPropertyType = "Context";
+                item = LocalDatabaseHelper.ReadItem<Context>(itemId);
+            }
+            if (complexPropertyName == "Projekt")
+            {
+                complexPropertyType = "Project";
+                item = LocalDatabaseHelper.ReadItem<Project>(itemId);
+            }
+
+            NameTextBlock.Text = "Edytuj " + complexPropertyName.ToLower();
+            NameTextBox.Text = item.Name;
         }
+
+        private string complexPropertyName;
+        private string complexPropertyType;
+        private ComplexProperty item;
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
@@ -58,7 +72,7 @@ namespace Remonty
 
         async private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new MessageDialog("Na pewno chcesz bezpowrotnie usunąć ten projekt? Wszystkie zadania mające ten projekt stracą go", "Na pewno?");
+            var dialog = new MessageDialog("Na pewno chcesz bezpowrotnie usunąć ten " + complexPropertyName.ToLower() + "? Wszystkie zadania mające ten " + complexPropertyName.ToLower() + " - stracą go", "Na pewno?");
             dialog.Commands.Add(new UICommand("Tak") { Id = 0 });
             dialog.Commands.Add(new UICommand("Nie") { Id = 1 });
             dialog.CancelCommandIndex = 1;
@@ -67,8 +81,8 @@ namespace Remonty
 
             if ((int)result.Id == 0)
             {
-                LocalDatabaseHelper.DeleteItem<Project>(project.Id);
-                LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET ProjectId = NULL WHERE ProjectID = " + project.Id);
+                LocalDatabaseHelper.ExecuteQuery("DELETE FROM " + complexPropertyType + " WHERE Id = " + item.Id);
+                LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET " + complexPropertyType + "Id = NULL WHERE " + complexPropertyType + "Id = " + item.Id);
                 App.PlannedWeekNeedsToBeReloaded = true;
 
                 if (this.Frame.CanGoBack)
@@ -78,20 +92,20 @@ namespace Remonty
 
         async private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            int counter = LocalDatabaseHelper.CountItems<Project>("SELECT * FROM Project WHERE Name = '" + NameTextBox.Text + "' COLLATE NOCASE");
+            int counter = LocalDatabaseHelper.CountItems<ComplexProperty>("SELECT * FROM " + complexPropertyType + " WHERE Name = '" + NameTextBox.Text + "' COLLATE NOCASE");
 
             if (string.IsNullOrWhiteSpace(NameTextBox.Text))
             {
-                var dialog = new MessageDialog("Projekt musi mieć nazwę", "Nie da rady");
+                var dialog = new MessageDialog(complexPropertyName + " musi mieć nazwę", "Nie da rady");
                 await dialog.ShowAsync();
             }
-            else if (counter > 0 && NameTextBox.Text.ToLower() != project.Name.ToLower())
+            else if (counter > 0 && NameTextBox.Text.ToLower() != item.Name.ToLower())
             {
-                var dialog = new MessageDialog("Taki projekt już istnieje", "Nie da rady");
+                var dialog = new MessageDialog("Taki " + complexPropertyName.ToLower() + " już istnieje", "Nie da rady");
                 await dialog.ShowAsync();
             }
             else {
-                LocalDatabaseHelper.UpdateNameInTable<Project>(project.Id, NameTextBox.Text);
+                LocalDatabaseHelper.ExecuteQuery("UPDATE " + complexPropertyType + " SET Name = '" + NameTextBox.Text + "' WHERE Id = " + item.Id);
                 App.PlannedWeekNeedsToBeReloaded = true;
 
                 if (this.Frame.CanGoBack)

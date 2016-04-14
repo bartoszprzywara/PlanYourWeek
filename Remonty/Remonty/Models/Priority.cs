@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Remonty.Models
 {
-    public class Priority : IHasName
+    public class Priority : ComplexProperty, IComplexProperty
     {
         public Priority()
         {
@@ -17,9 +17,5 @@ namespace Remonty.Models
         {
             Name = name;
         }
-
-        [SQLite.Net.Attributes.PrimaryKey, SQLite.Net.Attributes.AutoIncrement]
-        public int Id { get; set; }
-        public string Name { get; set; }
     }
 }

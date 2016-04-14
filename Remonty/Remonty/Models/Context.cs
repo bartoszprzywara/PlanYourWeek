@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Remonty.Models
 {
-    public class Context : IHasName
+    public class Context : ComplexProperty, IComplexProperty
     {
         public Context()
         {
@@ -17,10 +17,5 @@ namespace Remonty.Models
         {
             Name = name;
         }
-
-        [SQLite.Net.Attributes.PrimaryKey, SQLite.Net.Attributes.AutoIncrement]
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int ActivitiesCounter { get { return Helpers.LocalDatabaseHelper.CountItems<Activity>("SELECT * FROM Activity WHERE ContextID = " + Id); } }
     }
 }

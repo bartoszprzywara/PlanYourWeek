@@ -110,7 +110,7 @@ namespace Remonty
 
             if ((int)result.Id == 0)
             {
-                LocalDatabaseHelper.DeleteItem<Activity>(activity.Id);
+                LocalDatabaseHelper.ExecuteQuery("DELETE FROM Activity WHERE Id = " + activity.Id);
                 App.PlannedWeekNeedsToBeReloaded = true;
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Remonty.Models
 {
-    public class Estimation : IHasName
+    public class Estimation : ComplexProperty, IComplexProperty
     {
         public Estimation()
         {
@@ -19,9 +19,6 @@ namespace Remonty.Models
             Duration = ParseName(name);
         }
 
-        [SQLite.Net.Attributes.PrimaryKey, SQLite.Net.Attributes.AutoIncrement]
-        public int Id { get; set; }
-        public string Name { get; set; }
         public double Duration { get; set; }
 
         private double ParseName(string word)

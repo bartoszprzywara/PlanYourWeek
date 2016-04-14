@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="Remonty.EditContext"
+    x:Class="Remonty.EditGenericProperty"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Remonty"
@@ -32,7 +32,7 @@
         </RelativePanel>
 
         <StackPanel Grid.Row="1">
-            <TextBlock Text="Edytuj nazwę kontekstu" Margin="{StaticResource CommonMargin}"/>
+            <TextBlock Text="Edytuj nazwę" Margin="{StaticResource CommonMargin}"/>
             <TextBox Name="NameTextBox" Margin="{StaticResource CommonMargin}" BorderBrush="{StaticResource BackgroundMainColor}"/>
         </StackPanel>
     </Grid>

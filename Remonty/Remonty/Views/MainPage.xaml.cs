@@ -111,16 +111,16 @@ namespace Remonty
             {
                 TitleTextBlock.Text = "Zrobione";
                 ContentFrame.Navigate(typeof(ActivityGeneric), TitleTextBlock.Text);
-             }
+            }
             else if (ProjectsListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Projekty";
-                ContentFrame.Navigate(typeof(Projects));
+                ContentFrame.Navigate(typeof(ActivityGenericProperty), TitleTextBlock.Text);
             }
             else if (ContextsListBoxItem.IsSelected)
             {
                 TitleTextBlock.Text = "Konteksty";
-                ContentFrame.Navigate(typeof(Contexts));
+                ContentFrame.Navigate(typeof(ActivityGenericProperty), TitleTextBlock.Text);
             }
             else if (OptionsListBoxItem.IsSelected)
             {

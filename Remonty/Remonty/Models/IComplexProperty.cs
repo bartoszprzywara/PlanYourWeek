@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Remonty.Models
 {
-    public interface IHasName
+    public interface IComplexProperty
     {
+        int Id { get; set; }
         string Name { get; set; }
     }
 }

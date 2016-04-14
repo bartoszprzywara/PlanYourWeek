@@ -38,7 +38,7 @@ namespace Remonty
 
                 using (LocalDatabaseHelper.conn.Lock())
                     listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0").Where(
-                        v => v.Title.Contains(searchValue) || v.Description.Contains(searchValue)).ToList());
+                        v => v.Title.ToLower().Contains(searchValue) || v.Description.ToLower().Contains(searchValue)).ToList());
             }
             else if (listType == "Zrobione")
                 using (LocalDatabaseHelper.conn.Lock())
