@@ -75,6 +75,14 @@ namespace Remonty
             SaveState();
         }
 
+        private void SearchSplitTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            App.LastSearchValue = SearchSplitTextBox.Text;
+            ContentFrame.Navigate(typeof(ActivityGeneric), "Szukaj");
+            TitleTextBlock.Text = "Szukaj";
+            SaveState();
+        }
+
         private void MenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (YourWeekListBoxItem.IsSelected)

@@ -117,7 +117,7 @@
         <SplitView Grid.Row="0" Name="SearchSplitView" PanePlacement="Right" OpenPaneLength="250" DisplayMode="Overlay">
             <SplitView.Pane>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox Name="SearchSplitTextBox" Width="210" Height="40" PlaceholderText="Szukaj" BorderBrush="{StaticResource BackgroundMainColor}" FontSize="20"/>
+                    <TextBox Name="SearchSplitTextBox" Width="210" Height="40" PlaceholderText="Szukaj" BorderBrush="{StaticResource BackgroundMainColor}" FontSize="20" TextChanged="SearchSplitTextBox_TextChanged"/>
                     <Button Name="SearchSplitButton" Content="&#xE71E;" Background="{StaticResource BackgroundMainColor}" Style="{StaticResource NaviButtonStyle}" Click="SearchSplitButton_Click"/>
                 </StackPanel>
             </SplitView.Pane>
