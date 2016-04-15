@@ -51,7 +51,8 @@
             <TextBlock Text="Dodaj zadanie"  Name="TitleTextBlock" Foreground="{StaticResource ForegroundMainColor}" Margin="10,0,0,0" RelativePanel.RightOf="BackButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
             <Button Content="&#xE739;" Name="UnDoneButton" RelativePanel.LeftOf="DeleteButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed" Click="UnDoneButton_Click"/>
             <Button Content="&#xE73A;" Name="DoneButton" RelativePanel.LeftOf="DeleteButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed" Click="DoneButton_Click"/>
-            <Button Content="&#xE107;" Name="DeleteButton" RelativePanel.LeftOf="SaveButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed" Click="DeleteButton_Click"/>
+            <Button Content="&#xE107;" Name="DeleteButton" RelativePanel.LeftOf="AddToCalendarButton" Style="{StaticResource NaviButtonStyle}" Visibility="Collapsed" Click="DeleteButton_Click"/>
+            <Button Content="&#xE163;" Name="AddToCalendarButton" RelativePanel.LeftOf="SaveButton" Style="{StaticResource NaviButtonStyle}" Click="AddToCalendarButton_Click"/>
             <Button Content="&#xE74E;" Name="SaveButton" RelativePanel.AlignRightWithPanel="True" Style="{StaticResource NaviButtonStyle}" Click="SaveButton_Click"/>
         </RelativePanel>
 
@@ -124,8 +125,6 @@
                     <Image Name="ProjectClearButton" RelativePanel.LeftOf="ProjectComboBox" Style="{StaticResource ActivityClearButtonImageStyle}" Tapped="ProjectClearButton_Tapped"/>
                     <ComboBox Name="ProjectComboBox" ItemsSource="{x:Bind listOfProjects}" SelectedValuePath="Id" DisplayMemberPath="Name" SelectedItem="{x:Bind project, Mode=TwoWay, Converter={StaticResource ProjectConverter}}" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True" SelectionChanged="ProjectComboBox_SelectionChanged"/>
                 </RelativePanel>
-
-                <Button Name="CalendarButton" Content="Dodaj do kalendarza" Foreground="{StaticResource ForegroundMainColor}" Background="{StaticResource BackgroundMainColor}" Margin="15,35,15,0" Click="CalendarButton_Click"/>
 
                 <StackPanel Name="DebugAreaStrackPanel">
                     <StackPanel Orientation="Horizontal" Margin="15,35,15,0">

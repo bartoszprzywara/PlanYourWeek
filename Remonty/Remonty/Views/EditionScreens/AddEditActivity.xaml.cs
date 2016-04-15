@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Appointments;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Popups;
@@ -54,6 +55,7 @@ namespace Remonty
             {
                 DoneButton.Visibility = Visibility.Collapsed;
                 UnDoneButton.Visibility = Visibility.Visible;
+                AddToCalendarButton.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -163,12 +165,15 @@ namespace Remonty
                 StartDateRelativePanel.Visibility = Visibility.Visible;
                 if (StartDatePicker.Date == null)
                     StartDatePicker.Date = DateTimeOffset.Now;
+                if (activity == null || !activity.IsDone)
+                    AddToCalendarButton.Visibility = Visibility.Visible;
                 ShowStartDateRelativePanelStoryboard.Begin();
             }
             else
             {
                 StartDateRelativePanel.Visibility = Visibility.Collapsed;
                 StartHourRelativePanel.Visibility = Visibility.Collapsed;
+                AddToCalendarButton.Visibility = Visibility.Collapsed;
             }
             SetStartAndEndHourVisibility();
         }
@@ -396,34 +401,39 @@ namespace Remonty
 
         #endregion
 
-        private async void CalendarButton_Click(object sender, RoutedEventArgs e)
+        private async void AddToCalendarButton_Click(object sender, RoutedEventArgs e)
         {
-            var appointment = new Windows.ApplicationModel.Appointments.Appointment();
+            Appointment appointment = new Appointment();
+            Activity tempActivity = LoadActivityValuesFromControls();
 
-            appointment.Subject = "Test Calendar Entry";
-            appointment.Details = "Appointment Details";
-            appointment.Location = "Japan";
-            appointment.StartTime = DateTimeOffset.Now; // DateTime.Now;
-            appointment.Duration = new TimeSpan(10000);
-            appointment.AllDay = true;
-            appointment.Reminder = TimeSpan.FromDays(1);
-            appointment.BusyStatus = Windows.ApplicationModel.Appointments.AppointmentBusyStatus.WorkingElsewhere;
-            appointment.Sensitivity = Windows.ApplicationModel.Appointments.AppointmentSensitivity.Public;
+            appointment.Subject = tempActivity.Title;
+            appointment.Details = tempActivity.Description;
+            appointment.Location = tempActivity.ContextUI;
+            appointment.Reminder = TimeSpan.FromHours(1);
+            appointment.StartTime = ((DateTimeOffset)tempActivity.StartDate).Date;
+
+            if (tempActivity.StartHour != null)
+                appointment.StartTime += (TimeSpan)tempActivity.StartHour;
+
+            if (tempActivity.EstimationId != null)
+                appointment.Duration = TimeSpan.FromHours(LocalDatabaseHelper.ReadItem<Estimation>((int)tempActivity.EstimationId).Duration);
 
             var rect = new Rect(new Point(Window.Current.Bounds.Width / 2, Window.Current.Bounds.Height / 2), new Size());
-            string appointmentId = await Windows.ApplicationModel.Appointments.AppointmentManager.ShowAddAppointmentAsync(appointment, rect, Placement.Default);
+            string appointmentId = await AppointmentManager.ShowAddAppointmentAsync(appointment, rect, Placement.Default);
+
+            System.Diagnostics.Debug.WriteLine("A co to za string? " + appointmentId);
         }
 
         async private System.Threading.Tasks.Task CreateCalenderEntry()
         {
             // 1. get access to appointmentstore 
-            var appointmentStore = await Windows.ApplicationModel.Appointments.AppointmentManager.RequestStoreAsync(Windows.ApplicationModel.Appointments.AppointmentStoreAccessType.AppCalendarsReadWrite);
+            var appointmentStore = await AppointmentManager.RequestStoreAsync(AppointmentStoreAccessType.AppCalendarsReadWrite);
 
             // 2. get calendar 
             var appCustomApptCalendar = await appointmentStore.CreateAppointmentCalendarAsync("MyCalendar");
 
             // 3. create new Appointment 
-            var appointment = new Windows.ApplicationModel.Appointments.Appointment();
+            var appointment = new Appointment();
             appointment.AllDay = true;
             appointment.Subject = "Mein Termin";
             appointment.StartTime = DateTime.Now;
