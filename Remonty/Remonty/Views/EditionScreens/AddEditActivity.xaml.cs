@@ -55,8 +55,13 @@ namespace Remonty
             {
                 DoneButton.Visibility = Visibility.Collapsed;
                 UnDoneButton.Visibility = Visibility.Visible;
-                AddToCalendarButton.Visibility = Visibility.Collapsed;
             }
+
+            //CreateTemporaryNotification();
+
+            /* AddToCalendar
+            else if (activity.List == "Zaplanowane")
+                AddToCalendarButton.Visibility = Visibility.Visible; */
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -165,15 +170,17 @@ namespace Remonty
                 StartDateRelativePanel.Visibility = Visibility.Visible;
                 if (StartDatePicker.Date == null)
                     StartDatePicker.Date = DateTimeOffset.Now;
-                if (activity == null || !activity.IsDone)
-                    AddToCalendarButton.Visibility = Visibility.Visible;
+                /* AddToCalendar
+                if (activity != null && !activity.IsDone)
+                    AddToCalendarButton.Visibility = Visibility.Visible; */
                 ShowStartDateRelativePanelStoryboard.Begin();
             }
             else
             {
                 StartDateRelativePanel.Visibility = Visibility.Collapsed;
                 StartHourRelativePanel.Visibility = Visibility.Collapsed;
-                AddToCalendarButton.Visibility = Visibility.Collapsed;
+                /* AddToCalendar
+                AddToCalendarButton.Visibility = Visibility.Collapsed; */
             }
             SetStartAndEndHourVisibility();
         }
@@ -401,7 +408,37 @@ namespace Remonty
 
         #endregion
 
-        private async void AddToCalendarButton_Click(object sender, RoutedEventArgs e)
+        private void CreateTemporaryNotification()
+        {
+            string tempTitle = string.Empty;
+            if (activity != null)
+                tempTitle = activity.Title;
+
+            string contentString =
+            "<toast scenario=\"reminder\" duration=\"long\">" +
+                "<visual>" +
+                    "<binding template=\"ToastGeneric\">" +
+                        "<text id=\"1\">Masz zadanie do zrobienia!</text>" +
+                        "<text id=\"2\">" + tempTitle + "</text>" +
+                    "</binding>" +
+                "</visual>" +
+                "<commands>" +
+                    "<command id=\"snooze\"/>" +
+                    "<command id=\"dismiss\"/>" +
+                "</commands>" +
+            "</toast>";
+            Windows.Data.Xml.Dom.XmlDocument content = new Windows.Data.Xml.Dom.XmlDocument();
+            content.LoadXml(contentString);
+
+            DateTime scheduledTime = DateTime.Now.AddSeconds(5);
+            TimeSpan snoozeInterval = TimeSpan.FromMinutes(1);
+            var scheduledToast = new Windows.UI.Notifications.ScheduledToastNotification(content, scheduledTime, snoozeInterval, 0);
+
+            Windows.UI.Notifications.ToastNotifier toastNotifier = Windows.UI.Notifications.ToastNotificationManager.CreateToastNotifier();
+            toastNotifier.AddToSchedule(scheduledToast);
+        }
+
+        private async void AddToCalendar()
         {
             Appointment appointment = new Appointment();
             Activity tempActivity = LoadActivityValuesFromControls();
@@ -411,6 +448,7 @@ namespace Remonty
             appointment.Location = tempActivity.ContextUI;
             appointment.Reminder = TimeSpan.FromHours(1);
             appointment.StartTime = ((DateTimeOffset)tempActivity.StartDate).Date;
+            string activityAppointmentId = string.Empty; // to powinno być pole aktywności activity.AppointmentId
 
             if (tempActivity.StartHour != null)
                 appointment.StartTime += (TimeSpan)tempActivity.StartHour;
@@ -419,9 +457,21 @@ namespace Remonty
                 appointment.Duration = TimeSpan.FromHours(LocalDatabaseHelper.ReadItem<Estimation>((int)tempActivity.EstimationId).Duration);
 
             var rect = new Rect(new Point(Window.Current.Bounds.Width / 2, Window.Current.Bounds.Height / 2), new Size());
-            string appointmentId = await AppointmentManager.ShowAddAppointmentAsync(appointment, rect, Placement.Default);
 
-            System.Diagnostics.Debug.WriteLine("A co to za string? " + appointmentId);
+            string newAppointmentId;
+
+            if (string.IsNullOrEmpty(activityAppointmentId))
+            {
+                newAppointmentId = await AppointmentManager.ShowReplaceAppointmentAsync(activityAppointmentId, appointment, rect, Placement.Default);
+
+                if (string.IsNullOrEmpty(newAppointmentId))
+                    newAppointmentId = activityAppointmentId;
+            }
+            else
+                newAppointmentId = await AppointmentManager.ShowAddAppointmentAsync(appointment, rect, Placement.Default);
+
+            LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET AppointmentId = '" + newAppointmentId + "' WHERE Id = " + activity.Id);
+            App.PlannedWeekNeedsToBeReloaded = true;
         }
 
         async private System.Threading.Tasks.Task CreateCalenderEntry()

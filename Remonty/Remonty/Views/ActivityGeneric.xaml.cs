@@ -37,15 +37,15 @@ namespace Remonty
                 string searchValue = App.LastSearchValue.ToLower();
 
                 using (LocalDatabaseHelper.conn.Lock())
-                    listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0").Where(
+                    listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0 ORDER BY Id DESC").Where(
                         v => v.Title.ToLower().Contains(searchValue) || v.Description.ToLower().Contains(searchValue)).ToList());
             }
             else if (listType == "Zrobione")
                 using (LocalDatabaseHelper.conn.Lock())
-                    listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 1").ToList());
+                    listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 1 ORDER BY Id DESC").ToList());
             else
                 using (LocalDatabaseHelper.conn.Lock())
-                    listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0").Where(
+                    listofActivities = new ObservableCollection<Activity>(LocalDatabaseHelper.conn.Query<Activity>("SELECT * FROM Activity WHERE IsDone = 0 ORDER BY Id DESC").Where(
                         v => v.List == listType).ToList());
 
             if (App.PlannedWeekNeedsToBeReloaded)
