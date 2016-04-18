@@ -2,6 +2,7 @@
 using Remonty.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -92,19 +93,14 @@ namespace Remonty
 
         async private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            int counter = LocalDatabaseHelper.CountItems<ComplexProperty>("SELECT * FROM " + complexPropertyType + " WHERE Name = '" + NameTextBox.Text + "' COLLATE NOCASE");
+            int counter = new ObservableCollection<ComplexProperty>(LocalDatabaseHelper.conn.Query<ComplexProperty>("SELECT * FROM " + complexPropertyType).Where(v => v.Name.ToLower() == NameTextBox.Text.ToLower()).ToList()).Count;
 
             if (string.IsNullOrWhiteSpace(NameTextBox.Text))
-            {
-                var dialog = new MessageDialog(complexPropertyName + " musi mieć nazwę", "Nie da rady");
-                await dialog.ShowAsync();
-            }
+                await (new MessageDialog(complexPropertyName + " musi mieć nazwę", "Nie da rady")).ShowAsync();
             else if (counter > 0 && NameTextBox.Text.ToLower() != item.Name.ToLower())
+                await (new MessageDialog("Taki " + complexPropertyName.ToLower() + " już istnieje", "Nie da rady")).ShowAsync();
+            else
             {
-                var dialog = new MessageDialog("Taki " + complexPropertyName.ToLower() + " już istnieje", "Nie da rady");
-                await dialog.ShowAsync();
-            }
-            else {
                 LocalDatabaseHelper.ExecuteQuery("UPDATE " + complexPropertyType + " SET Name = '" + NameTextBox.Text + "' WHERE Id = " + item.Id);
                 App.PlannedWeekNeedsToBeReloaded = true;
 

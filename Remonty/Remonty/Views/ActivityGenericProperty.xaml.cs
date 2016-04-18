@@ -61,19 +61,14 @@ namespace Remonty
 
         async private void AddItemButton_Click(object sender, RoutedEventArgs e)
         {
-            int counter = LocalDatabaseHelper.CountItems<ComplexProperty>("SELECT * FROM " + complexPropertyType + " WHERE Name = '" + AddItemTextBox.Text + "' COLLATE NOCASE");
+            int counter = new ObservableCollection<ComplexProperty>(LocalDatabaseHelper.conn.Query<ComplexProperty>("SELECT * FROM " + complexPropertyType).Where(v => v.Name.ToLower() == AddItemTextBox.Text.ToLower()).ToList()).Count;
 
             if (string.IsNullOrWhiteSpace(AddItemTextBox.Text))
-            {
-                var dialog = new MessageDialog(complexPropertyName + " musi mieć nazwę", "Nie da rady");
-                await dialog.ShowAsync();
-            }
+                await (new MessageDialog(complexPropertyName + " musi mieć nazwę", "Nie da rady")).ShowAsync();
             else if (counter > 0)
+                await (new MessageDialog("Taki " + complexPropertyName.ToLower() + " już istnieje", "Nie da rady")).ShowAsync();
+            else
             {
-                var dialog = new MessageDialog("Taki " + complexPropertyName.ToLower() + " już istnieje", "Nie da rady");
-                await dialog.ShowAsync();
-            }
-            else {
                 if (complexPropertyName == "Kontekst")
                 {
                     LocalDatabaseHelper.InsertItem(new Context(AddItemTextBox.Text));

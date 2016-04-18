@@ -73,10 +73,7 @@ namespace Remonty
         private async void UnDoneButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
-            {
-                var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady");
-                await dialog.ShowAsync();
-            }
+                await (new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady")).ShowAsync();
             else
             {
                 LocalDatabaseHelper.UpdateActivity(activity.Id, LoadActivityValuesFromControls());
@@ -91,10 +88,7 @@ namespace Remonty
         private async void DoneButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
-            {
-                var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady");
-                await dialog.ShowAsync();
-            }
+                await (new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady")).ShowAsync();
             else
             {
                 LocalDatabaseHelper.UpdateActivity(activity.Id, LoadActivityValuesFromControls());
@@ -127,10 +121,7 @@ namespace Remonty
         async private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
-            {
-                var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady");
-                await dialog.ShowAsync();
-            }
+                await (new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady")).ShowAsync();
             else
             {
                 LocalDatabaseHelper.InsertItem<Activity>(LoadActivityValuesFromControls());
@@ -144,10 +135,7 @@ namespace Remonty
         async private void SaveExistingButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
-            {
-                var dialog = new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady");
-                await dialog.ShowAsync();
-            }
+                await (new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady")).ShowAsync();
             else
             {
                 LocalDatabaseHelper.UpdateActivity(activity.Id, LoadActivityValuesFromControls());
