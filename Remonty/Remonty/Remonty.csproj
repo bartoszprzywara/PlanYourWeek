@@ -103,6 +103,7 @@
     <Compile Include="Helpers\YourWeekTemplateSelector.cs" />
     <Compile Include="Models\IComplexProperty.cs" />
     <Compile Include="Models\PlannedActivity.cs" />
+    <Compile Include="Models\PlannedWeekItems.cs" />
     <Compile Include="Models\Settings.cs" />
     <Compile Include="Helpers\ContextConverter.cs" />
     <Compile Include="Views\EditionScreens\EditGenericProperty.xaml.cs">

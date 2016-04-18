@@ -34,17 +34,25 @@ namespace Remonty
         private int[] TotalHours;
         private int[] UsedHours;
         private string[] HoursColor = new string[7];
+        private int[] TotalWorkingHours;
+        private int[] UsedWorkingHours;
+        private string[] HoursWorkingColor = new string[7];
+        private Visibility[] IsVisible = new Visibility[7];
+        private PlannedWeekItems plannedWeekItems;
 
         private void GetPlannedWeek()
         {
             if (App.PlannedWeekNeedsToBeReloaded)
             {
                 (new YourWeekPlanningHelper()).GetPlannedWeek();
+                //plannedWeekItems = (new YourWeekPlanningHelper()).GetPlannedWeek2();
                 App.PlannedWeekNeedsToBeReloaded = false;
             }
             PlannedDay = App.FinalPlannedWeek;
             TotalHours = App.TotalHours;
             UsedHours = App.UsedHours;
+            TotalWorkingHours = App.TotalWorkingHours;
+            UsedWorkingHours = App.UsedWorkingHours;
 
             for (int i = 0; i < 7; i++)
             {
@@ -53,6 +61,14 @@ namespace Remonty
                     HoursColor[i] = "Orange";
                 if (UsedHours[i] > TotalHours[i])
                     HoursColor[i] = "Red";
+
+                HoursWorkingColor[i] = "DarkGreen";
+                if (UsedWorkingHours[i] > TotalWorkingHours[i] - 2)
+                    HoursWorkingColor[i] = "Orange";
+                if (UsedWorkingHours[i] > TotalWorkingHours[i])
+                    HoursWorkingColor[i] = "Red";
+
+                IsVisible[i] = (TotalWorkingHours[i] == 0) ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 

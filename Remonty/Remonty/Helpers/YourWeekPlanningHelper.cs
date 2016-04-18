@@ -17,6 +17,21 @@ namespace Remonty.Helpers
             App.FinalPlannedWeek = PlannedWeek;
             App.TotalHours = TotalHours;
             App.UsedHours = UsedHours;
+            App.TotalWorkingHours = TotalWorkingHours;
+            App.UsedWorkingHours = UsedWorkingHours;
+        }
+
+        public PlannedWeekItems GetPlannedWeek2()
+        {
+            this.PlanYourWeek();
+            Debug.WriteLine("Your Week has just been reloaded (" + DateTime.Now + ")");
+            PlannedWeekItems tempPlannedWeekItems = new PlannedWeekItems();
+            tempPlannedWeekItems.FinalPlannedWeek = PlannedWeek;
+            tempPlannedWeekItems.TotalHours = TotalHours;
+            tempPlannedWeekItems.UsedHours = UsedHours;
+            tempPlannedWeekItems.TotalWorkingHours = TotalWorkingHours;
+            tempPlannedWeekItems.UsedWorkingHours = UsedWorkingHours;
+            return tempPlannedWeekItems;
         }
 
         private void PlanYourWeek()
@@ -52,6 +67,8 @@ namespace Remonty.Helpers
         private int[] EndHour = new int[7];
         private int[] TotalHours = new int[7];
         private int[] UsedHours = new int[7];
+        private int[] TotalWorkingHours = new int[7];
+        private int[] UsedWorkingHours = new int[7];
         private ObservableCollection<PlannedActivity>[] PlannedWeek = new ObservableCollection<PlannedActivity>[7];
 
         private void GetSettings()
@@ -69,12 +86,14 @@ namespace Remonty.Helpers
                 EndHour[0] += 24;
             WorkingHoursEnabled[0] = bool.Parse(savedSettings[4].Value);
             TotalHours[0] = (StartWork[0] - StartHour[0]) + (EndHour[0] - EndWork[0]) + 1;
+            TotalWorkingHours[0] = EndWork[0] - StartWork[0];
 
             if (!WorkingHoursEnabled[0])
             {
                 StartWork[0] = -1;
                 EndWork[0] = -1;
                 TotalHours[0] = EndHour[0] - StartHour[0] + 1;
+                TotalWorkingHours[0] = 0;
             }
 
             for (int i = 1; i < 7; i++)
@@ -85,6 +104,7 @@ namespace Remonty.Helpers
                 EndHour[i] = EndHour[0];
                 WorkingHoursEnabled[i] = WorkingHoursEnabled[0];
                 TotalHours[i] = TotalHours[0];
+                TotalWorkingHours[i] = TotalWorkingHours[0];
             }
         }
 
@@ -370,6 +390,7 @@ namespace Remonty.Helpers
             // KROK 8: Pomiń listę "Oddelegowane" - takie aktywności ktoś musi wykonać za użytkownika
 
             UsedHours[day] -= GetUsedPlacesInWorkingHours(day);
+            UsedWorkingHours[day] = GetUsedPlacesInWorkingHours(day);
         }
 
         #region Filling Planned Day Helpers
@@ -445,14 +466,14 @@ namespace Remonty.Helpers
 
         private int GetUsedPlacesInWorkingHours(int day)
         {
-            int freePlacesInWorkingHours = 0;
+            int emptyPlacesInWorkingHours = 0;
             foreach (var act in PlannedWeek[day])
             {
                 if (act.Id >= StartWork[day] && act.Id < EndWork[day] && act.ProposedActivity == null)
-                    freePlacesInWorkingHours++;
+                    emptyPlacesInWorkingHours++;
             }
 
-            return EndWork[day] - StartWork[day] - freePlacesInWorkingHours;
+            return EndWork[day] - StartWork[day] - emptyPlacesInWorkingHours;
         }
 
         private int CalculateHeight(int duration)

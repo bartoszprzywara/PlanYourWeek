@@ -31,9 +31,14 @@ namespace Remonty
         internal static Task ReloadPlannedWeekTask;
         internal static Type CurrentFrameInMainPage;
         internal static bool PlannedWeekNeedsToBeReloaded = true;
+
+        internal static Models.PlannedWeekItems FinalPlannedWeekItems;
+
         internal static ObservableCollection<Models.PlannedActivity>[] FinalPlannedWeek;
         internal static int[] TotalHours;
         internal static int[] UsedHours;
+        internal static int[] TotalWorkingHours;
+        internal static int[] UsedWorkingHours;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
