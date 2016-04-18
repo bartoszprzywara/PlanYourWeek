@@ -41,7 +41,7 @@
             <Grid>
                 <Line X2="2000" StrokeDashArray="3,5" StrokeThickness="2" Stroke="{StaticResource BackgroundMainColor}"/>
                 <TextBlock Text="{x:Bind StartHourUI}" FontSize="9" Margin="0,2,0,0" Foreground="{StaticResource BackgroundMainColor}"/>
-                
+
                 <RelativePanel Background="{StaticResource LightGrayColor}" Height="{x:Bind ItemHeight}" BorderThickness="1" BorderBrush="{StaticResource BackgroundMainColor}" Margin="30,2,15,1">
                     <StackPanel Orientation="Horizontal" Margin="0,0,50,0">
                         <Ellipse Name="PriorIcon" Fill="{x:Bind ProposedActivity.PriorityUI}" Height="10" Width="10" Margin="10,5,0,0"/>
@@ -60,46 +60,123 @@
 
     <Pivot x:Name="YourWeekPivot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SelectionChanged="YourWeekPivot_SelectionChanged">
         <PivotItem Header="dzisiaj" Margin="0">
-            <ListView
-                ItemsSource="{x:Bind PlannedDay[0]}"
-                ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
-                IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                        <TextBlock Text="Wykorzystane godziny:" FontSize="{StaticResource YourWeekItemTitleFontSize}"/>
+                        <TextBlock Text="{x:Bind UsedHours[0]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,0,0,0" Foreground="{x:Bind HoursColor[0]}"/>
+                        <TextBlock Text="/" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[0]}"/>
+                        <TextBlock Text="{x:Bind TotalHours[0]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[0]}"/>
+                        <Ellipse Width="10" Height="10" Fill="{x:Bind HoursColor[0]}" Margin="5,3,0,0"/>
+                    </StackPanel>
+                    <ListView
+                        ItemsSource="{x:Bind PlannedDay[0]}"
+                        ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
+                        IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+                </StackPanel>
+            </ScrollViewer>
         </PivotItem>
         <PivotItem Header="jutro" Margin="0">
-            <ListView
-                ItemsSource="{x:Bind PlannedDay[1]}"
-                ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
-                IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                        <TextBlock Text="Wykorzystane godziny:" FontSize="{StaticResource YourWeekItemTitleFontSize}"/>
+                        <TextBlock Text="{x:Bind UsedHours[1]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,0,0,0" Foreground="{x:Bind HoursColor[1]}"/>
+                        <TextBlock Text="/" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[1]}"/>
+                        <TextBlock Text="{x:Bind TotalHours[1]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[1]}"/>
+                        <Ellipse Width="10" Height="10" Fill="{x:Bind HoursColor[1]}" Margin="5,3,0,0"/>
+                    </StackPanel>
+                    <ListView
+                        ItemsSource="{x:Bind PlannedDay[1]}"
+                        ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
+                        IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+                </StackPanel>
+            </ScrollViewer>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day3}" Margin="0">
-            <ListView
-                ItemsSource="{x:Bind PlannedDay[2]}"
-                ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
-                IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                        <TextBlock Text="Wykorzystane godziny:" FontSize="{StaticResource YourWeekItemTitleFontSize}"/>
+                        <TextBlock Text="{x:Bind UsedHours[2]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,0,0,0" Foreground="{x:Bind HoursColor[2]}"/>
+                        <TextBlock Text="/" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[2]}"/>
+                        <TextBlock Text="{x:Bind TotalHours[2]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[2]}"/>
+                        <Ellipse Width="10" Height="10" Fill="{x:Bind HoursColor[2]}" Margin="5,3,0,0"/>
+                    </StackPanel>
+                    <ListView
+                        ItemsSource="{x:Bind PlannedDay[2]}"
+                        ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
+                        IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+                </StackPanel>
+            </ScrollViewer>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day4}" Margin="0">
-            <ListView
-                ItemsSource="{x:Bind PlannedDay[3]}"
-                ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
-                IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                        <TextBlock Text="Wykorzystane godziny:" FontSize="{StaticResource YourWeekItemTitleFontSize}"/>
+                        <TextBlock Text="{x:Bind UsedHours[3]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,0,0,0" Foreground="{x:Bind HoursColor[3]}"/>
+                        <TextBlock Text="/" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[3]}"/>
+                        <TextBlock Text="{x:Bind TotalHours[3]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[3]}"/>
+                        <Ellipse Width="10" Height="10" Fill="{x:Bind HoursColor[3]}" Margin="5,3,0,0"/>
+                    </StackPanel>
+                    <ListView
+                        ItemsSource="{x:Bind PlannedDay[3]}"
+                        ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
+                        IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+                </StackPanel>
+            </ScrollViewer>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day5}" Margin="0">
-            <ListView
-                ItemsSource="{x:Bind PlannedDay[4]}"
-                ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
-                IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                        <TextBlock Text="Wykorzystane godziny:" FontSize="{StaticResource YourWeekItemTitleFontSize}"/>
+                        <TextBlock Text="{x:Bind UsedHours[4]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,0,0,0" Foreground="{x:Bind HoursColor[4]}"/>
+                        <TextBlock Text="/" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[4]}"/>
+                        <TextBlock Text="{x:Bind TotalHours[4]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[4]}"/>
+                        <Ellipse Width="10" Height="10" Fill="{x:Bind HoursColor[4]}" Margin="5,3,0,0"/>
+                    </StackPanel>
+                    <ListView
+                        ItemsSource="{x:Bind PlannedDay[4]}"
+                        ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
+                        IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+                </StackPanel>
+            </ScrollViewer>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day6}" Margin="0">
-            <ListView
-                ItemsSource="{x:Bind PlannedDay[5]}"
-                ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
-                IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                        <TextBlock Text="Wykorzystane godziny:" FontSize="{StaticResource YourWeekItemTitleFontSize}"/>
+                        <TextBlock Text="{x:Bind UsedHours[5]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,0,0,0" Foreground="{x:Bind HoursColor[5]}"/>
+                        <TextBlock Text="/" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[5]}"/>
+                        <TextBlock Text="{x:Bind TotalHours[5]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[5]}"/>
+                        <Ellipse Width="10" Height="10" Fill="{x:Bind HoursColor[5]}" Margin="5,3,0,0"/>
+                    </StackPanel>
+                    <ListView
+                        ItemsSource="{x:Bind PlannedDay[5]}"
+                        ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
+                        IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+                </StackPanel>
+            </ScrollViewer>
         </PivotItem>
         <PivotItem Header="{x:Bind Path=Day7}" Margin="0">
-            <ListView
-                ItemsSource="{x:Bind PlannedDay[6]}"
-                ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
-                IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
+                        <TextBlock Text="Wykorzystane godziny:" FontSize="{StaticResource YourWeekItemTitleFontSize}"/>
+                        <TextBlock Text="{x:Bind UsedHours[6]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Margin="5,0,0,0" Foreground="{x:Bind HoursColor[6]}"/>
+                        <TextBlock Text="/" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[6]}"/>
+                        <TextBlock Text="{x:Bind TotalHours[6]}" FontSize="{StaticResource YourWeekItemTitleFontSize}" Foreground="{x:Bind HoursColor[6]}"/>
+                        <Ellipse Width="10" Height="10" Fill="{x:Bind HoursColor[6]}" Margin="5,3,0,0"/>
+                    </StackPanel>
+                    <ListView
+                        ItemsSource="{x:Bind PlannedDay[6]}"
+                        ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
+                        IsItemClickEnabled="True" ItemClick="ListView_ItemClick"/>
+                </StackPanel>
+            </ScrollViewer>
         </PivotItem>
     </Pivot>
 </Page>

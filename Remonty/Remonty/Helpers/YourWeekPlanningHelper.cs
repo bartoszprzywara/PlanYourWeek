@@ -15,6 +15,8 @@ namespace Remonty.Helpers
             this.PlanYourWeek();
             Debug.WriteLine("Your Week has just been reloaded (" + DateTime.Now + ")");
             App.FinalPlannedWeek = PlannedWeek;
+            App.TotalHours = TotalHours;
+            App.UsedHours = UsedHours;
         }
 
         private void PlanYourWeek()
@@ -48,6 +50,8 @@ namespace Remonty.Helpers
         private int[] StartWork = new int[7];
         private int[] EndWork = new int[7];
         private int[] EndHour = new int[7];
+        private int[] TotalHours = new int[7];
+        private int[] UsedHours = new int[7];
         private ObservableCollection<PlannedActivity>[] PlannedWeek = new ObservableCollection<PlannedActivity>[7];
 
         private void GetSettings()
@@ -64,11 +68,13 @@ namespace Remonty.Helpers
             if (EndHour[0] < 0 || EndHour[0] < StartHour[0])
                 EndHour[0] += 24;
             WorkingHoursEnabled[0] = bool.Parse(savedSettings[4].Value);
+            TotalHours[0] = (StartWork[0] - StartHour[0]) + (EndHour[0] - EndWork[0]) + 1;
 
             if (!WorkingHoursEnabled[0])
             {
                 StartWork[0] = -1;
                 EndWork[0] = -1;
+                TotalHours[0] = EndHour[0] - StartHour[0] + 1;
             }
 
             for (int i = 1; i < 7; i++)
@@ -78,6 +84,7 @@ namespace Remonty.Helpers
                 EndWork[i] = EndWork[0];
                 EndHour[i] = EndHour[0];
                 WorkingHoursEnabled[i] = WorkingHoursEnabled[0];
+                TotalHours[i] = TotalHours[0];
             }
         }
 
@@ -167,6 +174,7 @@ namespace Remonty.Helpers
                             PlannedWeek[day][i].ItemHeight = CalculateHeight(duration);
                             // po dodaniu aktywności, oznacz ją w localdb jako dodaną
                             LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsAdded = 1 WHERE Id = " + act.Id);
+                            UsedHours[day] += duration;
                         }
                         // jeśli aktywność jednak koliduje z inną (wcześniej dodaną) aktywnością,
                         // dodaj ją wtedy do listy tymczasowo nieobsłużonych aktywności
@@ -233,6 +241,7 @@ namespace Remonty.Helpers
                             PlannedWeek[day][i].HourColor = "Red";
                             // po dodaniu aktywności, oznacz ją w localdb jako dodaną
                             LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsAdded = 1 WHERE Id = " + act.Id);
+                            UsedHours[day] += duration;
                         }
 
                         // jeśli aktywność zaczyna się później, niż koniec dnia - dodaj ją mimo wszystko
@@ -245,6 +254,7 @@ namespace Remonty.Helpers
                             PlannedWeek[day][PlannedWeek[day].Count - 1].HourColor = "Red";
                             // po dodaniu aktywności, oznacz ją w localdb jako dodaną
                             LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsAdded = 1 WHERE Id = " + act.Id);
+                            UsedHours[day] += duration;
                         }
                         break;
                     }
@@ -297,6 +307,7 @@ namespace Remonty.Helpers
                 // jeśli nie ma miejsca, to spróbuj wstawić aktywność godzinę później
                 // powtarzaj czynność aż do skutku (czyli aż do końca planu dnia)
                 int i = 0;
+                CanBeAdded = CanActivityBeAdded(day, i, duration);
                 while (i < PlannedWeek[day].Count - 1 && (
                     // sprawdź, czy pierwsza godzina dla wstawianej aktywności jest pusta w planie dnia
                     (PlannedWeek[day][i].ProposedActivity != null) ||
@@ -330,6 +341,9 @@ namespace Remonty.Helpers
 
                     // po dodaniu aktywności, oznacz ją w localdb jako dodaną
                     LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsAdded = 1 WHERE Id = " + act.Id);
+
+                    if (act.StartDate == tempToday)
+                        UsedHours[day] += duration;
                 }
                 // co daje krok 3b, 4b, 5b, 6b: aktywności niezaplanowane na aktualnie przetwarzany dzień zostaną zaproponowane na planie dnia w odpowiednim porządku
 
@@ -345,14 +359,17 @@ namespace Remonty.Helpers
                     PlannedWeek[day][i + 1].ItemHeight = CalculateHeight(duration);
                     // po dodaniu aktywności, oznacz ją w localdb jako dodaną
                     LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsAdded = 1 WHERE Id = " + act.Id);
+                    UsedHours[day] += duration;
                 }
                 // co daje krok 3c: aktywności bez godziny, ale zaplanowane na aktualnie przetwarzany dzień, będą mogły znaleźć się na planie dnia
                 // nawet, jeśli zostaną zaproponowane później, niż koniec dnia
             }
-            
+
 
             // KROK 7: Pomiń listę "Nowe" - takie aktywności należy najpierw przejrzeć i zaplanować lub umieścić na jakiejś liście
             // KROK 8: Pomiń listę "Oddelegowane" - takie aktywności ktoś musi wykonać za użytkownika
+
+            UsedHours[day] -= GetUsedPlacesInWorkingHours(day);
         }
 
         #region Filling Planned Day Helpers
@@ -426,9 +443,20 @@ namespace Remonty.Helpers
                 return PlannedWeek[day][i].Id;
         }
 
+        private int GetUsedPlacesInWorkingHours(int day)
+        {
+            int freePlacesInWorkingHours = 0;
+            foreach (var act in PlannedWeek[day])
+            {
+                if (act.Id >= StartWork[day] && act.Id < EndWork[day] && act.ProposedActivity == null)
+                    freePlacesInWorkingHours++;
+            }
+
+            return EndWork[day] - StartWork[day] - freePlacesInWorkingHours;
+        }
+
         private int CalculateHeight(int duration)
         {
-            //return 60 * duration;
             return 55 + 40 * (duration - 1);
         }
 

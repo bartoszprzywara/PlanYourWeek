@@ -31,6 +31,9 @@ namespace Remonty
 
         // List of planned days which goes to UI
         private ObservableCollection<PlannedActivity>[] PlannedDay;
+        private int[] TotalHours;
+        private int[] UsedHours;
+        private string[] HoursColor = new string[7];
 
         private void GetPlannedWeek()
         {
@@ -40,6 +43,17 @@ namespace Remonty
                 App.PlannedWeekNeedsToBeReloaded = false;
             }
             PlannedDay = App.FinalPlannedWeek;
+            TotalHours = App.TotalHours;
+            UsedHours = App.UsedHours;
+
+            for (int i = 0; i < 7; i++)
+            {
+                HoursColor[i] = "DarkGreen";
+                if (UsedHours[i] > TotalHours[i] - 2)
+                    HoursColor[i] = "Orange";
+                if (UsedHours[i] > TotalHours[i])
+                    HoursColor[i] = "Red";
+            }
         }
 
         private void YourWeekPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
