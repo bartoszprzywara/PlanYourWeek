@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,9 +26,9 @@ namespace Remonty
         {
             App.ReloadPlannedWeekTask?.Wait();
             this.InitializeComponent();
+            SetWeekDayNames();
             GetPlannedWeek();
             SetHoursColorAndVisibility();
-            SetWeekDayNames();
             SetYourWeekPivot();
             YourWeekPivot.SelectedIndex = App.LastPivotItem;
         }
@@ -49,13 +50,27 @@ namespace Remonty
             if (App.PlannedWeekNeedsToBeReloaded)
             {
                 (new YourWeekPlanningHelper()).GetPlannedWeek();
+                CheckIfPlanIsOverfilled();
                 App.PlannedWeekNeedsToBeReloaded = false;
             }
+
             PlannedDay = App.FinalPlannedWeekItems.PlannedWeek;
             TotalHours = App.FinalPlannedWeekItems.TotalHours;
             UsedHours = App.FinalPlannedWeekItems.UsedHours;
             TotalWorkingHours = App.FinalPlannedWeekItems.TotalWorkingHours;
             UsedWorkingHours = App.FinalPlannedWeekItems.UsedWorkingHours;
+        }
+
+        private async void CheckIfPlanIsOverfilled()
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                if (App.FinalPlannedWeekItems.UsedHours[i] > App.FinalPlannedWeekItems.TotalHours[i])
+                {
+                    await (new MessageDialog("Przekroczyłeś plan dnia (" + Days[i] + ")", "Pamiętaj")).ShowAsync();
+                    break;
+                }
+            }
         }
 
         private void YourWeekPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -168,19 +183,18 @@ namespace Remonty
 
             YourWeekPivot.ItemsSource = items;
         }
-
-        private class PivotModel
-        {
-            public string Header { get; set; }
-            public ObservableCollection<PlannedActivity> ListViewSource { get; set; }
-            public int TotalHours { get; set; }
-            public int UsedHours { get; set; }
-            public int TotalWorkingHours { get; set; }
-            public int UsedWorkingHours { get; set; }
-            public string HoursColor { get; set; }
-            public string HoursWorkingColor { get; set; }
-            public Visibility IsVisible { get; set; }
-        }
-        #endregion
     }
+    class PivotModel
+    {
+        public string Header { get; set; }
+        public ObservableCollection<PlannedActivity> ListViewSource { get; set; }
+        public int TotalHours { get; set; }
+        public int UsedHours { get; set; }
+        public int TotalWorkingHours { get; set; }
+        public int UsedWorkingHours { get; set; }
+        public string HoursColor { get; set; }
+        public string HoursWorkingColor { get; set; }
+        public Visibility IsVisible { get; set; }
+    }
+    #endregion
 }
