@@ -58,14 +58,13 @@
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel>
-                <TextBox PlaceholderText="Nazwa" Name="TitleTextBox" BorderBrush="{StaticResource BackgroundMainColor}" Margin="{StaticResource ActivityCommonMargin}"/>
-                <TextBox PlaceholderText="Opis" Name="DescriptionTextBox" BorderBrush="{StaticResource BackgroundMainColor}" Margin="{StaticResource ActivityCommonMargin}"/>
+                <TextBox PlaceholderText="Nazwa" Name="TitleTextBox" BorderBrush="{StaticResource BackgroundMainColor}" Margin="{StaticResource ActivityCommonMargin}" LostFocus="TitleTextBox_LostFocus"/>
+                <TextBox PlaceholderText="Opis" Name="DescriptionTextBox" BorderBrush="{StaticResource BackgroundMainColor}" Margin="{StaticResource ActivityCommonMargin}" LostFocus="DescriptionTextBox_LostFocus"/>
 
                 <!-- priorytet -->
                 <RelativePanel Margin="{StaticResource ActivityCommonMargin}">
                     <TextBlock Name="PriorityTextBlock" Text="Priorytet" Style="{StaticResource ActivityLeftColumnTextBlockStyle}"/>
                     <ComboBox Name="PriorityComboBox" BorderBrush="{StaticResource BackgroundMainColor}" Width="{StaticResource ActivityRightColumnWidth}" RelativePanel.AlignRightWithPanel="True"/>
-                    <!--<Image Margin="5,0" Name="StarThreeImage" Source="ms-appx:///Assets/StarFull.png" Height="20" Width="20" RelativePanel.AlignRightWithPanel="True"/>-->
                 </RelativePanel>
 
                 <Line Margin="{StaticResource ActivityCommonMargin}" Style="{StaticResource ActivityHorizontalLineStyle}"/>

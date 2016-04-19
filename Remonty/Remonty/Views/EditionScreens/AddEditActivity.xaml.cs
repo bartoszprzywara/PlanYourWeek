@@ -396,6 +396,7 @@ namespace Remonty
 
         #endregion
 
+        #region Reminders and Calendars
         private void CreateTemporaryNotification()
         {
             string tempTitle = string.Empty;
@@ -479,5 +480,63 @@ namespace Remonty
             //  4. add 
             await appCustomApptCalendar.SaveAppointmentAsync(appointment);
         }
+        #endregion
+
+        #region Context and Project proposing
+        private void TitleTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if ((activity != null && !string.IsNullOrWhiteSpace(TitleTextBox.Text) && activity.Description != TitleTextBox.Text) ||
+                (activity == null && !string.IsNullOrWhiteSpace(TitleTextBox.Text)))
+                ProposeProject();
+        }
+
+        private void DescriptionTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if ((activity != null && !string.IsNullOrWhiteSpace(DescriptionTextBox.Text) && activity.Description != DescriptionTextBox.Text) ||
+                (activity == null && !string.IsNullOrWhiteSpace(DescriptionTextBox.Text)))
+            {
+                ProposeContext();
+                ProposeProject();
+            }
+        }
+
+        private void ProposeContext()
+        {
+            List<Context> allContexts = LocalDatabaseHelper.conn.Table<Context>().ToList();
+            List<Context> foundContext;
+
+            for (int i = 0; i < 4; i++)
+            {
+                foundContext = allContexts.Where(
+                    v => ((DescriptionTextBox.Text.ToLower()).Contains(((v.Name.Length > (i + 2) && i > 0) ? v.Name.Remove(v.Name.Length - i) : v.Name).ToLower())
+                    || (TitleTextBox.Text.ToLower()).Contains(((v.Name.Length > (i + 2) && i > 0) ? v.Name.Remove(v.Name.Length - i) : v.Name).ToLower()))).ToList();
+
+                if (foundContext.Count > 0)
+                {
+                    ContextComboBox.SelectedValue = foundContext[0].Id;
+                    break;
+                }
+            }
+        }
+
+        private void ProposeProject()
+        {
+            List<Project> allProjects = LocalDatabaseHelper.conn.Table<Project>().ToList();
+            List<Project> foundProject;
+
+            for (int i = 0; i < 4; i++)
+            {
+                foundProject = allProjects.Where(
+                    v => ((DescriptionTextBox.Text.ToLower()).Contains(((v.Name.Length > (i + 2) && i > 0) ? v.Name.Remove(v.Name.Length - i) : v.Name).ToLower())
+                    || (TitleTextBox.Text.ToLower()).Contains(((v.Name.Length > (i + 2) && i > 0) ? v.Name.Remove(v.Name.Length - i) : v.Name).ToLower()))).ToList();
+
+                if (foundProject.Count > 0)
+                {
+                    ProjectComboBox.SelectedValue = foundProject[0].Id;
+                    break;
+                }
+            }
+        }
+        #endregion
     }
 }
