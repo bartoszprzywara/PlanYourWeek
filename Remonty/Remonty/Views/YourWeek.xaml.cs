@@ -27,6 +27,8 @@ namespace Remonty
             this.InitializeComponent();
             GetPlannedWeek();
             SetHoursColorAndVisibility();
+            SetWeekDayNames();
+            SetYourWeekPivot();
             YourWeekPivot.SelectedIndex = App.LastPivotItem;
         }
 
@@ -49,7 +51,7 @@ namespace Remonty
                 (new YourWeekPlanningHelper()).GetPlannedWeek();
                 App.PlannedWeekNeedsToBeReloaded = false;
             }
-            PlannedDay = App.FinalPlannedWeekItems.FinalPlannedWeek;
+            PlannedDay = App.FinalPlannedWeekItems.PlannedWeek;
             TotalHours = App.FinalPlannedWeekItems.TotalHours;
             UsedHours = App.FinalPlannedWeekItems.UsedHours;
             TotalWorkingHours = App.FinalPlannedWeekItems.TotalWorkingHours;
@@ -121,11 +123,15 @@ namespace Remonty
 
         #region Pivot Headers
         private int today = (int)DateTime.Today.DayOfWeek;
-        public string Day3 { get { return GetDayOfWeek((today + 2) % 7); } }
-        public string Day4 { get { return GetDayOfWeek((today + 3) % 7); } }
-        public string Day5 { get { return GetDayOfWeek((today + 4) % 7); } }
-        public string Day6 { get { return GetDayOfWeek((today + 5) % 7); } }
-        public string Day7 { get { return GetDayOfWeek((today + 6) % 7); } }
+        public string[] Days = new string[7];
+
+        private void SetWeekDayNames()
+        {
+            Days[0] = "dzisiaj";
+            Days[1] = "juro";
+            for (int i = 2; i < 7; i++)
+                Days[i] = GetDayOfWeek((today + i) % 7);
+        }
 
         private string GetDayOfWeek(int day)
         {
@@ -136,6 +142,44 @@ namespace Remonty
             if (day == 5) return "pią";
             if (day == 6) return "sob";
             else return "nie";
+        }
+        #endregion
+
+        #region Pivot Content
+        private void SetYourWeekPivot()
+        {
+            List<PivotModel> items = new List<PivotModel>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                items.Add(new PivotModel()
+                {
+                    Header = Days[i],
+                    ListViewSource = PlannedDay[i],
+                    TotalHours = TotalHours[i],
+                    UsedHours = UsedHours[i],
+                    TotalWorkingHours = TotalWorkingHours[i],
+                    UsedWorkingHours = UsedWorkingHours[i],
+                    HoursColor = HoursColor[i],
+                    HoursWorkingColor = HoursWorkingColor[i],
+                    IsVisible = IsVisible[i]
+                });
+            }
+
+            YourWeekPivot.ItemsSource = items;
+        }
+
+        private class PivotModel
+        {
+            public string Header { get; set; }
+            public ObservableCollection<PlannedActivity> ListViewSource { get; set; }
+            public int TotalHours { get; set; }
+            public int UsedHours { get; set; }
+            public int TotalWorkingHours { get; set; }
+            public int UsedWorkingHours { get; set; }
+            public string HoursColor { get; set; }
+            public string HoursWorkingColor { get; set; }
+            public Visibility IsVisible { get; set; }
         }
         #endregion
     }
