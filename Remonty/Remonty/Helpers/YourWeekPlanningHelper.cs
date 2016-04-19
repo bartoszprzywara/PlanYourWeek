@@ -14,24 +14,11 @@ namespace Remonty.Helpers
         {
             this.PlanYourWeek();
             Debug.WriteLine("Your Week has just been reloaded (" + DateTime.Now + ")");
-            App.FinalPlannedWeek = PlannedWeek;
-            App.TotalHours = TotalHours;
-            App.UsedHours = UsedHours;
-            App.TotalWorkingHours = TotalWorkingHours;
-            App.UsedWorkingHours = UsedWorkingHours;
-        }
-
-        public PlannedWeekItems GetPlannedWeek2()
-        {
-            this.PlanYourWeek();
-            Debug.WriteLine("Your Week has just been reloaded (" + DateTime.Now + ")");
-            PlannedWeekItems tempPlannedWeekItems = new PlannedWeekItems();
-            tempPlannedWeekItems.FinalPlannedWeek = PlannedWeek;
-            tempPlannedWeekItems.TotalHours = TotalHours;
-            tempPlannedWeekItems.UsedHours = UsedHours;
-            tempPlannedWeekItems.TotalWorkingHours = TotalWorkingHours;
-            tempPlannedWeekItems.UsedWorkingHours = UsedWorkingHours;
-            return tempPlannedWeekItems;
+            App.FinalPlannedWeekItems.FinalPlannedWeek = PlannedWeek;
+            App.FinalPlannedWeekItems.TotalHours = TotalHours;
+            App.FinalPlannedWeekItems.UsedHours = UsedHours;
+            App.FinalPlannedWeekItems.TotalWorkingHours = TotalWorkingHours;
+            App.FinalPlannedWeekItems.UsedWorkingHours = UsedWorkingHours;
         }
 
         private void PlanYourWeek()

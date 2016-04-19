@@ -26,50 +26,34 @@ namespace Remonty
             App.ReloadPlannedWeekTask?.Wait();
             this.InitializeComponent();
             GetPlannedWeek();
+            SetHoursColorAndVisibility();
             YourWeekPivot.SelectedIndex = App.LastPivotItem;
         }
 
         // List of planned days which goes to UI
         private ObservableCollection<PlannedActivity>[] PlannedDay;
+        // Total and used hours in the plan
         private int[] TotalHours;
         private int[] UsedHours;
-        private string[] HoursColor = new string[7];
         private int[] TotalWorkingHours;
         private int[] UsedWorkingHours;
+        // Color of total and used hours
+        private string[] HoursColor = new string[7];
         private string[] HoursWorkingColor = new string[7];
         private Visibility[] IsVisible = new Visibility[7];
-        private PlannedWeekItems plannedWeekItems;
 
         private void GetPlannedWeek()
         {
             if (App.PlannedWeekNeedsToBeReloaded)
             {
                 (new YourWeekPlanningHelper()).GetPlannedWeek();
-                //plannedWeekItems = (new YourWeekPlanningHelper()).GetPlannedWeek2();
                 App.PlannedWeekNeedsToBeReloaded = false;
             }
-            PlannedDay = App.FinalPlannedWeek;
-            TotalHours = App.TotalHours;
-            UsedHours = App.UsedHours;
-            TotalWorkingHours = App.TotalWorkingHours;
-            UsedWorkingHours = App.UsedWorkingHours;
-
-            for (int i = 0; i < 7; i++)
-            {
-                HoursColor[i] = "DarkGreen";
-                if (UsedHours[i] > TotalHours[i] - 2)
-                    HoursColor[i] = "Orange";
-                if (UsedHours[i] > TotalHours[i])
-                    HoursColor[i] = "Red";
-
-                HoursWorkingColor[i] = "DarkGreen";
-                if (UsedWorkingHours[i] > TotalWorkingHours[i] - 2)
-                    HoursWorkingColor[i] = "Orange";
-                if (UsedWorkingHours[i] > TotalWorkingHours[i])
-                    HoursWorkingColor[i] = "Red";
-
-                IsVisible[i] = (TotalWorkingHours[i] == 0) ? Visibility.Collapsed : Visibility.Visible;
-            }
+            PlannedDay = App.FinalPlannedWeekItems.FinalPlannedWeek;
+            TotalHours = App.FinalPlannedWeekItems.TotalHours;
+            UsedHours = App.FinalPlannedWeekItems.UsedHours;
+            TotalWorkingHours = App.FinalPlannedWeekItems.TotalWorkingHours;
+            UsedWorkingHours = App.FinalPlannedWeekItems.UsedWorkingHours;
         }
 
         private void YourWeekPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -113,8 +97,29 @@ namespace Remonty
             });
         }
 
-        #region Pivot Headers
+        #region Hours Color
+        private void SetHoursColorAndVisibility()
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                HoursColor[i] = "DarkGreen";
+                if (UsedHours[i] > TotalHours[i] - 2)
+                    HoursColor[i] = "Orange";
+                if (UsedHours[i] > TotalHours[i])
+                    HoursColor[i] = "Red";
 
+                HoursWorkingColor[i] = "DarkGreen";
+                if (UsedWorkingHours[i] > TotalWorkingHours[i] - 2)
+                    HoursWorkingColor[i] = "Orange";
+                if (UsedWorkingHours[i] > TotalWorkingHours[i])
+                    HoursWorkingColor[i] = "Red";
+
+                IsVisible[i] = (TotalWorkingHours[i] == 0) ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+        #endregion
+
+        #region Pivot Headers
         private int today = (int)DateTime.Today.DayOfWeek;
         public string Day3 { get { return GetDayOfWeek((today + 2) % 7); } }
         public string Day4 { get { return GetDayOfWeek((today + 3) % 7); } }
@@ -132,7 +137,6 @@ namespace Remonty
             if (day == 6) return "sob";
             else return "nie";
         }
-
         #endregion
     }
 }

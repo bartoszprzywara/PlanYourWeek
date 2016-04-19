@@ -36,6 +36,7 @@
         <RelativePanel Grid.Row="0" Background="{StaticResource BackgroundMainColor}">
             <Button Content="&#xE700;" Name="HamburgerButton" Style="{StaticResource NaviButtonStyle}" Click="HamburgerButton_Click"/>
             <TextBlock Text="Twój tydzień" Name="TitleTextBlock" Foreground="{StaticResource ForegroundMainColor}" Margin="10,0,0,0" RelativePanel.RightOf="HamburgerButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <Button Content="&#xE777;" Name="ReloadButton" RelativePanel.LeftOf="AddButton" Style="{StaticResource NaviButtonStyle}" Click="ReloadButton_Click"/>
             <Button Content="&#xE109;" Name="AddButton" RelativePanel.LeftOf="SearchButton" Style="{StaticResource NaviButtonStyle}" Click="AddButton_Click"/>
             <Button Content="&#xE71E;" Name="SearchButton" RelativePanel.AlignRightWithPanel="True"  Style="{StaticResource NaviButtonStyle}" Click="SearchButton_Click"/>
         </RelativePanel>

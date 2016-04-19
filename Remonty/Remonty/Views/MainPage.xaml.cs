@@ -31,6 +31,8 @@ namespace Remonty
             }
             else
                 ContentFrame.Navigate(typeof(YourWeek));
+
+            SetReloadButtonVisibility();
         }
 
         int NextCounter;
@@ -48,9 +50,21 @@ namespace Remonty
             App.TitleTextBlockText = TitleTextBlock.Text;
         }
 
+        private void SetReloadButtonVisibility()
+        {
+            ReloadButton.Visibility = Visibility.Collapsed;
+            if (ContentFrame.CurrentSourcePageType == typeof(YourWeek))
+                ReloadButton.Visibility = Visibility.Visible;
+        }
+
         private void HamburgerButton_Click(object sender, RoutedEventArgs e)
         {
             MenuSplitView.IsPaneOpen = !MenuSplitView.IsPaneOpen;
+        }
+
+        private void ReloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            ContentFrame.Navigate(typeof(YourWeek));
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
@@ -140,6 +154,7 @@ namespace Remonty
             }
             MenuListBox.SelectedItem = null;
             MenuSplitView.IsPaneOpen = false;
+            SetReloadButtonVisibility();
             SaveState();
         }
     }
