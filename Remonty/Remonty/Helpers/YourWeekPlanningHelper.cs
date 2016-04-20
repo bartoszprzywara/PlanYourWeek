@@ -12,6 +12,8 @@ namespace Remonty.Helpers
     {
         public void GetPlannedWeek()
         {
+            // TODO: błąd z planowaniem dla godzin w ustawieniach: 10,17,22,22
+            // TODO: zadania z częściami godziny - może po prostu wstawiać (insert item) aktywność między inne na plan?
             this.PlanYourWeek();
             Debug.WriteLine("Your Week has just been reloaded (" + DateTime.Now + ")");
             App.FinalPlannedWeekItems.PlannedWeek = PlannedWeek;

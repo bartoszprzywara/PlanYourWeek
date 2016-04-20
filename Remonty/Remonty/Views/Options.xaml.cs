@@ -3,6 +3,7 @@ using Remonty.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -39,44 +40,128 @@ namespace Remonty
         }
 
         private bool screenEntered = false;
+        private bool navigatingTimePicker = false;
 
         private void StartDayTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
-            LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + StartDayTimePicker.Time.ToString() + "' WHERE Name = 'StartDay'");
-            if (screenEntered)
+            if (screenEntered && !navigatingTimePicker)
             {
-                AnimateStartDayStackPanelStoryboard.Begin();
-                ReloadPlannedWeek();
+                navigatingTimePicker = true;
+
+                if (e.NewTime.Minutes != 0)
+                    StartDayTimePicker.Time -= new TimeSpan(0, e.NewTime.Minutes, 0);
+
+                if (StartDayTimePicker.Time > StartWorkingTimePicker.Time)
+                {
+                    InfoMessageTextBlock.Text = "Nie da się wstawać później, niż zaczęło się pracę";
+                    InfoMessageGrid.Opacity = 1;
+                    AnimateInfoMessageGridStoryboard.Begin();
+                    StartDayTimePicker.Time = e.OldTime;
+                }
+                else
+                {
+                    LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + StartDayTimePicker.Time.ToString() + "' WHERE Name = 'StartDay'");
+                    AnimateStartDayStackPanelStoryboard.Begin();
+                    ReloadPlannedWeek();
+                }
+
+                navigatingTimePicker = false;
             }
         }
 
         private void StartWorkingTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
-            LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + StartWorkingTimePicker.Time.ToString() + "' WHERE Name = 'StartWorking'");
-            if (screenEntered)
+            if (screenEntered && !navigatingTimePicker)
             {
-                AnimateStartWorkingStackPanelStoryboard.Begin();
-                ReloadPlannedWeek();
+                navigatingTimePicker = true;
+
+                if (e.NewTime.Minutes != 0)
+                    StartWorkingTimePicker.Time -= new TimeSpan(0, e.NewTime.Minutes, 0);
+
+                if (StartDayTimePicker.Time > StartWorkingTimePicker.Time)
+                {
+                    InfoMessageTextBlock.Text = "Nie da się zaczynać pracy wcześniej, niż się wstało";
+                    InfoMessageGrid.Opacity = 1;
+                    AnimateInfoMessageGridStoryboard.Begin();
+                    StartWorkingTimePicker.Time = e.OldTime;
+                }
+                else if (StartWorkingTimePicker.Time > EndWorkingTimePicker.Time)
+                {
+                    InfoMessageTextBlock.Text = "Nie da się zaczynać pracy później, niż się ją kończy";
+                    InfoMessageGrid.Opacity = 1;
+                    AnimateInfoMessageGridStoryboard.Begin();
+                    StartWorkingTimePicker.Time = e.OldTime;
+                }
+                else
+                {
+                    LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + StartWorkingTimePicker.Time.ToString() + "' WHERE Name = 'StartWorking'");
+                    AnimateStartWorkingStackPanelStoryboard.Begin();
+                    ReloadPlannedWeek();
+                }
+
+                navigatingTimePicker = false;
             }
         }
 
         private void EndWorkingTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
-            LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + EndWorkingTimePicker.Time.ToString() + "' WHERE Name = 'EndWorking'");
-            if (screenEntered)
+            if (screenEntered && !navigatingTimePicker)
             {
-                AnimateEndWorkingStackPanelStoryboard.Begin();
-                ReloadPlannedWeek();
+                navigatingTimePicker = true;
+
+                if (e.NewTime.Minutes != 0)
+                    EndWorkingTimePicker.Time -= new TimeSpan(0, e.NewTime.Minutes, 0);
+
+                if (StartWorkingTimePicker.Time > EndWorkingTimePicker.Time)
+                {
+                    InfoMessageTextBlock.Text = "Nie da się kończyć pracy wcześniej, niż się ją zaczęło";
+                    InfoMessageGrid.Opacity = 1;
+                    AnimateInfoMessageGridStoryboard.Begin();
+                    EndWorkingTimePicker.Time = e.OldTime;
+                }
+                else if (EndWorkingTimePicker.Time > EndDayTimePicker.Time)
+                {
+                    InfoMessageTextBlock.Text = "Nie da się kończyć pracy później, niż idzie się spać";
+                    InfoMessageGrid.Opacity = 1;
+                    AnimateInfoMessageGridStoryboard.Begin();
+                    EndWorkingTimePicker.Time = e.OldTime;
+                }
+                else
+                {
+                    LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + EndWorkingTimePicker.Time.ToString() + "' WHERE Name = 'EndWorking'");
+                    AnimateEndWorkingStackPanelStoryboard.Begin();
+                    ReloadPlannedWeek();
+                }
+
+                navigatingTimePicker = false;
             }
         }
 
         private void EndDayTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
-            LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + EndDayTimePicker.Time.ToString() + "' WHERE Name = 'EndDay'");
-            if (screenEntered)
+            if (screenEntered && !navigatingTimePicker)
             {
-                AnimateEndDayStackPanelStoryboard.Begin();
-                ReloadPlannedWeek();
+                navigatingTimePicker = true;
+
+                if (e.NewTime.Minutes != 0)
+                    EndDayTimePicker.Time -= new TimeSpan(0, e.NewTime.Minutes, 0);
+
+                if (EndWorkingTimePicker.Time > EndDayTimePicker.Time &&
+                    StartDayTimePicker.Time < EndDayTimePicker.Time)
+                {
+                    InfoMessageTextBlock.Text = "Nie da się iść spać wcześniej, niż kończy się pracę";
+                    InfoMessageGrid.Opacity = 1;
+                    AnimateInfoMessageGridStoryboard.Begin();
+                    EndDayTimePicker.Time = e.OldTime;
+                }
+                else
+                {
+                    LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + EndDayTimePicker.Time.ToString() + "' WHERE Name = 'EndDay'");
+                    AnimateEndDayStackPanelStoryboard.Begin();
+                    ReloadPlannedWeek();
+                }
+
+                navigatingTimePicker = false;
             }
         }
 

@@ -88,7 +88,7 @@
                 </RelativePanel>
 
                 <RelativePanel Name="StartHourRelativePanel" Margin="{StaticResource ActivityTimePickerMargin}">
-                    <TimePicker ClockIdentifier="24HourClock" MinWidth="{StaticResource ActivityRightColumnWidth}" Name="StartHourTimePicker" RelativePanel.AlignRightWithPanel="True"/>
+                    <TimePicker ClockIdentifier="24HourClock" MinWidth="{StaticResource ActivityRightColumnWidth}" Name="StartHourTimePicker" RelativePanel.AlignRightWithPanel="True" TimeChanged="StartHourTimePicker_TimeChanged"/>
                 </RelativePanel>
 
                 <!-- deadline -->
@@ -99,7 +99,7 @@
                 </RelativePanel>
 
                 <RelativePanel Name="EndHourRelativePanel" Margin="{StaticResource ActivityTimePickerMargin}">
-                    <TimePicker ClockIdentifier="24HourClock" MinWidth="{StaticResource ActivityRightColumnWidth}" Name="EndHourTimePicker" RelativePanel.AlignRightWithPanel="True"/>
+                    <TimePicker ClockIdentifier="24HourClock" MinWidth="{StaticResource ActivityRightColumnWidth}" Name="EndHourTimePicker" RelativePanel.AlignRightWithPanel="True" TimeChanged="EndHourTimePicker_TimeChanged"/>
                 </RelativePanel>
 
                 <!-- czas trwania -->

@@ -3,6 +3,7 @@ using Remonty.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -74,6 +75,8 @@ namespace Remonty
         {
             if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
                 await (new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady")).ShowAsync();
+            else if (!AreStartAndEndDatesCorrect())
+                await (new MessageDialog("Zadanie powinno kończyć się później, niż się zaczyna", "Nie da rady")).ShowAsync();
             else
             {
                 LocalDatabaseHelper.UpdateActivity(activity.Id, LoadActivityValuesFromControls());
@@ -89,6 +92,8 @@ namespace Remonty
         {
             if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
                 await (new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady")).ShowAsync();
+            else if (!AreStartAndEndDatesCorrect())
+                await (new MessageDialog("Zadanie powinno kończyć się później, niż się zaczyna", "Nie da rady")).ShowAsync();
             else
             {
                 LocalDatabaseHelper.UpdateActivity(activity.Id, LoadActivityValuesFromControls());
@@ -122,6 +127,8 @@ namespace Remonty
         {
             if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
                 await (new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady")).ShowAsync();
+            else if (!AreStartAndEndDatesCorrect())
+                await (new MessageDialog("Zadanie powinno kończyć się później, niż się zaczyna", "Nie da rady")).ShowAsync();
             else
             {
                 LocalDatabaseHelper.InsertItem<Activity>(LoadActivityValuesFromControls());
@@ -136,6 +143,8 @@ namespace Remonty
         {
             if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
                 await (new MessageDialog("Zadanie musi mieć chociaż nazwę", "Nie da rady")).ShowAsync();
+            else if (!AreStartAndEndDatesCorrect())
+                await (new MessageDialog("Zadanie powinno kończyć się później, niż się zaczyna", "Nie da rady")).ShowAsync();
             else
             {
                 LocalDatabaseHelper.UpdateActivity(activity.Id, LoadActivityValuesFromControls());
@@ -186,7 +195,7 @@ namespace Remonty
                 {
                     StartHourRelativePanel.Visibility = Visibility.Visible;
                     ShowStartHourRelativePanelStoryboard.Begin();
-                    if (activity == null)
+                    if (activity == null || (activity != null && activity.StartHour == null))
                         StartHourTimePicker.Time = new TimeSpan(0, 0, 0);
                 }
                 if (EndHourRelativePanel.Visibility != Visibility.Visible)
@@ -228,6 +237,23 @@ namespace Remonty
             EstimationClearButton.Visibility = Visibility.Collapsed;
             ContextClearButton.Visibility = Visibility.Collapsed;
             ProjectClearButton.Visibility = Visibility.Collapsed;
+        }
+
+        private bool AreStartAndEndDatesCorrect()
+        {
+            if (ListComboBox.SelectedItem.ToString() == "Zaplanowane" && EndDatePicker.Date != null)
+            {
+                DateTimeOffset tempStartDate = ((DateTimeOffset)StartDatePicker.Date).Date + new TimeSpan(0, 0, 0);
+                DateTimeOffset tempEndDate = ((DateTimeOffset)EndDatePicker.Date).Date + new TimeSpan(0, 0, 0);
+                if (!IsAllDayToggleSwitch.IsOn)
+                {
+                    tempStartDate += StartHourTimePicker.Time;
+                    tempEndDate += EndHourTimePicker.Time;
+                    return tempStartDate < tempEndDate;
+                }
+                return tempStartDate <= tempEndDate;
+            }
+            return true;
         }
 
         private void AddActivityModeSetControls()
@@ -536,6 +562,24 @@ namespace Remonty
                     break;
                 }
             }
+        }
+        #endregion
+
+        #region Round timepicker values
+        private void StartHourTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
+        {
+            int interval = 15; //15 min
+            int minutes = e.NewTime.Minutes;
+            if (minutes % interval != 0)
+                StartHourTimePicker.Time += new TimeSpan(0, interval - (minutes % interval), 0);
+        }
+
+        private void EndHourTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
+        {
+            int interval = 15; //15 min
+            int minutes = e.NewTime.Minutes;
+            if (minutes % interval != 0)
+                EndHourTimePicker.Time += new TimeSpan(0, interval - (minutes % interval), 0);
         }
         #endregion
     }

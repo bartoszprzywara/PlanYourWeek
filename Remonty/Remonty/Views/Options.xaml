@@ -57,10 +57,15 @@
             </StackPanel>
         </StackPanel>
 
-        <!--
-        <TextBlock Text="W które dni pracujesz?" Margin="{StaticResource SettingsCommonMargin}"/>
-        -->
-
+        <Grid Opacity="0" Name="InfoMessageGrid" Margin="{StaticResource SettingsCommonMargin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Image Source="../Assets/YellowExcl-2000.png" Height="15" Width="15" Margin="0,2,5,0" VerticalAlignment="Top"/>
+            <TextBlock Grid.Column="1" Name="InfoMessageTextBlock" FontSize="14" TextWrapping="WrapWholeWords" Margin="0,0,15,0"/>
+        </Grid>
+        
         <StackPanel.Resources>
             <Storyboard x:Name="AnimateStartDayStackPanelStoryboard">
                 <DoubleAnimation From="1" To="0" Duration="0:0:1" Storyboard.TargetName="StartDayStackPanel" Storyboard.TargetProperty="Opacity"/>
@@ -76,6 +81,9 @@
             </Storyboard>
             <Storyboard x:Name="AnimateWorkingHoursStackPanelStoryboard">
                 <DoubleAnimation From="1" To="0" Duration="0:0:1" Storyboard.TargetName="WorkingHoursStackPanel" Storyboard.TargetProperty="Opacity"/>
+            </Storyboard>
+            <Storyboard x:Name="AnimateInfoMessageGridStoryboard">
+                <DoubleAnimation From="1" To="0" Duration="0:0:4" BeginTime="0:0:2" Storyboard.TargetName="InfoMessageGrid" Storyboard.TargetProperty="Opacity"/>
             </Storyboard>
         </StackPanel.Resources>
     </StackPanel>
