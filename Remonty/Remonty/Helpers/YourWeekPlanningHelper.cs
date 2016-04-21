@@ -12,8 +12,6 @@ namespace Remonty.Helpers
     {
         public void GetPlannedWeek()
         {
-            // TODO: błąd z planowaniem dla godzin w ustawieniach: 10,17,22,22
-            // TODO: zadania z częściami godziny - może po prostu wstawiać (insert item) aktywność między inne na plan?
             this.PlanYourWeek();
             Debug.WriteLine("Your Week has just been reloaded (" + DateTime.Now + ")");
             App.FinalPlannedWeekItems.PlannedWeek = PlannedWeek;
@@ -70,18 +68,18 @@ namespace Remonty.Helpers
             StartHour[0] = TimeSpan.Parse(savedSettings[0].Value).Hours;
             StartWork[0] = TimeSpan.Parse(savedSettings[1].Value).Hours;
             EndWork[0] = TimeSpan.Parse(savedSettings[2].Value).Hours;
-            EndHour[0] = TimeSpan.Parse(savedSettings[3].Value).Hours - 1;
-            if (EndHour[0] < 0 || EndHour[0] < StartHour[0])
+            EndHour[0] = TimeSpan.Parse(savedSettings[3].Value).Hours;
+            if (EndHour[0] < StartHour[0])
                 EndHour[0] += 24;
             WorkingHoursEnabled[0] = bool.Parse(savedSettings[4].Value);
-            TotalHours[0] = (StartWork[0] - StartHour[0]) + (EndHour[0] - EndWork[0]) + 1;
+            TotalHours[0] = (StartWork[0] - StartHour[0]) + (EndHour[0] - EndWork[0]);
             TotalWorkingHours[0] = EndWork[0] - StartWork[0];
 
             if (!WorkingHoursEnabled[0])
             {
                 StartWork[0] = -1;
                 EndWork[0] = -1;
-                TotalHours[0] = EndHour[0] - StartHour[0] + 1;
+                TotalHours[0] = EndHour[0] - StartHour[0];
                 TotalWorkingHours[0] = 0;
             }
 
@@ -109,7 +107,7 @@ namespace Remonty.Helpers
             // w kroku nr 1 trzeba wypełnić plan dnia placeholderami
 
             // wypełnij plan dnia pustymi aktywnościami - placeholderami
-            for (int i = StartHour[day]; i <= EndHour[day]; i++)
+            for (int i = StartHour[day]; i < EndHour[day]; i++)
                 PlannedWeek[day].Add(new PlannedActivity(i));
             // co daje krok 1: mamy przygotowany aktualnie przetwarzany dzień do wypełnienia go aktywnościami
 
@@ -156,9 +154,9 @@ namespace Remonty.Helpers
                 }
 
                 // jeśli aktywność zaczyna się później, niż koniec planu dnia - wydłuż plan dnia
-                if (actId > EndHour[day])
+                if (actId >= EndHour[day])
                 {
-                    for (int i = EndHour[day] + 1; i < actId + 1; i++)
+                    for (int i = EndHour[day]; i < actId + 1; i++)
                         PlannedWeek[day].Add(new PlannedActivity(i));
                     EndHour[day] = actId + duration - 1;
                 }
@@ -172,7 +170,7 @@ namespace Remonty.Helpers
                     if (PlannedWeek[day][i].Id + GetPreviousActivityDuration(day, i) - 1 == actId)
                     {
                         IsActivityFound = true;
-                        bool CanBeAdded = CanActivityBeAdded(day, i, duration);
+                        bool CanBeAdded = AreAllRequiredPlacesEmpty(day, i, duration);
 
                         // dodaj aktywność do planu dnia tylko wtedy, jeśli będzie mogła się znaleźć pod "swoją" godziną
                         // czyli "jej" godzina będzie niezajęta przez inną (wcześniej dodaną) aktywność
@@ -228,7 +226,7 @@ namespace Remonty.Helpers
                     if (PlannedWeek[day][i].Id + GetPreviousActivityDuration(day, i) - 1 >= actId)
                     {
                         IsActivityFound = true;
-                        bool CanBeAdded = CanActivityBeAdded(day, i, duration);
+                        bool CanBeAdded = AreAllRequiredPlacesEmpty(day, i, duration);
 
                         // dodaj aktywność pod znalezioną godziną, tylko jeśli jest miejsce
                         // jeśli nie ma miejsca, to spróbuj wstawić aktywność godzinę później
@@ -238,7 +236,7 @@ namespace Remonty.Helpers
                             (!CanBeAdded)))
                         {
                             i++;
-                            CanBeAdded = CanActivityBeAdded(day, i, duration);
+                            CanBeAdded = AreAllRequiredPlacesEmpty(day, i, duration);
                         }
 
                         // jeśli znaleziono wolne miejsce w planie dnia, wstaw aktywność
@@ -316,23 +314,21 @@ namespace Remonty.Helpers
                 // jeśli nie ma miejsca, to spróbuj wstawić aktywność godzinę później
                 // powtarzaj czynność aż do skutku (czyli aż do końca planu dnia)
                 int i = 0;
-                CanBeAdded = CanActivityBeAdded(day, i, duration);
-                while (i < PlannedWeek[day].Count - 1 && (
-                    // sprawdź, czy pierwsza godzina dla wstawianej aktywności jest pusta w planie dnia
-                    (PlannedWeek[day][i].ProposedActivity != null) ||
-                    // sprawdź, czy aktywność nie będzie zaczynać się w godzinach pracy
-                    (PlannedWeek[day][i].Id >= StartWork[day] && PlannedWeek[day][i].Id < EndWork[day]) ||
-                    // sprawdź, czy aktywność nie będzie kończyła się po rozpoczęciu pracy
-                    (PlannedWeek[day][i].Id < StartWork[day] && StartWork[day] < (PlannedWeek[day][i].Id + duration)) ||
-                    (!CanBeAdded)))
+                CanBeAdded = AreAllRequiredPlacesEmpty(day, i, duration);
+                CanBeAdded = AreAllRequiredHoursProper(day, i, duration);
+                while (i < PlannedWeek[day].Count - 1 && !CanBeAdded)
                 {
                     i++;
-                    CanBeAdded = CanActivityBeAdded(day, i, duration);
+                    CanBeAdded = AreAllRequiredPlacesEmpty(day, i, duration);
+                    CanBeAdded = AreAllRequiredHoursProper(day, i, duration);
 
                     // jeśli aktywność nie jest zaplanowana na aktualnie przetwarzany dzień, to sprawdź, czy nie będzie kończyła się po końcu dnia
-                    if (act.StartDate != tempToday && (EndHour[day] + 1 < (PlannedWeek[day][i].Id + duration)))
+                    if (act.StartDate != tempToday && EndHour[day] < PlannedWeek[day][i].Id + duration)
                         CanBeAdded = false;
                 }
+                CanBeAdded = AreAllRequiredHoursProper(day, i, duration);
+                if (act.StartDate != tempToday && EndHour[day] < PlannedWeek[day][i].Id + duration)
+                    CanBeAdded = false;
 
                 // jeśli znaleziono wolne miejsce w planie dnia, wstaw aktywność
                 if (PlannedWeek[day][i].ProposedActivity == null && CanBeAdded)
@@ -384,7 +380,7 @@ namespace Remonty.Helpers
 
         #region Filling Planned Day Helpers
 
-        private bool CanActivityBeAdded(int day, int i, int duration)
+        private bool AreAllRequiredPlacesEmpty(int day, int i, int duration)
         {
             // sprawdź, czy wszystkie pola dla wstawianej aktywności w miejscu 'i' są puste
             bool canBeAdded = true;
@@ -397,6 +393,21 @@ namespace Remonty.Helpers
                 }
             }
             return canBeAdded;
+        }
+
+        private bool AreAllRequiredHoursProper(int day, int i, int duration)
+        {
+            // sprawdź, czy pierwsza godzina dla wstawianej aktywności jest pusta w planie dnia
+            if (PlannedWeek[day][i].ProposedActivity != null)
+                return false;
+            // sprawdź, czy aktywność nie będzie zaczynać się w godzinach pracy
+            if (PlannedWeek[day][i].Id >= StartWork[day] && PlannedWeek[day][i].Id < EndWork[day])
+                return false;
+            // sprawdź, czy aktywność nie będzie kończyła się po rozpoczęciu pracy
+            if (PlannedWeek[day][i].Id < StartWork[day] && StartWork[day] < (PlannedWeek[day][i].Id + duration))
+                return false;
+            else
+                return true;
         }
 
         private void RemoveReservedItems(int day, int i, int duration)
