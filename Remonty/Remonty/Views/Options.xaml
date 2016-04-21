@@ -9,6 +9,7 @@
 
     <Page.Resources>
         <Thickness x:Key="SettingsCommonMargin">15,10,0,0</Thickness>
+        <x:Double x:Key="ToggleButtonWidth">46</x:Double>
     </Page.Resources>
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -57,6 +58,16 @@
             </StackPanel>
         </StackPanel>
 
+        <StackPanel Orientation="Horizontal" Margin="{StaticResource SettingsCommonMargin}">
+            <ToggleButton Content="pon" Width="{StaticResource ToggleButtonWidth}" IsChecked="True" />
+            <ToggleButton Content="wto" Width="{StaticResource ToggleButtonWidth}" IsChecked="True" />
+            <ToggleButton Content="śro" Width="{StaticResource ToggleButtonWidth}" IsChecked="True" />
+            <ToggleButton Content="czw" Width="{StaticResource ToggleButtonWidth}" IsChecked="True" />
+            <ToggleButton Content="pią" Width="{StaticResource ToggleButtonWidth}" IsChecked="True" />
+            <ToggleButton Content="sob" Width="{StaticResource ToggleButtonWidth}" IsChecked="False" />
+            <ToggleButton Content="nie" Width="{StaticResource ToggleButtonWidth}" IsChecked="False" />
+        </StackPanel>
+
         <Grid Opacity="0" Name="InfoMessageGrid" Margin="{StaticResource SettingsCommonMargin}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -65,7 +76,7 @@
             <Image Source="../Assets/YellowExcl-2000.png" Height="15" Width="15" Margin="0,2,5,0" VerticalAlignment="Top"/>
             <TextBlock Grid.Column="1" Name="InfoMessageTextBlock" FontSize="14" TextWrapping="WrapWholeWords" Margin="0,0,15,0"/>
         </Grid>
-        
+
         <StackPanel.Resources>
             <Storyboard x:Name="AnimateStartDayStackPanelStoryboard">
                 <DoubleAnimation From="1" To="0" Duration="0:0:1" Storyboard.TargetName="StartDayStackPanel" Storyboard.TargetProperty="Opacity"/>

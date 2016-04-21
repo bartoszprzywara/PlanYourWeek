@@ -93,6 +93,16 @@ namespace Remonty.Helpers
                 TotalHours[i] = TotalHours[0];
                 TotalWorkingHours[i] = TotalWorkingHours[0];
             }
+
+            for (int i = 0; i < 7; i++)
+                if (((int)DateTime.Today.DayOfWeek + i) % 7 == 6 || ((int)DateTime.Today.DayOfWeek + i) % 7 == 0)
+                {
+                    WorkingHoursEnabled[i] = false;
+                    StartWork[i] = -1;
+                    EndWork[i] = -1;
+                    TotalHours[i] = EndHour[i] - StartHour[i];
+                    TotalWorkingHours[i] = 0;
+                }
         }
 
         private void PlanYourDay(int day)
