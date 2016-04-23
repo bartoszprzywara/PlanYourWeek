@@ -94,7 +94,7 @@ namespace Remonty.Models
         {
             get
             {
-                if (EstimationId > 3)
+                if (EstimationId > 2)
                     return (int)LocalDatabaseHelper.ReadItem<Estimation>((int)EstimationId).Duration + "h";
                 return "";
             }

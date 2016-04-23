@@ -513,7 +513,10 @@ namespace Remonty
         {
             if ((activity != null && !string.IsNullOrWhiteSpace(TitleTextBox.Text) && activity.Description != TitleTextBox.Text) ||
                 (activity == null && !string.IsNullOrWhiteSpace(TitleTextBox.Text)))
+            {
+                ProposeContext();
                 ProposeProject();
+            }
         }
 
         private void DescriptionTextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -528,18 +531,32 @@ namespace Remonty
 
         private void ProposeContext()
         {
-            List<Context> allContexts = LocalDatabaseHelper.conn.Table<Context>().ToList();
-            List<Context> foundContext;
+            List<Context> allItems = LocalDatabaseHelper.conn.Table<Context>().ToList();
+            List<string> allItemsSplit = new List<string>();
+            List<string> tempItemsSplit;
+            List<string> foundItem;
+
+            foreach (var item in allItems)
+            {
+                tempItemsSplit = new List<string>(item.Name.Split(' '));
+                foreach (var tempItem in tempItemsSplit)
+                {
+                    if (tempItem.Length > 3)
+                        allItemsSplit.Add(tempItem);
+                }
+            }
 
             for (int i = 0; i < 4; i++)
             {
-                foundContext = allContexts.Where(
-                    v => ((DescriptionTextBox.Text.ToLower()).Contains(((v.Name.Length > (i + 2) && i > 0) ? v.Name.Remove(v.Name.Length - i) : v.Name).ToLower())
-                    || (TitleTextBox.Text.ToLower()).Contains(((v.Name.Length > (i + 2) && i > 0) ? v.Name.Remove(v.Name.Length - i) : v.Name).ToLower()))).ToList();
+                foundItem = allItemsSplit.Where(
+                    v => ((DescriptionTextBox.Text.ToLower()).Contains(((v.Length > (i + 2) && i > 0) ? v.Remove(v.Length - i) : v).ToLower())
+                    || (TitleTextBox.Text.ToLower()).Contains(((v.Length > (i + 2) && i > 0) ? v.Remove(v.Length - i) : v).ToLower()))).ToList();
 
-                if (foundContext.Count > 0)
+                if (foundItem.Count > 0)
                 {
-                    ContextComboBox.SelectedValue = foundContext[0].Id;
+                    foreach (var item in allItems)
+                        if (item.Name.Contains(foundItem[0]))
+                            ContextComboBox.SelectedValue = item.Id;
                     break;
                 }
             }
@@ -547,18 +564,32 @@ namespace Remonty
 
         private void ProposeProject()
         {
-            List<Project> allProjects = LocalDatabaseHelper.conn.Table<Project>().ToList();
-            List<Project> foundProject;
+            List<Project> allItems = LocalDatabaseHelper.conn.Table<Project>().ToList();
+            List<string> allItemsSplit = new List<string>();
+            List<string> tempItemsSplit;
+            List<string> foundItem;
+
+            foreach (var item in allItems)
+            {
+                tempItemsSplit = new List<string>(item.Name.Split(' '));
+                foreach (var tempItem in tempItemsSplit)
+                {
+                    if (tempItem.Length > 3)
+                        allItemsSplit.Add(tempItem);
+                }
+            }
 
             for (int i = 0; i < 4; i++)
             {
-                foundProject = allProjects.Where(
-                    v => ((DescriptionTextBox.Text.ToLower()).Contains(((v.Name.Length > (i + 2) && i > 0) ? v.Name.Remove(v.Name.Length - i) : v.Name).ToLower())
-                    || (TitleTextBox.Text.ToLower()).Contains(((v.Name.Length > (i + 2) && i > 0) ? v.Name.Remove(v.Name.Length - i) : v.Name).ToLower()))).ToList();
+                foundItem = allItemsSplit.Where(
+                    v => ((DescriptionTextBox.Text.ToLower()).Contains(((v.Length > (i + 2) && i > 0) ? v.Remove(v.Length - i) : v).ToLower())
+                    || (TitleTextBox.Text.ToLower()).Contains(((v.Length > (i + 2) && i > 0) ? v.Remove(v.Length - i) : v).ToLower()))).ToList();
 
-                if (foundProject.Count > 0)
+                if (foundItem.Count > 0)
                 {
-                    ProjectComboBox.SelectedValue = foundProject[0].Id;
+                    foreach (var item in allItems)
+                        if (item.Name.Contains(foundItem[0]))
+                            ProjectComboBox.SelectedValue = item.Id;
                     break;
                 }
             }

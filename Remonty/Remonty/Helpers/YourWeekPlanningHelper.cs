@@ -14,8 +14,7 @@ namespace Remonty.Helpers
         {
             // TODO: przemyśleć sprawę połówek godziny i startów aktywności o nierównej godzinie
             // TODO: zadania z częściami godziny - może po prostu wstawiać (insert item) aktywność między inne na plan?
-            // TODO: proponowanie projektów i kontekstów po poszczególnych słowach a nie po całych wyrażeniach
-            // TODO: usunąć wybór 15minut w estymacji
+            // TODO: zrobić przypomnienia dla zaplanowanych zadań
 
             this.PlanYourWeek();
             Debug.WriteLine("Your Week has just been reloaded (" + DateTime.Now + ")");
@@ -183,11 +182,10 @@ namespace Remonty.Helpers
                     if (PlannedWeek[day][i].Id + GetPreviousActivityDuration(day, i) - 1 == actId)
                     {
                         IsActivityFound = true;
-                        bool CanBeAdded = AreAllRequiredPlacesEmpty(day, i, duration);
 
                         // dodaj aktywność do planu dnia tylko wtedy, jeśli będzie mogła się znaleźć pod "swoją" godziną
                         // czyli "jej" godzina będzie niezajęta przez inną (wcześniej dodaną) aktywność
-                        if (PlannedWeek[day][i].ProposedActivity == null && CanBeAdded)
+                        if (PlannedWeek[day][i].ProposedActivity == null && AreAllRequiredPlacesEmpty(day, i, duration))
                         {
                             PlannedWeek[day][i].ProposedActivity = act;
                             RemoveReservedItems(day, i, duration);
@@ -328,12 +326,15 @@ namespace Remonty.Helpers
                 // powtarzaj czynność aż do skutku (czyli aż do końca planu dnia)
                 int i = 0;
                 CanBeAdded = AreAllRequiredPlacesEmpty(day, i, duration);
-                CanBeAdded = AreAllRequiredHoursProper(day, i, duration);
+                if (CanBeAdded)
+                    CanBeAdded = AreAllRequiredHoursProper(day, i, duration);
+
                 while (i < PlannedWeek[day].Count - 1 && !CanBeAdded)
                 {
                     i++;
                     CanBeAdded = AreAllRequiredPlacesEmpty(day, i, duration);
-                    CanBeAdded = AreAllRequiredHoursProper(day, i, duration);
+                    if (CanBeAdded)
+                        CanBeAdded = AreAllRequiredHoursProper(day, i, duration);
 
                     // jeśli aktywność nie jest zaplanowana na aktualnie przetwarzany dzień, to sprawdź, czy nie będzie kończyła się po końcu dnia
                     if (act.StartDate != tempToday && EndHour[day] < PlannedWeek[day][i].Id + duration)
@@ -440,7 +441,7 @@ namespace Remonty.Helpers
             var tempEstimationList = LocalDatabaseHelper.ReadAllItemsFromTable<Estimation>();
             int duration = 0;
 
-            if (act.EstimationId > 2)
+            if (act.EstimationId > 1)
                 duration = (int)tempEstimationList[(int)act.EstimationId - 1].Duration;
             else
                 duration = 1;
