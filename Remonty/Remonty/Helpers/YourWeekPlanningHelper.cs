@@ -12,6 +12,11 @@ namespace Remonty.Helpers
     {
         public void GetPlannedWeek()
         {
+            // TODO: przemyśleć sprawę połówek godziny i startów aktywności o nierównej godzinie
+            // TODO: zadania z częściami godziny - może po prostu wstawiać (insert item) aktywność między inne na plan?
+            // TODO: proponowanie projektów i kontekstów po poszczególnych słowach a nie po całych wyrażeniach
+            // TODO: usunąć wybór 15minut w estymacji
+
             this.PlanYourWeek();
             Debug.WriteLine("Your Week has just been reloaded (" + DateTime.Now + ")");
             App.FinalPlannedWeekItems.PlannedWeek = PlannedWeek;
@@ -47,7 +52,7 @@ namespace Remonty.Helpers
         }
 
         private int DayLimit = 26; // 02:00 AM
-        private bool[] WorkingHoursEnabled = new bool[7];
+        private bool[] DayweekWorkingHoursEnabled = new bool[7];
         private int[] StartHour = new int[7];
         private int[] StartWork = new int[7];
         private int[] EndWork = new int[7];
@@ -69,19 +74,12 @@ namespace Remonty.Helpers
             StartWork[0] = TimeSpan.Parse(savedSettings[1].Value).Hours;
             EndWork[0] = TimeSpan.Parse(savedSettings[2].Value).Hours;
             EndHour[0] = TimeSpan.Parse(savedSettings[3].Value).Hours;
-            if (EndHour[0] < StartHour[0])
-                EndHour[0] += 24;
-            WorkingHoursEnabled[0] = bool.Parse(savedSettings[4].Value);
+            for (int i = 0; i < 7; i++)
+                DayweekWorkingHoursEnabled[i] = bool.Parse(savedSettings[i + 4].Value);
+
+            EndHour[0] = (EndHour[0] < StartHour[0]) ? EndHour[0] += 24 : EndHour[0];
             TotalHours[0] = (StartWork[0] - StartHour[0]) + (EndHour[0] - EndWork[0]);
             TotalWorkingHours[0] = EndWork[0] - StartWork[0];
-
-            if (!WorkingHoursEnabled[0])
-            {
-                StartWork[0] = -1;
-                EndWork[0] = -1;
-                TotalHours[0] = EndHour[0] - StartHour[0];
-                TotalWorkingHours[0] = 0;
-            }
 
             for (int i = 1; i < 7; i++)
             {
@@ -89,27 +87,32 @@ namespace Remonty.Helpers
                 StartWork[i] = StartWork[0];
                 EndWork[i] = EndWork[0];
                 EndHour[i] = EndHour[0];
-                WorkingHoursEnabled[i] = WorkingHoursEnabled[0];
                 TotalHours[i] = TotalHours[0];
                 TotalWorkingHours[i] = TotalWorkingHours[0];
             }
 
-            for (int i = 0; i < 7; i++)
-                if (((int)DateTime.Today.DayOfWeek + i) % 7 == 6 || ((int)DateTime.Today.DayOfWeek + i) % 7 == 0)
+            int j = 0;
+            for (int i = (int)DateTime.Today.DayOfWeek; i < 7; i++, j++)
+                if (!DayweekWorkingHoursEnabled[i])
                 {
-                    WorkingHoursEnabled[i] = false;
-                    StartWork[i] = -1;
-                    EndWork[i] = -1;
-                    TotalHours[i] = EndHour[i] - StartHour[i];
-                    TotalWorkingHours[i] = 0;
+                    StartWork[j] = -1;
+                    EndWork[j] = -1;
+                    TotalHours[j] = EndHour[j] - StartHour[j];
+                    TotalWorkingHours[j] = 0;
+                }
+
+            for (int i = 0; i < (int)DateTime.Today.DayOfWeek; i++, j++)
+                if (!DayweekWorkingHoursEnabled[i])
+                {
+                    StartWork[j] = -1;
+                    EndWork[j] = -1;
+                    TotalHours[j] = EndHour[j] - StartHour[j];
+                    TotalWorkingHours[j] = 0;
                 }
         }
 
         private void PlanYourDay(int day)
         {
-            // TODO: zrobić sobotę i niedzielę niepodatnymi na godziny pracy
-            // TODO: przemyśleć sprawę połówek godziny i startów aktywności o nierównej godzinie
-
             // KROK GŁÓWNY C - szczegóły
 
 

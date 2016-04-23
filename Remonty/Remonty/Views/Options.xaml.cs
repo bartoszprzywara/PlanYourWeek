@@ -36,7 +36,14 @@ namespace Remonty
             StartWorkingTimePicker.Time = TimeSpan.Parse(settingsList[1].Value);
             EndWorkingTimePicker.Time = TimeSpan.Parse(settingsList[2].Value);
             EndDayTimePicker.Time = TimeSpan.Parse(settingsList[3].Value);
-            WorkingHoursEnabledToggleSwitch.IsOn = bool.Parse(settingsList[4].Value);
+
+            SunToggleButton.IsChecked = bool.Parse(settingsList[4].Value);
+            MonToggleButton.IsChecked = bool.Parse(settingsList[5].Value);
+            TueToggleButton.IsChecked = bool.Parse(settingsList[6].Value);
+            WedToggleButton.IsChecked = bool.Parse(settingsList[7].Value);
+            ThuToggleButton.IsChecked = bool.Parse(settingsList[8].Value);
+            FriToggleButton.IsChecked = bool.Parse(settingsList[9].Value);
+            SatToggleButton.IsChecked = bool.Parse(settingsList[10].Value);
         }
 
         private bool screenEntered = false;
@@ -165,18 +172,21 @@ namespace Remonty
             }
         }
 
-        private void WorkingHoursEnabledToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        private void WeekdayToggleButton_Click(object sender, RoutedEventArgs e)
         {
-            LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + WorkingHoursEnabledToggleSwitch.IsOn.ToString() + "' WHERE Name = 'WorkingHoursEnabled'");
+            ToggleButton button = sender as ToggleButton;
+
+            LocalDatabaseHelper.ExecuteQuery("UPDATE Settings SET Value = '" + button.IsChecked.ToString() + "' WHERE Name = 'Is" + button.DataContext + "Workday'");
             if (screenEntered)
             {
-                AnimateWorkingHoursStackPanelStoryboard.Begin();
+                AnimateWorkdaysStackPanelStoryboard.Begin();
                 ReloadPlannedWeek();
             }
         }
 
         private void ReloadPlannedWeek()
         {
+            App.ReloadPlannedWeekTask?.Wait();
             App.ReloadPlannedWeekTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 (new YourWeekPlanningHelper()).GetPlannedWeek();

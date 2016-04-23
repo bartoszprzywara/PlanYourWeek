@@ -47,6 +47,7 @@ namespace Remonty
 
             if (App.PlannedWeekNeedsToBeReloaded)
             {
+                App.ReloadPlannedWeekTask?.Wait();
                 App.ReloadPlannedWeekTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
                 {
                     (new YourWeekPlanningHelper()).GetPlannedWeek();

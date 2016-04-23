@@ -50,6 +50,7 @@ namespace Remonty
 
             if (App.PlannedWeekNeedsToBeReloaded)
             {
+                App.ReloadPlannedWeekTask?.Wait();
                 App.ReloadPlannedWeekTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
                 {
                     (new YourWeekPlanningHelper()).GetPlannedWeek();
@@ -84,6 +85,7 @@ namespace Remonty
 
             listofActivities.RemoveAt(i);
 
+            App.ReloadPlannedWeekTask?.Wait();
             App.ReloadPlannedWeekTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 (new YourWeekPlanningHelper()).GetPlannedWeek();

@@ -82,7 +82,14 @@ namespace Remonty.Helpers
                 InsertItem(new Settings("StartWorking", new TimeSpan(09, 00, 00).ToString()));
                 InsertItem(new Settings("EndWorking", new TimeSpan(17, 00, 00).ToString()));
                 InsertItem(new Settings("EndDay", new TimeSpan(23, 00, 00).ToString()));
-                InsertItem(new Settings("WorkingHoursEnabled", true.ToString()));
+
+                InsertItem(new Settings("IsSunWorkday", false.ToString()));
+                InsertItem(new Settings("IsMonWorkday", true.ToString()));
+                InsertItem(new Settings("IsTueWorkday", true.ToString()));
+                InsertItem(new Settings("IsWedWorkday", true.ToString()));
+                InsertItem(new Settings("IsThuWorkday", true.ToString()));
+                InsertItem(new Settings("IsFriWorkday", true.ToString()));
+                InsertItem(new Settings("IsSatWorkday", false.ToString()));
             }
         }
 

@@ -108,6 +108,7 @@ namespace Remonty
                 PlannedDay[currentPivotItem].Insert(j, new PlannedActivity(j + PlannedDay[currentPivotItem][0].Id + duration));
             PlannedDay[currentPivotItem][i] = new PlannedActivity(i + PlannedDay[currentPivotItem][0].Id + duration);
 
+            App.ReloadPlannedWeekTask?.Wait();
             App.ReloadPlannedWeekTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 tempPlannedWeek.GetPlannedWeek();

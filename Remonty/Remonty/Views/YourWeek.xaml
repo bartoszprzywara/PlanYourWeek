@@ -71,14 +71,14 @@
                             <TextBlock Text="/" FontSize="{StaticResource YourWeekItemLabelFontSize}" Foreground="{x:Bind HoursColor}"/>
                             <TextBlock Text="{x:Bind TotalHours}" FontSize="{StaticResource YourWeekItemLabelFontSize}" Foreground="{x:Bind HoursColor}"/>
                             <Ellipse Width="8" Height="8" Fill="{x:Bind HoursColor}" Margin="3,1,20,0"/>
-                            
+
                             <TextBlock Text="W czasie pracy:" FontSize="{StaticResource YourWeekItemLabelFontSize}" Visibility="{x:Bind IsVisible}"/>
                             <TextBlock Text="{x:Bind UsedWorkingHours}" FontSize="{StaticResource YourWeekItemLabelFontSize}" Margin="5,0,0,0" Foreground="{x:Bind HoursWorkingColor}" Visibility="{x:Bind IsVisible}"/>
                             <TextBlock Text="/" FontSize="{StaticResource YourWeekItemLabelFontSize}" Foreground="{x:Bind HoursWorkingColor}" Visibility="{x:Bind IsVisible}"/>
                             <TextBlock Text="{x:Bind TotalWorkingHours}" FontSize="{StaticResource YourWeekItemLabelFontSize}" Foreground="{x:Bind HoursWorkingColor}" Visibility="{x:Bind IsVisible}"/>
                             <Ellipse Width="8" Height="8" Fill="{x:Bind HoursWorkingColor}" Margin="3,1,0,0" Visibility="{x:Bind IsVisible}"/>
                         </StackPanel>
-                        
+
                         <ListView
                             ItemsSource="{x:Bind ListViewSource}"
                             ItemTemplateSelector="{StaticResource DailyActivitiesListSelector}"
