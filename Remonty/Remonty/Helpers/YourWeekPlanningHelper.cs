@@ -12,9 +12,9 @@ namespace Remonty.Helpers
     {
         public void GetPlannedWeek()
         {
-            // TODO: przemyśleć sprawę połówek godziny i startów aktywności o nierównej godzinie
-            // TODO: zadania z częściami godziny - może po prostu wstawiać (insert item) aktywność między inne na plan?
-            // TODO: zrobić przypomnienia dla zaplanowanych zadań
+            // TODO: dokończyć przypomnienia (reminders) dla zaplanowanych zadań
+            // TODO: przerobić opcję, żeby interwały były co godzinę, a nie co pół
+            // TODO: przerobić time pickery na własne z półgodzinnymi interwałami
 
             this.PlanYourWeek();
             Debug.WriteLine("Your Week has just been reloaded (" + DateTime.Now + ")");
@@ -50,16 +50,17 @@ namespace Remonty.Helpers
             // co daje krok C: mamy zaplanowany cały tydzień
         }
 
-        private int DayLimit = 26; // 02:00 AM
+        private int activitiesInHour = 2;
+        private int DayLimit = 26 * 2; // 02:00 AM
         private bool[] DayweekWorkingHoursEnabled = new bool[7];
         private int[] StartHour = new int[7];
         private int[] StartWork = new int[7];
         private int[] EndWork = new int[7];
         private int[] EndHour = new int[7];
-        private int[] TotalHours = new int[7];
-        private int[] UsedHours = new int[7];
-        private int[] TotalWorkingHours = new int[7];
-        private int[] UsedWorkingHours = new int[7];
+        private double[] TotalHours = new double[7];
+        private double[] UsedHours = new double[7];
+        private double[] TotalWorkingHours = new double[7];
+        private double[] UsedWorkingHours = new double[7];
         private ObservableCollection<PlannedActivity>[] PlannedWeek = new ObservableCollection<PlannedActivity>[7];
 
         private void GetSettings()
@@ -69,16 +70,16 @@ namespace Remonty.Helpers
             // z localdb pobierz aktualne ustawienia użytkownika i przypisz je wszystkim dniom tygodnia
             ObservableCollection<Settings> savedSettings = LocalDatabaseHelper.ReadAllItemsFromTable<Settings>();
 
-            StartHour[0] = TimeSpan.Parse(savedSettings[0].Value).Hours;
-            StartWork[0] = TimeSpan.Parse(savedSettings[1].Value).Hours;
-            EndWork[0] = TimeSpan.Parse(savedSettings[2].Value).Hours;
-            EndHour[0] = TimeSpan.Parse(savedSettings[3].Value).Hours;
+            StartHour[0] = TimeSpan.Parse(savedSettings[0].Value).Hours * activitiesInHour;
+            StartWork[0] = TimeSpan.Parse(savedSettings[1].Value).Hours * activitiesInHour;
+            EndWork[0] = TimeSpan.Parse(savedSettings[2].Value).Hours * activitiesInHour;
+            EndHour[0] = TimeSpan.Parse(savedSettings[3].Value).Hours * activitiesInHour;
             for (int i = 0; i < 7; i++)
                 DayweekWorkingHoursEnabled[i] = bool.Parse(savedSettings[i + 4].Value);
 
-            EndHour[0] = (EndHour[0] < StartHour[0]) ? EndHour[0] += 24 : EndHour[0];
-            TotalHours[0] = (StartWork[0] - StartHour[0]) + (EndHour[0] - EndWork[0]);
-            TotalWorkingHours[0] = EndWork[0] - StartWork[0];
+            EndHour[0] = (EndHour[0] < StartHour[0]) ? EndHour[0] += (24 * activitiesInHour) : EndHour[0];
+            TotalHours[0] = ((StartWork[0] - StartHour[0]) + (EndHour[0] - EndWork[0])) / activitiesInHour;
+            TotalWorkingHours[0] = (EndWork[0] - StartWork[0]) / activitiesInHour;
 
             for (int i = 1; i < 7; i++)
             {
@@ -96,7 +97,7 @@ namespace Remonty.Helpers
                 {
                     StartWork[j] = -1;
                     EndWork[j] = -1;
-                    TotalHours[j] = EndHour[j] - StartHour[j];
+                    TotalHours[j] = (EndHour[j] - StartHour[j]) / activitiesInHour;
                     TotalWorkingHours[j] = 0;
                 }
 
@@ -105,7 +106,7 @@ namespace Remonty.Helpers
                 {
                     StartWork[j] = -1;
                     EndWork[j] = -1;
-                    TotalHours[j] = EndHour[j] - StartHour[j];
+                    TotalHours[j] = (EndHour[j] - StartHour[j]) / activitiesInHour;
                     TotalWorkingHours[j] = 0;
                 }
         }
@@ -152,7 +153,7 @@ namespace Remonty.Helpers
             // w pierwszej iteracji każdą taką znalezioną aktywność spróbuj dodać do planu dnia pod odpowiednią, "swoją" godziną 
             foreach (var act in tempActivityList)
             {
-                int actId = act.StartHour.Value.Hours;
+                int actId = act.StartHour.Value.Hours * activitiesInHour + act.StartHour.Value.Minutes / (60 / activitiesInHour) + 1;
                 int duration = GetActivityDuration(act);
                 bool IsActivityFound = false;
 
@@ -160,7 +161,7 @@ namespace Remonty.Helpers
                 // jeśli aktywność zaczyna się wcześniej, niż początek planu dnia - zacznij plan dnia wcześniej
                 if (actId < StartHour[day])
                 {
-                    for (int i = StartHour[day] - 1; i > actId - 1; i--)
+                    for (int i = StartHour[day] - 1; i > actId - 2; i--)
                         PlannedWeek[day].Insert(0, new PlannedActivity(i));
                     StartHour[day] = actId;
                 }
@@ -224,7 +225,7 @@ namespace Remonty.Helpers
             // wiadomo, że taka aktywność nie będzie mogła się znaleźć pod "swoją" godziną
             foreach (var act in tempUnhandledActivityList)
             {
-                int actId = act.StartHour.Value.Hours;
+                int actId = act.StartHour.Value.Hours * activitiesInHour + act.StartHour.Value.Minutes / (60 / activitiesInHour) + 1;
                 int duration = GetActivityDuration(act);
                 bool IsActivityFound = false;
 
@@ -374,7 +375,7 @@ namespace Remonty.Helpers
                 // ale nie dodawaj aktywności w ogóle, jeśli przekroczy tzw. "limit dnia" - np. godzinę 3:00 w nocy
                 else if (act.StartDate == tempToday && GetTemporaryPlannedActivityId(day, i) + duration - 1 < DayLimit)
                 {
-                    PlannedWeek[day].Add(new PlannedActivity((PlannedWeek[day][i].Id + GetPreviousActivityDuration(day, i)) % 24, act));
+                    PlannedWeek[day].Add(new PlannedActivity((PlannedWeek[day][i].Id + GetPreviousActivityDuration(day, i)) % (24 * activitiesInHour), act));
                     PlannedWeek[day][i + 1].ItemHeight = CalculateHeight(duration);
                     // po dodaniu aktywności, oznacz ją w localdb jako dodaną
                     LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsAdded = 1 WHERE Id = " + act.Id);
@@ -390,6 +391,9 @@ namespace Remonty.Helpers
 
             UsedHours[day] -= GetUsedPlacesInWorkingHours(day);
             UsedWorkingHours[day] = GetUsedPlacesInWorkingHours(day);
+
+            UsedHours[day] /= activitiesInHour;
+            UsedWorkingHours[day] /= activitiesInHour;
         }
 
         #region Filling Planned Day Helpers
@@ -439,14 +443,14 @@ namespace Remonty.Helpers
         public int GetActivityDuration(Activity act)
         {
             var tempEstimationList = LocalDatabaseHelper.ReadAllItemsFromTable<Estimation>();
-            int duration = 0;
+            double duration = 0;
 
-            if (act.EstimationId > 1)
-                duration = (int)tempEstimationList[(int)act.EstimationId - 1].Duration;
+            if (act.EstimationId > 0)
+                duration = tempEstimationList[(int)act.EstimationId - 1].Duration;
             else
                 duration = 1;
 
-            return duration;
+            return (int)(duration * activitiesInHour);
         }
 
         private int GetPreviousActivityDuration(int day, int i)
@@ -460,7 +464,7 @@ namespace Remonty.Helpers
             else
                 prevActDuration = 1;
 
-            return prevActDuration;
+            return prevActDuration * activitiesInHour;
         }
 
         private bool IdDecreased = false;
@@ -492,7 +496,12 @@ namespace Remonty.Helpers
 
         private int CalculateHeight(int duration)
         {
-            return 55 + 40 * (duration - 1);
+            if (duration == 1)
+                return 47;
+            if (duration == 2)
+                return 65;
+
+            return 55 + 40 * (duration / activitiesInHour - 1);
         }
 
         #endregion

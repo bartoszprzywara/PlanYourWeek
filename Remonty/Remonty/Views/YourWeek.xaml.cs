@@ -36,10 +36,10 @@ namespace Remonty
         // List of planned days which goes to UI
         private ObservableCollection<PlannedActivity>[] PlannedDay;
         // Total and used hours in the plan
-        private int[] TotalHours;
-        private int[] UsedHours;
-        private int[] TotalWorkingHours;
-        private int[] UsedWorkingHours;
+        private double[] TotalHours;
+        private double[] UsedHours;
+        private double[] TotalWorkingHours;
+        private double[] UsedWorkingHours;
         // Color of total and used hours
         private string[] HoursColor = new string[7];
         private string[] HoursWorkingColor = new string[7];
@@ -189,10 +189,10 @@ namespace Remonty
     {
         public string Header { get; set; }
         public ObservableCollection<PlannedActivity> ListViewSource { get; set; }
-        public int TotalHours { get; set; }
-        public int UsedHours { get; set; }
-        public int TotalWorkingHours { get; set; }
-        public int UsedWorkingHours { get; set; }
+        public double TotalHours { get; set; }
+        public double UsedHours { get; set; }
+        public double TotalWorkingHours { get; set; }
+        public double UsedWorkingHours { get; set; }
         public string HoursColor { get; set; }
         public string HoursWorkingColor { get; set; }
         public Visibility IsVisible { get; set; }

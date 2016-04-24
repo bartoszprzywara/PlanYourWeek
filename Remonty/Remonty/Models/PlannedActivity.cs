@@ -11,14 +11,14 @@ namespace Remonty.Models
         public PlannedActivity(int i)
         {
             Id = i;
-            StartHour = new TimeSpan(i, 00, 00);
+            StartHour = new TimeSpan(i / 2, i % 2 * 30, 00);
             ProposedActivity = null;
         }
 
         public PlannedActivity(int i, Activity act)
         {
             Id = i;
-            StartHour = new TimeSpan(i, 00, 00);
+            StartHour = new TimeSpan(i / 2, i % 2 * 30, 00);
             ProposedActivity = act;
         }
 

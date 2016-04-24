@@ -10,9 +10,9 @@ namespace Remonty.Models
     public class PlannedWeekItems
     {
         public ObservableCollection<PlannedActivity>[] PlannedWeek { get; set; }
-        public int[] TotalHours { get; set; }
-        public int[] UsedHours { get; set; }
-        public int[] TotalWorkingHours { get; set; }
-        public int[] UsedWorkingHours { get; set; }
+        public double[] TotalHours { get; set; }
+        public double[] UsedHours { get; set; }
+        public double[] TotalWorkingHours { get; set; }
+        public double[] UsedWorkingHours { get; set; }
     }
 }

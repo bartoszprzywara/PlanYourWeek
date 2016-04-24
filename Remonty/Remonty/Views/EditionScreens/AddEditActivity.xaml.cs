@@ -599,7 +599,7 @@ namespace Remonty
         #region Round timepicker values
         private void StartHourTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
-            int interval = 15; //15 min
+            int interval = 30; //30 min
             int minutes = e.NewTime.Minutes;
             if (minutes % interval != 0)
                 StartHourTimePicker.Time += new TimeSpan(0, interval - (minutes % interval), 0);
@@ -607,7 +607,7 @@ namespace Remonty
 
         private void EndHourTimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
-            int interval = 15; //15 min
+            int interval = 30; //30 min
             int minutes = e.NewTime.Minutes;
             if (minutes % interval != 0)
                 EndHourTimePicker.Time += new TimeSpan(0, interval - (minutes % interval), 0);
