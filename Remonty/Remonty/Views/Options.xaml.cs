@@ -46,6 +46,7 @@ namespace Remonty
             SatToggleButton.IsChecked = bool.Parse(settingsList[10].Value);
         }
 
+        int interval = 30; //30 min
         private bool screenEntered = false;
         private bool navigatingTimePicker = false;
 
@@ -55,8 +56,8 @@ namespace Remonty
             {
                 navigatingTimePicker = true;
 
-                if (e.NewTime.Minutes != 0)
-                    StartDayTimePicker.Time -= new TimeSpan(0, e.NewTime.Minutes, 0);
+                if (e.NewTime.Minutes % interval != 0)
+                    StartDayTimePicker.Time += new TimeSpan(0, interval - (e.NewTime.Minutes % interval), 0);
 
                 if (StartDayTimePicker.Time > StartWorkingTimePicker.Time)
                 {
@@ -82,8 +83,8 @@ namespace Remonty
             {
                 navigatingTimePicker = true;
 
-                if (e.NewTime.Minutes != 0)
-                    StartWorkingTimePicker.Time -= new TimeSpan(0, e.NewTime.Minutes, 0);
+                if (e.NewTime.Minutes % interval != 0)
+                    StartWorkingTimePicker.Time += new TimeSpan(0, interval - (e.NewTime.Minutes % interval), 0);
 
                 if (StartDayTimePicker.Time > StartWorkingTimePicker.Time)
                 {
@@ -116,8 +117,8 @@ namespace Remonty
             {
                 navigatingTimePicker = true;
 
-                if (e.NewTime.Minutes != 0)
-                    EndWorkingTimePicker.Time -= new TimeSpan(0, e.NewTime.Minutes, 0);
+                if (e.NewTime.Minutes % interval != 0)
+                    EndWorkingTimePicker.Time += new TimeSpan(0, interval - (e.NewTime.Minutes % interval), 0);
 
                 if (StartWorkingTimePicker.Time > EndWorkingTimePicker.Time)
                 {
@@ -150,8 +151,8 @@ namespace Remonty
             {
                 navigatingTimePicker = true;
 
-                if (e.NewTime.Minutes != 0)
-                    EndDayTimePicker.Time -= new TimeSpan(0, e.NewTime.Minutes, 0);
+                if (e.NewTime.Minutes % interval != 0)
+                    EndDayTimePicker.Time += new TimeSpan(0, interval - (e.NewTime.Minutes % interval), 0);
 
                 if (EndWorkingTimePicker.Time > EndDayTimePicker.Time &&
                     StartDayTimePicker.Time < EndDayTimePicker.Time)

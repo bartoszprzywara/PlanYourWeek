@@ -27,7 +27,6 @@ namespace Remonty
             {
                 TitleTextBlock.Text = App.TitleTextBlockText;
                 ContentFrame.Navigate(App.CurrentFrameInMainPage, TitleTextBlock.Text);
-                // TODO: Pamiętać, że aktualnie nie działa dla powrotu do SearchResults
             }
             else
                 ContentFrame.Navigate(typeof(YourWeek));
