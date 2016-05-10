@@ -174,6 +174,17 @@ namespace Remonty.Helpers
                         PlannedWeek[day].Add(new PlannedActivity(i));
                     EndHour[day] = actId + duration;
                 }
+
+                if (actId < EndHour[day] && actId + duration > EndHour[day])
+                {
+                    for (int i = EndHour[day]; i < actId + 1; i++)
+                        PlannedWeek[day].Add(new PlannedActivity(i));
+                    EndHour[day] = actId + duration;
+
+                    Debug.WriteLine(act.Title + " " + actId + " " + EndHour[day] + " " + duration);
+                    int roznica = 0;
+                    Debug.WriteLine("różnica: " + roznica);
+                }
                 #endregion
 
                 // po ewentualnym wydłużeniu planu dnia - spróbuj dodać aktywność do planu dnia
