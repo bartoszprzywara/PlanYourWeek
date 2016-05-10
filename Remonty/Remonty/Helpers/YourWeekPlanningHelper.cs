@@ -226,7 +226,7 @@ namespace Remonty.Helpers
             // wiadomo, że taka aktywność nie będzie mogła się znaleźć pod "swoją" godziną
             foreach (var act in tempUnhandledActivityList)
             {
-                int actId = act.StartHour.Value.Hours * 2 + act.StartHour.Value.Minutes / 30 + 1;
+                int actId = act.StartHour.Value.Hours * 2 + act.StartHour.Value.Minutes / 30;
                 int duration = GetActivityDuration(act);
                 bool IsActivityFound = false;
 
@@ -282,7 +282,7 @@ namespace Remonty.Helpers
                 if (!IsActivityFound)
                 {
                     // dla pewności zostawię tego if-a, gdyby kiedyś jakaś aktywność tutaj trafiła
-                    //throw new CompletelyUnhandledActivityException("Nieobsłużona aktywność: " + act.Title);
+                    throw new CompletelyUnhandledActivityException("Nieobsłużona aktywność: " + act.Title);
                 }
             }
             // co daje krok 2c: tymczasowo nieobsłużone aktywności dla danego dnia z godzinami również są umieszczone na planie dnia
@@ -395,10 +395,6 @@ namespace Remonty.Helpers
 
             UsedHours[day] /= 2;
             UsedWorkingHours[day] /= 2;
-
-            if (day == 0)
-                foreach (var act in PlannedWeek[day])
-                    Debug.WriteLine(act.Id);
         }
 
         #region Filling Planned Day Helpers
