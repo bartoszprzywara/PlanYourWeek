@@ -17,6 +17,9 @@ namespace Remonty.Helpers
             // TODO: przerobić time pickery na własne z półgodzinnymi interwałami
             // TODO: opisać w komentarzach algorytm proponowania projektu i kontekstu
             // TODO: zmienić nazwę apki i dodać ikonę oraz splash screen
+            // TODO: pomarańczowy kolor wykorzystanych godzin aktualnie jest przy np. 0.5/2
+            // TODO: pomarańczowy kolor wykorzystanych godzin aktualnie jest przy np. 0/1
+            // Debug.WriteLine(act.Title + " actId: " + actId + " EndHour[day]: " + EndHour[day] + " duration: " + duration);
 
             this.PlanYourWeek();
             Debug.WriteLine("Your Week has just been reloaded (" + DateTime.Now + ")");
@@ -167,23 +170,12 @@ namespace Remonty.Helpers
                     StartHour[day] = actId;
                 }
 
-                // jeśli aktywność zaczyna się później, niż koniec planu dnia - wydłuż plan dnia
-                if (actId >= EndHour[day])
+                // jeśli aktywność kończy się później, niż koniec planu dnia - wydłuż plan dnia
+                if (actId + duration > EndHour[day])
                 {
-                    for (int i = EndHour[day]; i < actId + 1; i++)
+                    for (int i = EndHour[day]; i < actId + duration; i++)
                         PlannedWeek[day].Add(new PlannedActivity(i));
                     EndHour[day] = actId + duration;
-                }
-
-                if (actId < EndHour[day] && actId + duration > EndHour[day])
-                {
-                    for (int i = EndHour[day]; i < actId + 1; i++)
-                        PlannedWeek[day].Add(new PlannedActivity(i));
-                    EndHour[day] = actId + duration;
-
-                    Debug.WriteLine(act.Title + " " + actId + " " + EndHour[day] + " " + duration);
-                    int roznica = 0;
-                    Debug.WriteLine("różnica: " + roznica);
                 }
                 #endregion
 
@@ -455,12 +447,10 @@ namespace Remonty.Helpers
         public int GetActivityDuration(Activity act)
         {
             var tempEstimationList = LocalDatabaseHelper.ReadAllItemsFromTable<Estimation>();
-            double duration = 0;
+            double duration = 1;
 
             if (act.EstimationId > 0)
                 duration = tempEstimationList[(int)act.EstimationId - 1].Duration;
-            else
-                duration = 1;
 
             return (int)(duration * 2);
         }
@@ -468,15 +458,13 @@ namespace Remonty.Helpers
         private int GetPreviousActivityDuration(int day, int i)
         {
             var tempEstimationList = LocalDatabaseHelper.ReadAllItemsFromTable<Estimation>();
-            int? prevActEstId = PlannedWeek[day][i].ProposedActivity?.EstimationId;
-            int prevActDuration = 0;
+            double? prevActEstId = PlannedWeek[day][i].ProposedActivity?.EstimationId;
+            double prevActDuration = 1;
 
-            if (prevActEstId > 2)
-                prevActDuration = (int)tempEstimationList[(int)prevActEstId - 1].Duration;
-            else
-                prevActDuration = 1;
+            if (prevActEstId > 0)
+                prevActDuration = tempEstimationList[(int)prevActEstId - 1].Duration;
 
-            return prevActDuration * 2;
+            return (int)(prevActDuration * 2);
         }
 
         private bool IdDecreased = false;
