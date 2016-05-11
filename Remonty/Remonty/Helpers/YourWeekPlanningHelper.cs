@@ -13,13 +13,9 @@ namespace Remonty.Helpers
         public void GetPlannedWeek()
         {
             // TODO: dokończyć przypomnienia (reminders) dla zaplanowanych zadań
-            // TODO: przerobić opcje, żeby interwały były co pół godziny
             // TODO: przerobić time pickery na własne z półgodzinnymi interwałami
             // TODO: opisać w komentarzach algorytm proponowania projektu i kontekstu
             // TODO: zmienić nazwę apki i dodać ikonę oraz splash screen
-            // TODO: pomarańczowy kolor wykorzystanych godzin aktualnie jest przy np. 0.5/2
-            // TODO: pomarańczowy kolor wykorzystanych godzin aktualnie jest przy np. 0/1
-            // Debug.WriteLine(act.Title + " actId: " + actId + " EndHour[day]: " + EndHour[day] + " duration: " + duration);
 
             this.PlanYourWeek();
             Debug.WriteLine("Your Week has just been reloaded (" + DateTime.Now + ")");
@@ -82,8 +78,8 @@ namespace Remonty.Helpers
                 DayweekWorkingHoursEnabled[i] = bool.Parse(savedSettings[i + 4].Value);
 
             EndHour[0] = (EndHour[0] < StartHour[0]) ? EndHour[0] += 48 : EndHour[0];
-            TotalHours[0] = ((StartWork[0] - StartHour[0]) + (EndHour[0] - EndWork[0])) / 2;
-            TotalWorkingHours[0] = (EndWork[0] - StartWork[0]) / 2;
+            TotalHours[0] = ((StartWork[0] - StartHour[0]) + (EndHour[0] - EndWork[0])) / 2.0;
+            TotalWorkingHours[0] = (EndWork[0] - StartWork[0]) / 2.0;
 
             for (int i = 1; i < 7; i++)
             {
@@ -101,7 +97,7 @@ namespace Remonty.Helpers
                 {
                     StartWork[j] = -1;
                     EndWork[j] = -1;
-                    TotalHours[j] = (EndHour[j] - StartHour[j]) / 2;
+                    TotalHours[j] = (EndHour[j] - StartHour[j]) / 2.0;
                     TotalWorkingHours[j] = 0;
                 }
 
@@ -110,7 +106,7 @@ namespace Remonty.Helpers
                 {
                     StartWork[j] = -1;
                     EndWork[j] = -1;
-                    TotalHours[j] = (EndHour[j] - StartHour[j]) / 2;
+                    TotalHours[j] = (EndHour[j] - StartHour[j]) / 2.0;
                     TotalWorkingHours[j] = 0;
                 }
         }

@@ -127,7 +127,7 @@ namespace Remonty
                     AnimateInfoMessageGridStoryboard.Begin();
                     EndWorkingTimePicker.Time = e.OldTime;
                 }
-                else if (EndWorkingTimePicker.Time > EndDayTimePicker.Time)
+                else if (EndWorkingTimePicker.Time > EndDayTimePicker.Time && StartDayTimePicker.Time < EndDayTimePicker.Time)
                 {
                     InfoMessageTextBlock.Text = "Nie da się kończyć pracy później, niż idzie się spać";
                     InfoMessageGrid.Opacity = 1;

@@ -121,13 +121,13 @@ namespace Remonty
             for (int i = 0; i < 7; i++)
             {
                 HoursColor[i] = "DarkGreen";
-                if (UsedHours[i] > TotalHours[i] - 2)
+                if (UsedHours[i] > TotalHours[i] - 1.5 && UsedHours[i] != 0)
                     HoursColor[i] = "Orange";
                 if (UsedHours[i] > TotalHours[i])
                     HoursColor[i] = "Red";
 
                 HoursWorkingColor[i] = "DarkGreen";
-                if (UsedWorkingHours[i] > TotalWorkingHours[i] - 2)
+                if (UsedWorkingHours[i] > TotalWorkingHours[i] - 1.5 && UsedWorkingHours[i] != 0)
                     HoursWorkingColor[i] = "Orange";
                 if (UsedWorkingHours[i] > TotalWorkingHours[i])
                     HoursWorkingColor[i] = "Red";

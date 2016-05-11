@@ -27,7 +27,7 @@
         <helpers:YourWeekTemplateSelector x:Name="DailyActivitiesListSelector" PlaceholderTemplate="{StaticResource PlaceholderTemplate}" ActivityTemplate="{StaticResource ActivityTemplate}"/>
 
         <DataTemplate x:Key="PlaceholderTemplate" x:DataType="data:PlannedActivity">
-            <RelativePanel BorderThickness="0" BorderBrush="{StaticResource BackgroundMainColor}" Height="25">
+            <RelativePanel BorderThickness="0" BorderBrush="{StaticResource BackgroundMainColor}" Height="24">
                 <Line X2="2000" StrokeDashArray="3,5" StrokeThickness="2" Stroke="{StaticResource BackgroundMainColor}"/>
                 <TextBlock Text="{x:Bind StartHourUI}" FontSize="9" Margin="0,2,0,0" Foreground="{StaticResource BackgroundMainColor}" />
             </RelativePanel>
