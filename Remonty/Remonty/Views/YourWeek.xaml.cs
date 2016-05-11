@@ -91,6 +91,7 @@ namespace Remonty
             int ItemId = (int)((FrameworkElement)e.OriginalSource).DataContext;
 
             LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 1 WHERE Id = " + ItemId);
+            ToastNotificationHelper.RemoveNotification(LocalDatabaseHelper.ReadItem<Activity>(ItemId));
 
             int i = 0;
             int duration = 0;

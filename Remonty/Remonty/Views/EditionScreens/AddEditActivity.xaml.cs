@@ -58,8 +58,6 @@ namespace Remonty
                 UnDoneButton.Visibility = Visibility.Visible;
             }
 
-            //CreateTemporaryNotification();
-
             /* AddToCalendar
             else if (activity.List == "Zaplanowane")
                 AddToCalendarButton.Visibility = Visibility.Visible; */
@@ -81,6 +79,7 @@ namespace Remonty
             {
                 LocalDatabaseHelper.UpdateActivity(activity.Id, LoadActivityValuesFromControls());
                 LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 0 WHERE Id = " + activity.Id);
+                ToastNotificationHelper.AddNotification(LocalDatabaseHelper.ReadItem<Activity>(activity.Id));
                 App.PlannedWeekNeedsToBeReloaded = true;
 
                 if (this.Frame.CanGoBack)
@@ -98,6 +97,7 @@ namespace Remonty
             {
                 LocalDatabaseHelper.UpdateActivity(activity.Id, LoadActivityValuesFromControls());
                 LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 1 WHERE Id = " + activity.Id);
+                ToastNotificationHelper.RemoveNotification(activity);
                 App.PlannedWeekNeedsToBeReloaded = true;
 
                 if (this.Frame.CanGoBack)
@@ -117,6 +117,7 @@ namespace Remonty
             if ((int)result.Id == 0)
             {
                 LocalDatabaseHelper.ExecuteQuery("DELETE FROM Activity WHERE Id = " + activity.Id);
+                ToastNotificationHelper.RemoveNotification(activity);
                 App.PlannedWeekNeedsToBeReloaded = true;
                 if (this.Frame.CanGoBack)
                     this.Frame.GoBack();
@@ -132,6 +133,7 @@ namespace Remonty
             else
             {
                 LocalDatabaseHelper.InsertItem<Activity>(LoadActivityValuesFromControls());
+                ToastNotificationHelper.AddNotification(LocalDatabaseHelper.ReadLastItem<Activity>());
                 App.PlannedWeekNeedsToBeReloaded = true;
 
                 if (this.Frame.CanGoBack)
@@ -148,6 +150,7 @@ namespace Remonty
             else
             {
                 LocalDatabaseHelper.UpdateActivity(activity.Id, LoadActivityValuesFromControls());
+                ToastNotificationHelper.AddNotification(LocalDatabaseHelper.ReadItem<Activity>(activity.Id));
                 App.PlannedWeekNeedsToBeReloaded = true;
 
                 if (this.Frame.CanGoBack)
@@ -420,92 +423,6 @@ namespace Remonty
             ProjectClearButton.Visibility = Visibility.Collapsed;
         }
 
-        #endregion
-
-        #region Reminders and Calendars
-        private void CreateTemporaryNotification()
-        {
-            string tempTitle = string.Empty;
-            if (activity != null)
-                tempTitle = activity.Title;
-
-            string contentString =
-            "<toast scenario=\"reminder\" duration=\"long\">" +
-                "<visual>" +
-                    "<binding template=\"ToastGeneric\">" +
-                        "<text id=\"1\">Masz zadanie do zrobienia!</text>" +
-                        "<text id=\"2\">" + tempTitle + "</text>" +
-                    "</binding>" +
-                "</visual>" +
-                "<commands>" +
-                    "<command id=\"snooze\"/>" +
-                    "<command id=\"dismiss\"/>" +
-                "</commands>" +
-            "</toast>";
-            Windows.Data.Xml.Dom.XmlDocument content = new Windows.Data.Xml.Dom.XmlDocument();
-            content.LoadXml(contentString);
-
-            DateTime scheduledTime = DateTime.Now.AddSeconds(5);
-            TimeSpan snoozeInterval = TimeSpan.FromMinutes(1);
-            var scheduledToast = new Windows.UI.Notifications.ScheduledToastNotification(content, scheduledTime, snoozeInterval, 0);
-
-            Windows.UI.Notifications.ToastNotifier toastNotifier = Windows.UI.Notifications.ToastNotificationManager.CreateToastNotifier();
-            toastNotifier.AddToSchedule(scheduledToast);
-        }
-
-        private async void AddToCalendar()
-        {
-            Appointment appointment = new Appointment();
-            Activity tempActivity = LoadActivityValuesFromControls();
-
-            appointment.Subject = tempActivity.Title;
-            appointment.Details = tempActivity.Description;
-            appointment.Location = tempActivity.ContextUI;
-            appointment.Reminder = TimeSpan.FromHours(1);
-            appointment.StartTime = ((DateTimeOffset)tempActivity.StartDate).Date;
-            string activityAppointmentId = string.Empty; // to powinno być pole aktywności activity.AppointmentId
-
-            if (tempActivity.StartHour != null)
-                appointment.StartTime += (TimeSpan)tempActivity.StartHour;
-
-            if (tempActivity.EstimationId != null)
-                appointment.Duration = TimeSpan.FromHours(LocalDatabaseHelper.ReadItem<Estimation>((int)tempActivity.EstimationId).Duration);
-
-            var rect = new Rect(new Point(Window.Current.Bounds.Width / 2, Window.Current.Bounds.Height / 2), new Size());
-
-            string newAppointmentId;
-
-            if (string.IsNullOrEmpty(activityAppointmentId))
-            {
-                newAppointmentId = await AppointmentManager.ShowReplaceAppointmentAsync(activityAppointmentId, appointment, rect, Placement.Default);
-
-                if (string.IsNullOrEmpty(newAppointmentId))
-                    newAppointmentId = activityAppointmentId;
-            }
-            else
-                newAppointmentId = await AppointmentManager.ShowAddAppointmentAsync(appointment, rect, Placement.Default);
-
-            LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET AppointmentId = '" + newAppointmentId + "' WHERE Id = " + activity.Id);
-            App.PlannedWeekNeedsToBeReloaded = true;
-        }
-
-        async private System.Threading.Tasks.Task CreateCalenderEntry()
-        {
-            // 1. get access to appointmentstore 
-            var appointmentStore = await AppointmentManager.RequestStoreAsync(AppointmentStoreAccessType.AppCalendarsReadWrite);
-
-            // 2. get calendar 
-            var appCustomApptCalendar = await appointmentStore.CreateAppointmentCalendarAsync("MyCalendar");
-
-            // 3. create new Appointment 
-            var appointment = new Appointment();
-            appointment.AllDay = true;
-            appointment.Subject = "Mein Termin";
-            appointment.StartTime = DateTime.Now;
-
-            //  4. add 
-            await appCustomApptCalendar.SaveAppointmentAsync(appointment);
-        }
         #endregion
 
         #region Context and Project proposing

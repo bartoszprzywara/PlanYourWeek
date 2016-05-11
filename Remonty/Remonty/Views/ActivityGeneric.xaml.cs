@@ -75,9 +75,15 @@ namespace Remonty
             int ItemId = (int)((FrameworkElement)e.OriginalSource).DataContext;
 
             if (listType != "Zrobione")
+            {
                 LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 1 WHERE Id = " + ItemId);
+                ToastNotificationHelper.RemoveNotification(LocalDatabaseHelper.ReadItem<Activity>(ItemId));
+            }
             else
+            {
                 LocalDatabaseHelper.ExecuteQuery("UPDATE Activity SET IsDone = 0 WHERE Id = " + ItemId);
+                ToastNotificationHelper.AddNotification(LocalDatabaseHelper.ReadItem<Activity>(ItemId));
+            }
 
             int i = 0;
             while (listofActivities[i].Id != ItemId)
