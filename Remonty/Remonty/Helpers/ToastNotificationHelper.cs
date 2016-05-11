@@ -15,7 +15,21 @@ namespace Remonty.Helpers
     {
         public static void AddNotification(Activity act)
         {
+            // notifications will be created only for planned activities
             if (act.List != "Zaplanowane") return;
+
+            // setting notification delivery time
+            DateTimeOffset scheduledTime = ((DateTimeOffset)act.StartDate).LocalDateTime;
+            if (act.StartHour != null)
+                scheduledTime = scheduledTime.Add((TimeSpan)act.StartHour);
+            else if (act.StartDate == DateTime.Today)
+                scheduledTime = scheduledTime.Add(new TimeSpan(16, 0, 0));
+            else
+                scheduledTime = scheduledTime.Add(new TimeSpan(9, 0, 0));
+            //scheduledTime = DateTime.Now.AddSeconds(5); // debug setting
+
+            // checking if notification can be created
+            if (scheduledTime < DateTime.Now) return;
 
             // creating notification message
             string when = (act.StartHour == null) ? "dzisiaj" : "od " + act.StartHourUI;
@@ -35,14 +49,6 @@ namespace Remonty.Helpers
             "</toast>";
             Windows.Data.Xml.Dom.XmlDocument content = new Windows.Data.Xml.Dom.XmlDocument();
             content.LoadXml(contentString);
-
-            // setting notification delivery time
-            DateTimeOffset scheduledTime = ((DateTimeOffset)act.StartDate).LocalDateTime;
-            if (act.StartHour != null)
-                scheduledTime = scheduledTime.Add((TimeSpan)act.StartHour);
-            else
-                scheduledTime = scheduledTime.Add(new TimeSpan(9, 0, 0));
-            //scheduledTime = DateTime.Now.AddSeconds(5); // debug setting
 
             // creating new notification
             var newToast = new Windows.UI.Notifications.ScheduledToastNotification(content, scheduledTime, TimeSpan.FromMinutes(5), 0);

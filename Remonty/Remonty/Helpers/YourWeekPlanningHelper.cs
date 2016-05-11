@@ -12,7 +12,6 @@ namespace Remonty.Helpers
     {
         public void GetPlannedWeek()
         {
-            // TODO: dokończyć przypomnienia (reminders) dla zaplanowanych zadań
             // TODO: przerobić time pickery na własne z półgodzinnymi interwałami
             // TODO: opisać w komentarzach algorytm proponowania projektu i kontekstu
             // TODO: zmienić nazwę apki i dodać ikonę oraz splash screen
