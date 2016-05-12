@@ -426,9 +426,17 @@ namespace Remonty
         #endregion
 
         #region Context and Project proposing
+
+        // --------------- KROK GŁÓWNY A ---------------
+        // uruchom proponowanie kontekstu i projektu po edycji tytułu lub opisu zadania
+        //
+        // sprawdź, czy edytowany tytuł lub opis nie jest pusty
+        // jeśli edytujesz aktywność, to dodatkowo sprawdź, czy aktualnie podany tytuł lub opis różni się od starego tytułu lub opisu aktywności
+        // jeśli warunki są spełnione, uruchom proponowanie kontekstu i projektu
+
         private void TitleTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if ((activity != null && !string.IsNullOrWhiteSpace(TitleTextBox.Text) && activity.Description != TitleTextBox.Text) ||
+            if ((activity != null && !string.IsNullOrWhiteSpace(TitleTextBox.Text) && activity.Title != TitleTextBox.Text) ||
                 (activity == null && !string.IsNullOrWhiteSpace(TitleTextBox.Text)))
             {
                 ProposeContext();
@@ -446,6 +454,9 @@ namespace Remonty
             }
         }
 
+        // --------------- KROK GŁÓWNY B ---------------
+        // wyszukaj kontekst na podstawie edytowanego tytułu lub opisu zadania
+
         private void ProposeContext()
         {
             List<Context> allItems = LocalDatabaseHelper.conn.Table<Context>().ToList();
@@ -453,21 +464,35 @@ namespace Remonty
             List<string> tempItemsSplit;
             List<string> foundItem;
 
+            // --------------- KROK 1 ---------------
+            // wyciągnij wszystkie istniejące konteksty z bazy
+            // zauważ, że jeden kontekst możmy zawierać wiecej, niż jedno słowo
+            // podziel każdy kontekst na pojedyncze słowa
+            // odrzuć słowa, które mają mniej, niż 3 znaki (np. do, na, i)
             foreach (var item in allItems)
             {
                 tempItemsSplit = new List<string>(item.Name.Split(' '));
+
                 foreach (var tempItem in tempItemsSplit)
-                {
                     if (tempItem.Length > 3)
                         allItemsSplit.Add(tempItem);
-                }
             }
+            // co daje krok 1: na podstawie kontekstów mamy przygotowaną listę słów, które będziemy przeszukiwać
 
+
+            // --------------- KROK 2 ---------------
+            // sprawdź, czy tytuł lub opis zadania zawiera którekolwiek ze słów z utworzonej przed chwilą listy
+            // jeśli tak, zaproponuj kontekst, z którego pochodzi znalezione słowo i zakończ krok 2
+            // jeśli nie, usuń ostatnią literę w każdym sprawdzanym słowie i zacznij sprawdzanie na nowo
+            // pamietaj, że usunąć literę w sprawdzanym słowie można tylko jeśli słowo aktualnie ma co najmniej 3 litery
+            // powtarzaj czynność jeszcze 2 razy
+            // czyli sprawdzane słowa będą miały usunięte maksylanie 3 ostatnie litery
+            // jeśli wszystkie sprawdzania się zakończyły i nie otrzymano rezultatu, nie proponuj żadnego kontekstu
             for (int i = 0; i < 4; i++)
             {
                 foundItem = allItemsSplit.Where(
                     v => ((DescriptionTextBox.Text.ToLower()).Contains(((v.Length > (i + 2) && i > 0) ? v.Remove(v.Length - i) : v).ToLower())
-                    || (TitleTextBox.Text.ToLower()).Contains(((v.Length > (i + 2) && i > 0) ? v.Remove(v.Length - i) : v).ToLower()))).ToList();
+                             || (TitleTextBox.Text.ToLower()).Contains(((v.Length > (i + 2) && i > 0) ? v.Remove(v.Length - i) : v).ToLower()))).ToList();
 
                 if (foundItem.Count > 0)
                 {
@@ -477,7 +502,12 @@ namespace Remonty
                     break;
                 }
             }
+            // co daje krok 2: mamy zaproponowany kontekst, jeśli został znaleziony odpowiedni
         }
+
+
+        // --------------- KROK GŁÓWNY C ---------------
+        // powtórz krok główny B dla projektu zamiast dla kontekstu
 
         private void ProposeProject()
         {
@@ -489,18 +519,17 @@ namespace Remonty
             foreach (var item in allItems)
             {
                 tempItemsSplit = new List<string>(item.Name.Split(' '));
+
                 foreach (var tempItem in tempItemsSplit)
-                {
                     if (tempItem.Length > 3)
                         allItemsSplit.Add(tempItem);
-                }
             }
 
             for (int i = 0; i < 4; i++)
             {
                 foundItem = allItemsSplit.Where(
                     v => ((DescriptionTextBox.Text.ToLower()).Contains(((v.Length > (i + 2) && i > 0) ? v.Remove(v.Length - i) : v).ToLower())
-                    || (TitleTextBox.Text.ToLower()).Contains(((v.Length > (i + 2) && i > 0) ? v.Remove(v.Length - i) : v).ToLower()))).ToList();
+                             || (TitleTextBox.Text.ToLower()).Contains(((v.Length > (i + 2) && i > 0) ? v.Remove(v.Length - i) : v).ToLower()))).ToList();
 
                 if (foundItem.Count > 0)
                 {
