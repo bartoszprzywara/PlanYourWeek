@@ -32,8 +32,12 @@ namespace Remonty.Helpers
             if (scheduledTime < DateTime.Now) return;
 
             // creating notification message
-            string when = (act.StartHour == null) ? "dzisiaj" : "od " + act.StartHourUI;
-            when += string.IsNullOrEmpty(act.EstimationUI) ? "" : " przez " + act.EstimationUI;
+            string when = (act.StartHour == null) ? "dzisiaj" : act.StartHourUI;
+            if (!string.IsNullOrEmpty(act.EstimationUI))
+                when += ", przez " + act.EstimationUI;
+            else if (act.EstimationId == 1)
+                when += ", przez 30min";
+
             string contentString =
             "<toast scenario=\"reminder\" duration=\"long\">" +
                 "<visual>" +
