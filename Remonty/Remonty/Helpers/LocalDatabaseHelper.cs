@@ -38,28 +38,29 @@ namespace Remonty.Helpers
                 // kont: 1-"Zakupy", 2-"Spotkanie", 3-"Telefon", 4-"Prace", 5-"Komputer", 6-"Kuchnia", 7-"Łazienka", 8-"Przedpokój", 9-"Salon", 10-"Sypialnia"
                 // proj: 1-"Malowanie", 2-"Kaloryfery", 3-"Podłogi", 4-"Okna"
 
+                int shift = 1;
                 InsertItem(new Activity("Opróżnić piwnicę", "Zalegają jakieś garty", 1, true, "Najbliższe", null, null, null, null, 3, 4, null));
-                InsertItem(new Activity("Wymienić zamki", "", 3, false, "Zaplanowane", DateTime.Today.AddDays(-5), new TimeSpan(19, 00, 00), null, null, 1, 8, null));
+                InsertItem(new Activity("Wymienić zamki", "", 3, false, "Zaplanowane", DateTime.Today.AddDays(-5 + shift), new TimeSpan(19, 00, 00), null, null, 1, 8, null));
                 ExecuteQuery("UPDATE Activity SET IsDone = 1");
 
                 InsertItem(new Activity("Pomyśleć nad kuchenką", "Czy kupić nową kuchenkę?", 2, true, "Nowe", null, null, null, null, null, 6, null));
-                InsertItem(new Activity("Ogłoszenie o wymianie okien", "Na klatce wisi info", 3, true, "Nowe", null, null, DateTime.Today.AddDays(12), null, null, null, 4));
-                InsertItem(new Activity("Pomalować kuchnię", "Na zielono", 2, false, "Zaplanowane", DateTime.Today.AddDays(1), new TimeSpan(16, 00, 00), DateTime.Today.AddDays(9), new TimeSpan(21, 00, 00), 4, 6, 1));
-                InsertItem(new Activity("Kupić płytki", "Do kuchni i łazienki", 2, true, "Zaplanowane", DateTime.Today.AddDays(2), null, DateTime.Today.AddDays(11), null, 3, 1, 3));
-                InsertItem(new Activity("Mają przywieźć kanapę", "Zadzwonią godzinę przed", 2, true, "Zaplanowane", DateTime.Today.AddDays(3), null, null, null, 2, 9, null));
-                InsertItem(new Activity("Cyklinowanie podłogi", "Przyjdzie Pan Karol z asystentem", 2, false, "Zaplanowane", DateTime.Today, new TimeSpan(10, 30, 00), null, null, 4, 4, 3));
-                InsertItem(new Activity("Pomiar gazu", "Przyjdzie Pan Jan Kowalski", 1, false, "Zaplanowane", DateTime.Today, new TimeSpan(08, 00, 00), DateTime.Today, new TimeSpan(09, 00, 00), 1, 2, null));
-                InsertItem(new Activity("Kupić farbę", "Biała 10l, zielona 5l", 2, true, "Najbliższe", null, null, DateTime.Today.AddDays(2), null, 3, 1, 1));
-                InsertItem(new Activity("Zmierzyć, ile trzeba płytek", "Kuchnia i łazienka", 3, true, "Najbliższe", null, null, DateTime.Today.AddDays(1), null, 1, 4, 3));
-                InsertItem(new Activity("Kupić okna", "", 3, true, "Najbliższe", null, null, DateTime.Today.AddDays(4), null, 4, 1, 4));
-                InsertItem(new Activity("Znaleźć ekipę do wymiany okien", "Takiej, która zrobi to najszybciej", 3, true, "Najbliższe", null, null, DateTime.Today.AddDays(3), null, 2, 5, 4));
+                InsertItem(new Activity("Ogłoszenie o wymianie okien", "Na klatce wisi info", 3, true, "Nowe", null, null, DateTime.Today.AddDays(12 + shift), null, null, null, 4));
+                InsertItem(new Activity("Pomalować kuchnię", "Na zielono", 2, false, "Zaplanowane", DateTime.Today.AddDays(1 + shift), new TimeSpan(16, 00, 00), DateTime.Today.AddDays(9 + shift), new TimeSpan(21, 00, 00), 4, 6, 1));
+                InsertItem(new Activity("Kupić płytki", "Do kuchni i łazienki", 2, true, "Zaplanowane", DateTime.Today.AddDays(2 + shift), null, DateTime.Today.AddDays(11 + shift), null, 3, 1, 3));
+                InsertItem(new Activity("Mają przywieźć kanapę", "Zadzwonią godzinę przed", 2, true, "Zaplanowane", DateTime.Today.AddDays(3 + shift), null, null, null, 2, 9, null));
+                InsertItem(new Activity("Cyklinowanie podłogi", "Przyjdzie Pan Karol z asystentem", 2, false, "Zaplanowane", DateTime.Today.AddDays(shift), new TimeSpan(10, 30, 00), null, null, 4, 4, 3));
+                InsertItem(new Activity("Pomiar gazu", "Przyjdzie Pan Jan Kowalski", 1, false, "Zaplanowane", DateTime.Today.AddDays(shift), new TimeSpan(08, 00, 00), DateTime.Today.AddDays(shift), new TimeSpan(09, 00, 00), 1, 2, null));
+                InsertItem(new Activity("Kupić farbę", "Biała 10l, zielona 5l", 2, true, "Najbliższe", null, null, DateTime.Today.AddDays(2 + shift), null, 3, 1, 1));
+                InsertItem(new Activity("Zmierzyć, ile trzeba płytek", "Kuchnia i łazienka", 3, true, "Najbliższe", null, null, DateTime.Today.AddDays(1 + shift), null, 1, 4, 3));
+                InsertItem(new Activity("Kupić okna", "", 3, true, "Najbliższe", null, null, DateTime.Today.AddDays(4 + shift), null, 4, 1, 4));
+                InsertItem(new Activity("Znaleźć ekipę do wymiany okien", "Takiej, która zrobi to najszybciej", 3, true, "Najbliższe", null, null, DateTime.Today.AddDays(3 + shift), null, 2, 5, 4));
                 InsertItem(new Activity("Przesunąć lampę na suficie", "Bliżej aneksu", 2, true, "Najbliższe", null, null, null, null, 3, 9, null));
-                InsertItem(new Activity("Powiesić szafkę w łazience", "Nad pralką", 1, true, "Najbliższe", null, null, DateTime.Today.AddDays(3), null, 2, 7, null));
+                InsertItem(new Activity("Powiesić szafkę w łazience", "Nad pralką", 1, true, "Najbliższe", null, null, DateTime.Today.AddDays(3 + shift), null, 2, 7, null));
                 InsertItem(new Activity("Sprawdzić kod do domofonu", "W spółdzielni", 1, true, "Najbliższe", null, null, null, null, null, 2, null));
                 InsertItem(new Activity("Listwa na złączeniu", "Między salonem a aneksem", 1, true, "Kiedyś", null, null, null, null, 1, 4, 3));
-                InsertItem(new Activity("Odkamienić pralkę", "", 2, true, "Kiedyś", null, null, DateTime.Today.AddDays(18), null, 3, 7, null));
-                InsertItem(new Activity("Zasłony do okien", "Tata ma przywieźć od babci", 1, true, "Oddelegowane", null, null, DateTime.Today.AddDays(10), null, null, 1, 4));
-                InsertItem(new Activity("Założenie rolet na okna", "Fachowiec ma zadzwonić jak się dowie", 2, false, "Oddelegowane", null, null, DateTime.Today.AddDays(6), new TimeSpan(14, 00, 00), 1, 10, 4));
+                InsertItem(new Activity("Odkamienić pralkę", "", 2, true, "Kiedyś", null, null, DateTime.Today.AddDays(18 + shift), null, 3, 7, null));
+                InsertItem(new Activity("Zasłony do okien", "Tata ma przywieźć od babci", 1, true, "Oddelegowane", null, null, DateTime.Today.AddDays(10 + shift), null, null, 1, 4));
+                InsertItem(new Activity("Założenie rolet na okna", "Fachowiec ma zadzwonić jak się dowie", 2, false, "Oddelegowane", null, null, DateTime.Today.AddDays(6 + shift), new TimeSpan(14, 00, 00), 1, 10, 4));
                 //InsertItem(new Activity(null, null, 2, true, null, null, null, null, null, null, null, null));
 
                 string[] projects = { "Malowanie", "Kaloryfery", "Podłogi", "Okna" };
