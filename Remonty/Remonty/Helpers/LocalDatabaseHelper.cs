@@ -38,7 +38,7 @@ namespace Remonty.Helpers
                 // kont: 1-"Zakupy", 2-"Spotkanie", 3-"Telefon", 4-"Prace", 5-"Komputer", 6-"Kuchnia", 7-"Łazienka", 8-"Przedpokój", 9-"Salon", 10-"Sypialnia"
                 // proj: 1-"Malowanie", 2-"Kaloryfery", 3-"Podłogi", 4-"Okna"
 
-                int shift = 1;
+                int shift = 0;
                 InsertItem(new Activity("Opróżnić piwnicę", "Zalegają jakieś garty", 1, true, "Najbliższe", null, null, null, null, 3, 4, null));
                 InsertItem(new Activity("Wymienić zamki", "", 3, false, "Zaplanowane", DateTime.Today.AddDays(-5 + shift), new TimeSpan(19, 00, 00), null, null, 1, 8, null));
                 ExecuteQuery("UPDATE Activity SET IsDone = 1");

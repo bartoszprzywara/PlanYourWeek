@@ -145,7 +145,7 @@ namespace Remonty
         private void SetWeekDayNames()
         {
             Days[0] = "dzisiaj";
-            Days[1] = "juro";
+            Days[1] = "jutro";
             for (int i = 2; i < 7; i++)
                 Days[i] = GetDayOfWeek((today + i) % 7);
         }
