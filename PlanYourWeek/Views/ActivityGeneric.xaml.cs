@@ -21,6 +21,9 @@ namespace PlanYourWeek
 {
     public sealed partial class ActivityGeneric : Page
     {
+        private string listType;
+        private ObservableCollection<Activity> listofActivities;
+
         public ActivityGeneric()
         {
             this.InitializeComponent();
@@ -59,9 +62,6 @@ namespace PlanYourWeek
                 });
             }
         }
-
-        private string listType;
-        private ObservableCollection<Activity> listofActivities;
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
