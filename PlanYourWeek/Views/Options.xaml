@@ -18,7 +18,7 @@
 
     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
         <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <TextBlock Text="O której godzinie wstajesz?" Margin="{StaticResource SettingsCommonMargin}"/>
+            <TextBlock x:Uid="Sample" Text="O której godzinie wstajesz?" Margin="{StaticResource SettingsCommonMargin}"/>
             <StackPanel Orientation="Horizontal" Margin="15,5,0,0">
                 <TimePicker Name="StartDayTimePicker" ClockIdentifier="24HourClock" MinWidth="130" TimeChanged="StartDayTimePicker_TimeChanged"/>
                 <StackPanel Opacity="0" Orientation="Horizontal" Name="StartDayStackPanel">

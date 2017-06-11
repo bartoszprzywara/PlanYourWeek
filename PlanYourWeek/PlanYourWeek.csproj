@@ -94,10 +94,12 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="PlanYourWeek_TemporaryKey.pfx" />
     <None Include="project.json" />
+    <PRIResource Include="Resources\pl-PL\Resources.resw" />
+    <PRIResource Include="Resources\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\LocalizedStringsHelper.cs" />
     <Compile Include="Helpers\ProjectConverter.cs" />
     <Compile Include="Helpers\ToastNotificationHelper.cs" />
     <Compile Include="Helpers\YourWeekPlanningHelper.cs" />
@@ -208,7 +210,7 @@
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <DelaySign>false</DelaySign>

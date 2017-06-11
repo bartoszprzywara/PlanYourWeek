@@ -35,7 +35,7 @@
 
         <RelativePanel Grid.Row="0" Background="{StaticResource BackgroundMainColor}">
             <Button Content="&#xE700;" Name="HamburgerButton" Style="{StaticResource NaviButtonStyle}" Click="HamburgerButton_Click"/>
-            <TextBlock Text="Twój tydzień" Name="TitleTextBlock" Foreground="{StaticResource ForegroundMainColor}" Margin="10,0,0,0" RelativePanel.RightOf="HamburgerButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <TextBlock x:Uid="MainPage_YourWeek" Text="Twój tydzień" Name="TitleTextBlock" Foreground="{StaticResource ForegroundMainColor}" Margin="10,0,0,0" RelativePanel.RightOf="HamburgerButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
             <Button Content="&#xE777;" Name="ReloadButton" RelativePanel.LeftOf="AddButton" Style="{StaticResource NaviButtonStyle}" Click="ReloadButton_Click"/>
             <Button Content="&#xE109;" Name="AddButton" RelativePanel.LeftOf="SearchButton" Style="{StaticResource NaviButtonStyle}" Click="AddButton_Click"/>
             <Button Content="&#xE71E;" Name="SearchButton" RelativePanel.AlignRightWithPanel="True"  Style="{StaticResource NaviButtonStyle}" Click="SearchButton_Click"/>
@@ -47,13 +47,15 @@
                     <ListBoxItem Name="YourWeekListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE10F;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
-                            <TextBlock Text="Twój tydzień" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
+                            <TextBlock Text="Twój tydzień" Style="{StaticResource HamburgerMenuItemLabelStyle}"
+                                       x:Uid="MainPageMenu_YourWeek"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="IncomingListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE734;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
-                            <TextBlock Text="Nowe" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
+                            <TextBlock Text="Nowe" Style="{StaticResource HamburgerMenuItemLabelStyle}"
+                                       x:Uid="MainPageMenu_Incoming"/>
                             <RelativePanel Margin="5,0,0,0" Name="NextCounterRelativePanel" Visibility="Collapsed">
                                 <Ellipse Name="PriorIcon" Fill="Red" Height="17" Width="17" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
                                 <TextBlock Text="{x:Bind NextCounter}" FontSize="12" Foreground="White" RelativePanel.AlignVerticalCenterWithPanel="True" RelativePanel.AlignHorizontalCenterWithPanel="True"/>
@@ -63,49 +65,57 @@
                     <ListBoxItem Name="ScheduledListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE2AD;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
-                            <TextBlock Text="Zaplanowane" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
+                            <TextBlock Text="Zaplanowane" Style="{StaticResource HamburgerMenuItemLabelStyle}"
+                                       x:Uid="MainPageMenu_Scheduled"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="NextListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE122;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
-                            <TextBlock Text="Najbliższe" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
+                            <TextBlock Text="Najbliższe" Style="{StaticResource HamburgerMenuItemLabelStyle}"
+                                       x:Uid="MainPageMenu_Next"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="SomedayListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE74E;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
-                            <TextBlock Text="Kiedyś" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
+                            <TextBlock Text="Kiedyś" Style="{StaticResource HamburgerMenuItemLabelStyle}"
+                                       x:Uid="MainPageMenu_Someday"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="WaitingListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE805;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
-                            <TextBlock Text="Oddelegowane" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
+                            <TextBlock Text="Oddelegowane" Style="{StaticResource HamburgerMenuItemLabelStyle}"
+                                       x:Uid="MainPageMenu_Waiting"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="DoneListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE930;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
-                            <TextBlock Text="Zrobione" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
+                            <TextBlock Text="Zrobione" Style="{StaticResource HamburgerMenuItemLabelStyle}"
+                                       x:Uid="MainPageMenu_Done"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="ProjectsListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE80A;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
-                            <TextBlock Text="Projekty" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
+                            <TextBlock Text="Projekty" Style="{StaticResource HamburgerMenuItemLabelStyle}"
+                                       x:Uid="MainPageMenu_Projects"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="ContextsListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE909;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
-                            <TextBlock Text="Konteksty" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
+                            <TextBlock Text="Konteksty" Style="{StaticResource HamburgerMenuItemLabelStyle}"
+                                       x:Uid="MainPageMenu_Contexts"/>
                         </StackPanel>
                     </ListBoxItem>
                     <ListBoxItem Name="OptionsListBoxItem">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="&#xE115;" Style="{StaticResource HamburgerMenuItemIconStyle}"/>
-                            <TextBlock Text="Ustawienia" Style="{StaticResource HamburgerMenuItemLabelStyle}"/>
+                            <TextBlock Text="Ustawienia" Style="{StaticResource HamburgerMenuItemLabelStyle}"
+                                       x:Uid="MainPageMenu_Options"/>
                         </StackPanel>
                     </ListBoxItem>
                 </ListBox>
@@ -118,7 +128,8 @@
         <SplitView Grid.Row="0" Name="SearchSplitView" PanePlacement="Right" OpenPaneLength="250" DisplayMode="Overlay">
             <SplitView.Pane>
                 <StackPanel Orientation="Horizontal">
-                    <TextBox Name="SearchSplitTextBox" Width="210" Height="40" PlaceholderText="Szukaj" BorderBrush="{StaticResource BackgroundMainColor}" FontSize="20" TextChanged="SearchSplitTextBox_TextChanged"/>
+                    <TextBox Name="SearchSplitTextBox" Width="210" Height="40" PlaceholderText="Szukaj" BorderBrush="{StaticResource BackgroundMainColor}" FontSize="20" TextChanged="SearchSplitTextBox_TextChanged"
+                             x:Uid="MainPage_Search"/>
                     <Button Name="SearchSplitButton" Content="&#xE71E;" Background="{StaticResource BackgroundMainColor}" Style="{StaticResource NaviButtonStyle}" Click="SearchSplitButton_Click"/>
                 </StackPanel>
             </SplitView.Pane>

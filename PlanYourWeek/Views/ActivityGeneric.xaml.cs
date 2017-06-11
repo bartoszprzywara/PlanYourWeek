@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -51,7 +52,7 @@ namespace PlanYourWeek
             if (App.PlannedWeekNeedsToBeReloaded)
             {
                 App.ReloadPlannedWeekTask?.Wait();
-                App.ReloadPlannedWeekTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                App.ReloadPlannedWeekTask = Task.Factory.StartNew(() =>
                 {
                     (new YourWeekPlanningHelper()).GetPlannedWeek();
                     App.PlannedWeekNeedsToBeReloaded = false;
@@ -92,7 +93,7 @@ namespace PlanYourWeek
             listofActivities.RemoveAt(i);
 
             App.ReloadPlannedWeekTask?.Wait();
-            App.ReloadPlannedWeekTask = System.Threading.Tasks.Task.Factory.StartNew(() =>
+            App.ReloadPlannedWeekTask = Task.Factory.StartNew(() =>
             {
                 (new YourWeekPlanningHelper()).GetPlannedWeek();
             });
