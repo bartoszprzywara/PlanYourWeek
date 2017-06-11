@@ -7,8 +7,8 @@
     <ProjectGuid>{6C6BB779-0903-40FB-8B33-8CE96FE112B6}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remonty</RootNamespace>
-    <AssemblyName>Remonty</AssemblyName>
+    <RootNamespace>PlanYourWeek</RootNamespace>
+    <AssemblyName>PlanYourWeek</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
