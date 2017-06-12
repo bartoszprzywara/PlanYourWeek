@@ -67,7 +67,9 @@ namespace PlanYourWeek
             {
                 if (App.FinalPlannedWeekItems.UsedHours[i] > App.FinalPlannedWeekItems.TotalHours[i])
                 {
-                    await (new MessageDialog("Przekroczyłeś plan dnia (" + Days[i] + ")", "Pamiętaj")).ShowAsync();
+                    var messageTitle = LocalizedStrings.GetString("YourWeek_Alert_LimitExceeded_Title/Text");
+                    var messageContent = LocalizedStrings.GetString("YourWeek_Alert_LimitExceeded_Content/Text");
+                    await (new MessageDialog(messageContent + " (" + Days[i] + ")", messageTitle)).ShowAsync();
                     break;
                 }
             }
@@ -144,21 +146,21 @@ namespace PlanYourWeek
 
         private void SetWeekDayNames()
         {
-            Days[0] = "dzisiaj";
-            Days[1] = "jutro";
+            Days[0] = LocalizedStrings.GetString("Global_WeekDays_Today/Content");
+            Days[1] = LocalizedStrings.GetString("Global_WeekDays_Tomorrow/Content");
             for (int i = 2; i < 7; i++)
                 Days[i] = GetDayOfWeek((today + i) % 7);
         }
 
         private string GetDayOfWeek(int day)
         {
-            if (day == 1) return "pon";
-            if (day == 2) return "wto";
-            if (day == 3) return "śro";
-            if (day == 4) return "czw";
-            if (day == 5) return "pią";
-            if (day == 6) return "sob";
-            else return "nie";
+            if (day == 1) return LocalizedStrings.GetString("Global_WeekDaysShort_Monday/Content");
+            if (day == 2) return LocalizedStrings.GetString("Global_WeekDaysShort_Tuesday/Content");
+            if (day == 3) return LocalizedStrings.GetString("Global_WeekDaysShort_Wednesday/Content");
+            if (day == 4) return LocalizedStrings.GetString("Global_WeekDaysShort_Thursday/Content");
+            if (day == 5) return LocalizedStrings.GetString("Global_WeekDaysShort_Friday/Content");
+            if (day == 6) return LocalizedStrings.GetString("Global_WeekDaysShort_Saturday/Content");
+            else return LocalizedStrings.GetString("Global_WeekDaysShort_Sunday/Content");
         }
         #endregion
 

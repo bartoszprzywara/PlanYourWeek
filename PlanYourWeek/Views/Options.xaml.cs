@@ -61,7 +61,7 @@ namespace PlanYourWeek
 
                 if (StartDayTimePicker.Time > StartWorkingTimePicker.Time)
                 {
-                    InfoMessageTextBlock.Text = "Nie da się wstawać później, niż zaczęło się pracę";
+                    InfoMessageTextBlock.Text = LocalizedStrings.GetString("Options_Alert_StartDayPicker1/Text");
                     InfoMessageGrid.Opacity = 1;
                     AnimateInfoMessageGridStoryboard.Begin();
                     StartDayTimePicker.Time = e.OldTime;
@@ -88,14 +88,14 @@ namespace PlanYourWeek
 
                 if (StartDayTimePicker.Time > StartWorkingTimePicker.Time)
                 {
-                    InfoMessageTextBlock.Text = "Nie da się zaczynać pracy wcześniej, niż się wstało";
+                    InfoMessageTextBlock.Text = LocalizedStrings.GetString("Options_Alert_StartWorkingPicker1/Text");
                     InfoMessageGrid.Opacity = 1;
                     AnimateInfoMessageGridStoryboard.Begin();
                     StartWorkingTimePicker.Time = e.OldTime;
                 }
                 else if (StartWorkingTimePicker.Time > EndWorkingTimePicker.Time)
                 {
-                    InfoMessageTextBlock.Text = "Nie da się zaczynać pracy później, niż się ją kończy";
+                    InfoMessageTextBlock.Text = LocalizedStrings.GetString("Options_Alert_StartWorkingPicker2/Text");
                     InfoMessageGrid.Opacity = 1;
                     AnimateInfoMessageGridStoryboard.Begin();
                     StartWorkingTimePicker.Time = e.OldTime;
@@ -122,14 +122,14 @@ namespace PlanYourWeek
 
                 if (StartWorkingTimePicker.Time > EndWorkingTimePicker.Time)
                 {
-                    InfoMessageTextBlock.Text = "Nie da się kończyć pracy wcześniej, niż się ją zaczęło";
+                    InfoMessageTextBlock.Text = LocalizedStrings.GetString("Options_Alert_EndWorkingPicker1/Text");
                     InfoMessageGrid.Opacity = 1;
                     AnimateInfoMessageGridStoryboard.Begin();
                     EndWorkingTimePicker.Time = e.OldTime;
                 }
                 else if (EndWorkingTimePicker.Time > EndDayTimePicker.Time && StartDayTimePicker.Time < EndDayTimePicker.Time)
                 {
-                    InfoMessageTextBlock.Text = "Nie da się kończyć pracy później, niż idzie się spać";
+                    InfoMessageTextBlock.Text = LocalizedStrings.GetString("Options_Alert_EndWorkingPicker2/Text");
                     InfoMessageGrid.Opacity = 1;
                     AnimateInfoMessageGridStoryboard.Begin();
                     EndWorkingTimePicker.Time = e.OldTime;
@@ -157,7 +157,7 @@ namespace PlanYourWeek
                 if (EndWorkingTimePicker.Time > EndDayTimePicker.Time &&
                     StartDayTimePicker.Time < EndDayTimePicker.Time)
                 {
-                    InfoMessageTextBlock.Text = "Nie da się iść spać wcześniej, niż kończy się pracę";
+                    InfoMessageTextBlock.Text = LocalizedStrings.GetString("Options_Alert_EndDayPicker1/Text");
                     InfoMessageGrid.Opacity = 1;
                     AnimateInfoMessageGridStoryboard.Begin();
                     EndDayTimePicker.Time = e.OldTime;

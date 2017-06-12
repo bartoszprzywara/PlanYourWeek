@@ -66,13 +66,13 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="10,0,0,10">
-                            <TextBlock Text="Wykorzystane godziny:" FontSize="{StaticResource YourWeekItemLabelFontSize}"/>
+                            <TextBlock Text="Wykorzystane godziny:" FontSize="{StaticResource YourWeekItemLabelFontSize}" x:Uid="YourWeek_UsedHours"/>
                             <TextBlock Text="{x:Bind UsedHours}" FontSize="{StaticResource YourWeekItemLabelFontSize}" Margin="5,0,0,0" Foreground="{x:Bind HoursColor}"/>
                             <TextBlock Text="/" FontSize="{StaticResource YourWeekItemLabelFontSize}" Foreground="{x:Bind HoursColor}"/>
                             <TextBlock Text="{x:Bind TotalHours}" FontSize="{StaticResource YourWeekItemLabelFontSize}" Foreground="{x:Bind HoursColor}"/>
                             <Ellipse Width="8" Height="8" Fill="{x:Bind HoursColor}" Margin="3,1,15,0"/>
 
-                            <TextBlock Text="W czasie pracy:" FontSize="{StaticResource YourWeekItemLabelFontSize}" Visibility="{x:Bind IsVisible}"/>
+                            <TextBlock Text="W czasie pracy:" FontSize="{StaticResource YourWeekItemLabelFontSize}" Visibility="{x:Bind IsVisible}" x:Uid="YourWeek_WorkingHours"/>
                             <TextBlock Text="{x:Bind UsedWorkingHours}" FontSize="{StaticResource YourWeekItemLabelFontSize}" Margin="5,0,0,0" Foreground="{x:Bind HoursWorkingColor}" Visibility="{x:Bind IsVisible}"/>
                             <TextBlock Text="/" FontSize="{StaticResource YourWeekItemLabelFontSize}" Foreground="{x:Bind HoursWorkingColor}" Visibility="{x:Bind IsVisible}"/>
                             <TextBlock Text="{x:Bind TotalWorkingHours}" FontSize="{StaticResource YourWeekItemLabelFontSize}" Foreground="{x:Bind HoursWorkingColor}" Visibility="{x:Bind IsVisible}"/>

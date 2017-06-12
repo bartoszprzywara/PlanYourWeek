@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PlanYourWeek.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -103,52 +104,52 @@ namespace PlanYourWeek
         {
             if (YourWeekListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = Helpers.LocalizedStrings.GetString("MainPageMenu_YourWeek/Text");
+                TitleTextBlock.Text = LocalizedStrings.GetString("MainPage_Menu_YourWeek/Text");
                 ContentFrame.Navigate(typeof(YourWeek));
             }
             else if (IncomingListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = Helpers.LocalizedStrings.GetString("MainPageMenu_Incoming/Text");
+                TitleTextBlock.Text = LocalizedStrings.GetString("MainPage_Menu_Incoming/Text");
                 ContentFrame.Navigate(typeof(ActivityGeneric), "Nowe");
             }
             else if (ScheduledListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = Helpers.LocalizedStrings.GetString("MainPageMenu_Scheduled/Text");
+                TitleTextBlock.Text = LocalizedStrings.GetString("MainPage_Menu_Scheduled/Text");
                 ContentFrame.Navigate(typeof(ActivityGeneric), "Zaplanowane");
             }
             else if (NextListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = Helpers.LocalizedStrings.GetString("MainPageMenu_Next/Text");
+                TitleTextBlock.Text = LocalizedStrings.GetString("MainPage_Menu_Next/Text");
                 ContentFrame.Navigate(typeof(ActivityGeneric), "Najbliższe");
             }
             else if (SomedayListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = Helpers.LocalizedStrings.GetString("MainPageMenu_Someday/Text");
+                TitleTextBlock.Text = LocalizedStrings.GetString("MainPage_Menu_Someday/Text");
                 ContentFrame.Navigate(typeof(ActivityGeneric), "Kiedyś");
             }
             else if (WaitingListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = Helpers.LocalizedStrings.GetString("MainPageMenu_Waiting/Text");
+                TitleTextBlock.Text = LocalizedStrings.GetString("MainPage_Menu_Waiting/Text");
                 ContentFrame.Navigate(typeof(ActivityGeneric), "Oddelegowane");
             }
             else if (DoneListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = Helpers.LocalizedStrings.GetString("MainPageMenu_Done/Text");
+                TitleTextBlock.Text = LocalizedStrings.GetString("MainPage_Menu_Done/Text");
                 ContentFrame.Navigate(typeof(ActivityGeneric), "Zrobione");
             }
             else if (ProjectsListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = Helpers.LocalizedStrings.GetString("MainPageMenu_Projects/Text");
+                TitleTextBlock.Text = LocalizedStrings.GetString("MainPage_Menu_Projects/Text");
                 ContentFrame.Navigate(typeof(ActivityGenericProperty), "Projekty");
             }
             else if (ContextsListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = Helpers.LocalizedStrings.GetString("MainPageMenu_Contexts/Text");
+                TitleTextBlock.Text = LocalizedStrings.GetString("MainPage_Menu_Contexts/Text");
                 ContentFrame.Navigate(typeof(ActivityGenericProperty), "Konteksty");
             }
             else if (OptionsListBoxItem.IsSelected)
             {
-                TitleTextBlock.Text = Helpers.LocalizedStrings.GetString("MainPageMenu_Options/Text");
+                TitleTextBlock.Text = LocalizedStrings.GetString("MainPage_Menu_Options/Text");
                 ContentFrame.Navigate(typeof(Options));
             }
             MenuListBox.SelectedItem = null;

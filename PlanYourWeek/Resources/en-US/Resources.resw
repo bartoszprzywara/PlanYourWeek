@@ -117,34 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MainPageMenu_Contexts.Text" xml:space="preserve">
+  <data name="Global_WeekDaysShort_Friday.Content" xml:space="preserve">
+    <value>fri</value>
+  </data>
+  <data name="Global_WeekDaysShort_Monday.Content" xml:space="preserve">
+    <value>mon</value>
+  </data>
+  <data name="Global_WeekDaysShort_Saturday.Content" xml:space="preserve">
+    <value>sat</value>
+  </data>
+  <data name="Global_WeekDaysShort_Sunday.Content" xml:space="preserve">
+    <value>sun</value>
+  </data>
+  <data name="Global_WeekDaysShort_Thursday.Content" xml:space="preserve">
+    <value>thu</value>
+  </data>
+  <data name="Global_WeekDaysShort_Tuesday.Content" xml:space="preserve">
+    <value>tue</value>
+  </data>
+  <data name="Global_WeekDaysShort_Wednesday.Content" xml:space="preserve">
+    <value>wed</value>
+  </data>
+  <data name="Global_WeekDays_Today.Content" xml:space="preserve">
+    <value>today</value>
+  </data>
+  <data name="Global_WeekDays_Tomorrow.Content" xml:space="preserve">
+    <value>tomorrow</value>
+  </data>
+  <data name="MainPage_Menu_Contexts.Text" xml:space="preserve">
     <value>Contexts</value>
   </data>
-  <data name="MainPageMenu_Done.Text" xml:space="preserve">
+  <data name="MainPage_Menu_Done.Text" xml:space="preserve">
     <value>Done</value>
   </data>
-  <data name="MainPageMenu_Incoming.Text" xml:space="preserve">
+  <data name="MainPage_Menu_Incoming.Text" xml:space="preserve">
     <value>Incoming</value>
   </data>
-  <data name="MainPageMenu_Next.Text" xml:space="preserve">
+  <data name="MainPage_Menu_Next.Text" xml:space="preserve">
     <value>Next</value>
   </data>
-  <data name="MainPageMenu_Options.Text" xml:space="preserve">
+  <data name="MainPage_Menu_Options.Text" xml:space="preserve">
     <value>Options</value>
   </data>
-  <data name="MainPageMenu_Projects.Text" xml:space="preserve">
+  <data name="MainPage_Menu_Projects.Text" xml:space="preserve">
     <value>Projects</value>
   </data>
-  <data name="MainPageMenu_Scheduled.Text" xml:space="preserve">
+  <data name="MainPage_Menu_Scheduled.Text" xml:space="preserve">
     <value>Scheduled</value>
   </data>
-  <data name="MainPageMenu_Someday.Text" xml:space="preserve">
+  <data name="MainPage_Menu_Someday.Text" xml:space="preserve">
     <value>Someday</value>
   </data>
-  <data name="MainPageMenu_Waiting.Text" xml:space="preserve">
+  <data name="MainPage_Menu_Waiting.Text" xml:space="preserve">
     <value>Waiting</value>
   </data>
-  <data name="MainPageMenu_YourWeek.Text" xml:space="preserve">
+  <data name="MainPage_Menu_YourWeek.Text" xml:space="preserve">
     <value>Your week</value>
   </data>
   <data name="MainPage_Search.PlaceholderText" xml:space="preserve">
@@ -153,7 +180,65 @@
   <data name="MainPage_YourWeek.Text" xml:space="preserve">
     <value>Your week</value>
   </data>
-  <data name="Sample.Text" xml:space="preserve">
-    <value>My First String in English</value>
+  <data name="Options_Alert_EndDayPicker1.Text" xml:space="preserve">
+    <value>Nie da się iść spać wcześniej, niż kończy się pracę</value>
+    <comment>needs translation</comment>
+  </data>
+  <data name="Options_Alert_EndWorkingPicker1.Text" xml:space="preserve">
+    <value>Nie da się kończyć pracy wcześniej, niż się ją zaczęło</value>
+    <comment>needs translation</comment>
+  </data>
+  <data name="Options_Alert_EndWorkingPicker2.Text" xml:space="preserve">
+    <value>Nie da się kończyć pracy później, niż idzie się spać</value>
+    <comment>needs translation</comment>
+  </data>
+  <data name="Options_Alert_StartDayPicker1.Text" xml:space="preserve">
+    <value>Nie da się wstawać później, niż zaczęło się pracę</value>
+    <comment>needs translation</comment>
+  </data>
+  <data name="Options_Alert_StartWorkingPicker1.Text" xml:space="preserve">
+    <value>Nie da się zaczynać pracy wcześniej, niż się wstało</value>
+    <comment>needs translation</comment>
+  </data>
+  <data name="Options_Alert_StartWorkingPicker2.Text" xml:space="preserve">
+    <value>Nie da się zaczynać pracy później, niż się ją kończy</value>
+    <comment>needs translation</comment>
+  </data>
+  <data name="Options_From.Text" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="Options_QuestionGoToSleep.Text" xml:space="preserve">
+    <value>O której godzinie chodzisz spać?</value>
+    <comment>needs translation</comment>
+  </data>
+  <data name="Options_QuestionWakeUp.Text" xml:space="preserve">
+    <value>O której godzinie wstajesz?</value>
+    <comment>needs translation</comment>
+  </data>
+  <data name="Options_QuestionWorkingDays.Text" xml:space="preserve">
+    <value>W jakie dni pracujesz?</value>
+    <comment>needs translation</comment>
+  </data>
+  <data name="Options_QuestionWorkingHours.Text" xml:space="preserve">
+    <value>Jakie są Twoje godziny pracy?</value>
+    <comment>needs translation</comment>
+  </data>
+  <data name="Options_Saved.Text" xml:space="preserve">
+    <value>saved</value>
+  </data>
+  <data name="Options_Till.Text" xml:space="preserve">
+    <value>till</value>
+  </data>
+  <data name="YourWeek_Alert_LimitExceeded_Content.Text" xml:space="preserve">
+    <value>You have exceeded your time limit</value>
+  </data>
+  <data name="YourWeek_Alert_LimitExceeded_Title.Text" xml:space="preserve">
+    <value>Please note</value>
+  </data>
+  <data name="YourWeek_UsedHours.Text" xml:space="preserve">
+    <value>Used hours:</value>
+  </data>
+  <data name="YourWeek_WorkingHours.Text" xml:space="preserve">
+    <value>Working hours:</value>
   </data>
 </root>
