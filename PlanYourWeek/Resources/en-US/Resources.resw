@@ -117,6 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActivityGeneric_Property_AddNew.PlaceholderText" xml:space="preserve">
+    <value>Add new</value>
+  </data>
+  <data name="ActivityGeneric_Property_Alert_PropertyAlreadyExists_Content_End.Text" xml:space="preserve">
+    <value>already exists</value>
+  </data>
+  <data name="ActivityGeneric_Property_Alert_PropertyAlreadyExists_Content_Start.Text" xml:space="preserve">
+    <value>Such</value>
+  </data>
+  <data name="ActivityGeneric_Property_Alert_PropertyAlreadyExists_Title.Text" xml:space="preserve">
+    <value>Oh no</value>
+  </data>
+  <data name="ActivityGeneric_Property_Alert_PropertyHasToHaveName_Content_End.Text" xml:space="preserve">
+    <value>has to have name</value>
+  </data>
+  <data name="ActivityGeneric_Property_Alert_PropertyHasToHaveName_Title.Text" xml:space="preserve">
+    <value>Oh no</value>
+  </data>
+  <data name="ActivityGeneric_Property_Context.Text" xml:space="preserve">
+    <value>Context</value>
+  </data>
+  <data name="ActivityGeneric_Property_Project.Text" xml:space="preserve">
+    <value>Project</value>
+  </data>
   <data name="Global_WeekDaysShort_Friday.Content" xml:space="preserve">
     <value>fri</value>
   </data>
@@ -174,6 +198,9 @@
   <data name="MainPage_Menu_YourWeek.Text" xml:space="preserve">
     <value>Your week</value>
   </data>
+  <data name="MainPage_NewTask.Text" xml:space="preserve">
+    <value>New task</value>
+  </data>
   <data name="MainPage_Search.PlaceholderText" xml:space="preserve">
     <value>Search</value>
   </data>
@@ -181,47 +208,37 @@
     <value>Your week</value>
   </data>
   <data name="Options_Alert_EndDayPicker1.Text" xml:space="preserve">
-    <value>Nie da się iść spać wcześniej, niż kończy się pracę</value>
-    <comment>needs translation</comment>
+    <value>You can't go to sleep before ending the work</value>
   </data>
   <data name="Options_Alert_EndWorkingPicker1.Text" xml:space="preserve">
-    <value>Nie da się kończyć pracy wcześniej, niż się ją zaczęło</value>
-    <comment>needs translation</comment>
+    <value>You can't finish work before starting it</value>
   </data>
   <data name="Options_Alert_EndWorkingPicker2.Text" xml:space="preserve">
-    <value>Nie da się kończyć pracy później, niż idzie się spać</value>
-    <comment>needs translation</comment>
+    <value>You can't  finish work after going to sleep</value>
   </data>
   <data name="Options_Alert_StartDayPicker1.Text" xml:space="preserve">
-    <value>Nie da się wstawać później, niż zaczęło się pracę</value>
-    <comment>needs translation</comment>
+    <value>You can't get up after starting the work</value>
   </data>
   <data name="Options_Alert_StartWorkingPicker1.Text" xml:space="preserve">
-    <value>Nie da się zaczynać pracy wcześniej, niż się wstało</value>
-    <comment>needs translation</comment>
+    <value>You can't start work before getting up</value>
   </data>
   <data name="Options_Alert_StartWorkingPicker2.Text" xml:space="preserve">
-    <value>Nie da się zaczynać pracy później, niż się ją kończy</value>
-    <comment>needs translation</comment>
+    <value>You can't start work after ending it</value>
   </data>
   <data name="Options_From.Text" xml:space="preserve">
     <value>from</value>
   </data>
   <data name="Options_QuestionGoToSleep.Text" xml:space="preserve">
-    <value>O której godzinie chodzisz spać?</value>
-    <comment>needs translation</comment>
+    <value>What time do you go to sleep?</value>
   </data>
   <data name="Options_QuestionWakeUp.Text" xml:space="preserve">
-    <value>O której godzinie wstajesz?</value>
-    <comment>needs translation</comment>
+    <value>What time do you get up?</value>
   </data>
   <data name="Options_QuestionWorkingDays.Text" xml:space="preserve">
-    <value>W jakie dni pracujesz?</value>
-    <comment>needs translation</comment>
+    <value>What are your working days?</value>
   </data>
   <data name="Options_QuestionWorkingHours.Text" xml:space="preserve">
-    <value>Jakie są Twoje godziny pracy?</value>
-    <comment>needs translation</comment>
+    <value>What are your working hours?</value>
   </data>
   <data name="Options_Saved.Text" xml:space="preserve">
     <value>saved</value>

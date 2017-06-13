@@ -36,7 +36,7 @@ namespace PlanYourWeek
                 complexPropertyType = "Context";
                 listOfItems = new ObservableCollection<ComplexProperty>(LocalDatabaseHelper.ReadAllItemsFromTable<Context>());
             }
-            if (complexPropertyName == "Projekt")
+            else if (complexPropertyName == "Projekt")
             {
                 complexPropertyType = "Project";
                 listOfItems = new ObservableCollection<ComplexProperty>(LocalDatabaseHelper.ReadAllItemsFromTable<Project>());
@@ -63,11 +63,23 @@ namespace PlanYourWeek
         async private void AddItemButton_Click(object sender, RoutedEventArgs e)
         {
             int counter = new ObservableCollection<ComplexProperty>(LocalDatabaseHelper.conn.Query<ComplexProperty>("SELECT * FROM " + complexPropertyType).Where(v => v.Name.ToLower() == AddItemTextBox.Text.ToLower()).ToList()).Count;
+            var complexPropertyNameForAlert = LocalizedStrings.GetString("ActivityGeneric_Property_" + complexPropertyType + "/Text");
 
             if (string.IsNullOrWhiteSpace(AddItemTextBox.Text))
-                await (new MessageDialog(complexPropertyName + " musi mieć nazwę", "Nie da rady")).ShowAsync();
+            {
+                var alertNameTitle = LocalizedStrings.GetString("ActivityGeneric_Property_Alert_PropertyHasToHaveName_Title/Text");
+                var alertNameContentEnd = LocalizedStrings.GetString("ActivityGeneric_Property_Alert_PropertyHasToHaveName_Content_End/Text");
+
+                await (new MessageDialog(complexPropertyNameForAlert + " " + alertNameContentEnd, alertNameTitle)).ShowAsync();
+            }
             else if (counter > 0)
-                await (new MessageDialog("Taki " + complexPropertyName.ToLower() + " już istnieje", "Nie da rady")).ShowAsync();
+            {
+                var alertExistsTitle = LocalizedStrings.GetString("ActivityGeneric_Property_Alert_PropertyAlreadyExists_Title/Text");
+                var alertExistsContentStart = LocalizedStrings.GetString("ActivityGeneric_Property_Alert_PropertyAlreadyExists_Content_Start/Text");
+                var alertExistsContentEnd = LocalizedStrings.GetString("ActivityGeneric_Property_Alert_PropertyAlreadyExists_Content_End/Text");
+
+                await (new MessageDialog(alertExistsContentStart + " " + complexPropertyNameForAlert.ToLower() + " " + alertExistsContentEnd, alertExistsTitle)).ShowAsync();
+            }
             else
             {
                 if (complexPropertyName == "Kontekst")

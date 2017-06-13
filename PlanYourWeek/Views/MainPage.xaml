@@ -159,7 +159,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="MenuSplitView.DisplayMode" Value="CompactInline" />
-                        <Setter Target="MenuSplitView.IsPaneOpen" Value="True" />
+                        <!--<Setter Target="MenuSplitView.IsPaneOpen" Value="True" />-->
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

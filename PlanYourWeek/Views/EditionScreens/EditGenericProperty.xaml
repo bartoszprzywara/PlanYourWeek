@@ -26,13 +26,13 @@
 
         <RelativePanel Grid.Row="0" Background="{StaticResource BackgroundMainColor}">
             <Button Content="&#xE0C4;" Name="BackButton" Style="{StaticResource NaviButtonStyle}" Click="BackButton_Click"/>
-            <TextBlock Text="Edytuj kontekst"  Name="NameTextBlock" Foreground="{StaticResource ForegroundMainColor}" Margin="10,0,0,0" RelativePanel.RightOf="BackButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
+            <TextBlock Text="Edytuj" Name="NameTextBlock" x:Uid="Edit_GenericProperty_Edit" Foreground="{StaticResource ForegroundMainColor}" Margin="10,0,0,0" RelativePanel.RightOf="BackButton" RelativePanel.AlignVerticalCenterWithPanel="True"/>
             <Button Content="&#xE107;" Name="DeleteButton" RelativePanel.LeftOf="SaveButton" Style="{StaticResource NaviButtonStyle}" Visibility="Visible" Click="DeleteButton_Click"/>
             <Button Content="&#xE74E;" Name="SaveButton" RelativePanel.AlignRightWithPanel="True" Style="{StaticResource NaviButtonStyle}" Click="SaveButton_Click"/>
         </RelativePanel>
 
         <StackPanel Grid.Row="1">
-            <TextBlock Text="Edytuj nazwę" Margin="{StaticResource CommonMargin}"/>
+            <TextBlock Text="Edytuj nazwę" x:Uid="Edit_GenericProperty_EditName" Margin="{StaticResource CommonMargin}"/>
             <TextBox Name="NameTextBox" Margin="{StaticResource CommonMargin}" BorderBrush="{StaticResource BackgroundMainColor}"/>
         </StackPanel>
     </Grid>

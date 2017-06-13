@@ -117,6 +117,42 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActivityGeneric_Property_AddNew.PlaceholderText" xml:space="preserve">
+    <value>Dodaj nowy</value>
+  </data>
+  <data name="ActivityGeneric_Property_Alert_PropertyAlreadyExists_Content_End.Text" xml:space="preserve">
+    <value>już istnieje</value>
+  </data>
+  <data name="ActivityGeneric_Property_Alert_PropertyAlreadyExists_Content_Start.Text" xml:space="preserve">
+    <value>Taki</value>
+  </data>
+  <data name="ActivityGeneric_Property_Alert_PropertyAlreadyExists_Title.Text" xml:space="preserve">
+    <value>Nie da rady</value>
+  </data>
+  <data name="ActivityGeneric_Property_Alert_PropertyHasToHaveName_Content_End.Text" xml:space="preserve">
+    <value>musi mieć nazwę</value>
+  </data>
+  <data name="ActivityGeneric_Property_Alert_PropertyHasToHaveName_Title.Text" xml:space="preserve">
+    <value>Nie da rady</value>
+  </data>
+  <data name="ActivityGeneric_Property_Context.Text" xml:space="preserve">
+    <value>Kontekst</value>
+  </data>
+  <data name="ActivityGeneric_Property_Project.Text" xml:space="preserve">
+    <value>Projekt</value>
+  </data>
+  <data name="ActivityGeneric_ResultsFor.Text" xml:space="preserve">
+    <value>Wyniki dla:</value>
+  </data>
+  <data name="Edit_GenericProperty_Edit.Text" xml:space="preserve">
+    <value>Edytuj</value>
+  </data>
+  <data name="Edit_GenericProperty_EditName.Text" xml:space="preserve">
+    <value>Edytuj nazwę</value>
+  </data>
+  <data name="Global_No" xml:space="preserve">
+    <value>Nie</value>
+  </data>
   <data name="Global_WeekDaysShort_Friday.Content" xml:space="preserve">
     <value>pią</value>
   </data>
@@ -143,6 +179,9 @@
   </data>
   <data name="Global_WeekDays_Tomorrow.Content" xml:space="preserve">
     <value>jutro</value>
+  </data>
+  <data name="Global_Yes" xml:space="preserve">
+    <value>Tak</value>
   </data>
   <data name="MainPage_Menu_Contexts.Text" xml:space="preserve">
     <value>Konteksty</value>
@@ -173,6 +212,9 @@
   </data>
   <data name="MainPage_Menu_YourWeek.Text" xml:space="preserve">
     <value>Twój tydzień</value>
+  </data>
+  <data name="MainPage_NewTask.Text" xml:space="preserve">
+    <value>Nowe zadanie</value>
   </data>
   <data name="MainPage_Search.PlaceholderText" xml:space="preserve">
     <value>Szukaj</value>

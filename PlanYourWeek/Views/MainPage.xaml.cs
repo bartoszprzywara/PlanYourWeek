@@ -71,7 +71,7 @@ namespace PlanYourWeek
         {
             SaveState();
             this.Frame.Navigate(typeof(AddEditActivity));
-            TitleTextBlock.Text = "Nowe zadanie";
+            TitleTextBlock.Text = LocalizedStrings.GetString("MainPage_NewTask/Text");
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -84,7 +84,7 @@ namespace PlanYourWeek
         {
             App.LastSearchValue = SearchSplitTextBox.Text;
             ContentFrame.Navigate(typeof(ActivityGeneric), "Szukaj");
-            TitleTextBlock.Text = "Szukaj";
+            TitleTextBlock.Text = LocalizedStrings.GetString("MainPage_Search/PlaceholderText");
             SearchSplitView.IsPaneOpen = false;
             SaveState();
         }
@@ -95,7 +95,7 @@ namespace PlanYourWeek
             {
                 App.LastSearchValue = SearchSplitTextBox.Text;
                 ContentFrame.Navigate(typeof(ActivityGeneric), "Szukaj");
-                TitleTextBlock.Text = "Szukaj";
+                TitleTextBlock.Text = LocalizedStrings.GetString("MainPage_Search/PlaceholderText");
             }
             SaveState();
         }

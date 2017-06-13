@@ -50,7 +50,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Name="AddItemTextBox" Background="{StaticResource LightGrayColor}" PlaceholderText="Dodaj nowy" BorderBrush="{StaticResource LightGrayColor}" FontSize="{StaticResource ItemTitleFontSize}" Height="34"/>
+                <TextBox Grid.Column="0" Name="AddItemTextBox" Background="{StaticResource LightGrayColor}" x:Uid="ActivityGeneric_Property_AddNew" PlaceholderText="Dodaj nowy" BorderBrush="{StaticResource LightGrayColor}" FontSize="{StaticResource ItemTitleFontSize}" Height="34"/>
                 <Button Grid.Column="1" Name="AddItemButton" Content="&#xE109;" FontFamily="Segoe MDL2 Assets" Style="{StaticResource ItemButtonStyle}" Click="AddItemButton_Click"/>
             </Grid>
         </Grid>

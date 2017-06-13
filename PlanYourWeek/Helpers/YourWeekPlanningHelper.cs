@@ -13,7 +13,6 @@ namespace PlanYourWeek.Helpers
         public void GetPlannedWeek()
         {
             // TODO: przerobić time pickery na własne z półgodzinnymi interwałami
-            // TODO: zmienić nazwę apki i dodać ikonę oraz splash screen
 
             this.PlanYourWeek();
             Debug.WriteLine("Your Week has just been reloaded (" + DateTime.Now + ")");

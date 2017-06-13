@@ -37,7 +37,7 @@ namespace PlanYourWeek
             if (listType.Contains("Szukaj"))
             {
                 SearchValueTextBlock.Visibility = Visibility.Visible;
-                SearchValueTextBlock.Text = "Wyniki dla: " + App.LastSearchValue;
+                SearchValueTextBlock.Text = LocalizedStrings.GetString("ActivityGeneric_ResultsFor/Text") + " " + App.LastSearchValue;
                 string searchValue = App.LastSearchValue.ToLower();
 
                 using (LocalDatabaseHelper.conn.Lock())

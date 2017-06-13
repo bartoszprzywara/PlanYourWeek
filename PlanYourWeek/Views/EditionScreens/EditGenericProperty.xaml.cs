@@ -57,7 +57,8 @@ namespace PlanYourWeek
                 item = LocalDatabaseHelper.ReadItem<Project>(itemId);
             }
 
-            NameTextBlock.Text = "Edytuj " + complexPropertyName.ToLower();
+            var complexPropertyNameForTitle = LocalizedStrings.GetString("ActivityGeneric_Property_" + complexPropertyType + "/Text");
+            NameTextBlock.Text = LocalizedStrings.GetString("Edit_GenericProperty_Edit/Text") + " " + complexPropertyNameForTitle.ToLower();
             NameTextBox.Text = item.Name;
         }
 
